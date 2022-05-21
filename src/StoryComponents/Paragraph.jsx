@@ -1,5 +1,5 @@
 import React from 'react'
-import DebugVerboseText from './DebugVerboseText'
+import DebugVerboseText from '../DebugVerboseText'
 
 /*
 <p>

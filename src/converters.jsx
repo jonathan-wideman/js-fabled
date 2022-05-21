@@ -1,10 +1,10 @@
-import Section from "./Section"
-import Paragraph from "./Paragraph"
-import Goto from "./Goto"
-import Item from "./Item"
-import DefaultNode from "./DefaultNode"
+import Section from "./StoryComponents/Section"
+import Paragraph from "./StoryComponents/Paragraph"
+import Goto from "./StoryComponents/Goto"
+import Item from "./StoryComponents/Item"
+import DefaultNode from "./StoryComponents/DefaultNode"
 import DebugVerboseText from "./DebugVerboseText"
-import Give from "./Give"
+import Give from "./StoryComponents/Give"
 
 const converters = {
     /*

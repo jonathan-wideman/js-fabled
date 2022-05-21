@@ -1,7 +1,7 @@
 import React from 'react'
-import DebugVerboseText from './DebugVerboseText'
-import { useGameContext } from './GameContext'
-import { bookFromNumber, getBookTitle } from './helpers'
+import DebugVerboseText from '../DebugVerboseText'
+import { useGameContext } from '../GameContext'
+import { bookFromNumber, getBookTitle } from '../helpers'
 
 /*
 <goto section="S" [book="S"] [force="B"] [sail="B"] [visit="B"] [dead=”B”] [flee=”B”] [codeword=”S”] [revisit=”B”] [price/flag=”S”]>

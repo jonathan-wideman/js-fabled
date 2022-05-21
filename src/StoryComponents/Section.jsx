@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import Checkbox from './Checkbox'
-import DebugVerboseText from './DebugVerboseText'
-import { useGameContext } from './GameContext'
-import { range, sectionCodeword, sectionTickCodeword } from './helpers'
+import DebugVerboseText from '../DebugVerboseText'
+import { useGameContext } from '../GameContext'
+import { range, sectionCodeword, sectionTickCodeword } from '../helpers'
 
 /*
 <section name="S" [dock="S"] [boxes="N"] [profession="S"] [start="B"] [tag="S"] [image=”S”] [todock=”S”]>
