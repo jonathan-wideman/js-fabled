@@ -6,6 +6,7 @@ import { useGameContext } from './GameContext'
 // import { ReactDOM } from 'react'
 import XMLToReact from '@condenast/xml-to-react'
 import converters from './converters'
+import DebugVerboseText from './DebugVerboseText'
 
 
 
@@ -44,6 +45,10 @@ export default function Story() {
         <div className='story'>
 
             {reactTree}
+
+            <DebugVerboseText>
+                {storyData.data && <pre>{storyData.data}</pre>}
+            </DebugVerboseText>
 
         </div>
     )

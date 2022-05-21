@@ -85,6 +85,11 @@
   color: var(--color-txt-debug);
 }
 
+.debug-verbose pre {
+  font-size: 1.2em;
+  white-space: pre-wrap;
+}
+
 .dice {
   display: flex;
   align-items: center;
