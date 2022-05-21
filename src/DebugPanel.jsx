@@ -25,7 +25,7 @@ export default function DebugPanel() {
     }
 
     return (
-        <div>
+        <div className='debug pane'>
             <h3>Debug Panel</h3>
             <div>
                 <button onClick={() => gotoPage(inputPage)}>goto</button>

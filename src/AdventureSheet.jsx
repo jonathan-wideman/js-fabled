@@ -10,7 +10,7 @@ export default function AdventureSheet() {
     const { character } = useGameContext()
 
     return (
-        <div className='sheet'>
+        <div className='sheet pane'>
             <div><StatLabel>Name:</StatLabel>{character.name}</div>
             <div><StatLabel>Profession:</StatLabel>{character.profession}</div>
             {/* <div><StatLabel>Rank:</StatLabel>{character.rank.value} ({character.rank.title})</div> */}
