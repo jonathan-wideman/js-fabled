@@ -54,15 +54,15 @@ TODO: shards – The number of Shards that can be gained. This provides the defa
 
 TODO: special – An unusual, 'game' action: one of {attack, defence, armourlock, weaponlock, lock, unlock, difficultycurse, difficultyrestore, godless}.
 
-'attack' gives a bonus to the character's rolls in the next fight; 'defence' gives a bonus to the character's Defence score during the next fight. Both of these actions use the bonus attribute, although the defence bonus defaults to 3.
+    TODO: 'attack' gives a bonus to the character's rolls in the next fight; 'defence' gives a bonus to the character's Defence score during the next fight. Both of these actions use the bonus attribute, although the defence bonus defaults to 3.
 
-'lock' (or 'freeze') and 'unlock' (or 'thaw') work on a cache, indicated by the cache attribute; the cache will temporarily ignore user access, or restore access.
+    TODO: 'lock' (or 'freeze') and 'unlock' (or 'thaw') work on a cache, indicated by the cache attribute; the cache will temporarily ignore user access, or restore access.
 
-'armourlock' stops the character from changing the worn armour, for the duration of the section; 'weaponlock', similarly, locks in the currently wielded weapon.
+    TODO: 'armourlock' stops the character from changing the worn armour, for the duration of the section; 'weaponlock', similarly, locks in the currently wielded weapon.
 
-'difficultycurse' changes all difficulty rolls to be made with one die, while 'difficultyrestore' restores them to the usual two dice.
+    TODO: 'difficultycurse' changes all difficulty rolls to be made with one die, while 'difficultyrestore' restores them to the usual two dice.
 
-'godless' removes the character's ability to worship a god (clearing the currently worshipped god in the process).
+    TODO: 'godless' removes the character's ability to worship a god (clearing the currently worshipped god in the process).
 
 TODO: ticks – The number of ticks to add to the checkboxes displayed with this section. If no attributes are present, this defaults to 1, with default text of 'put a tick there now'. Also used by the name attribute.
 

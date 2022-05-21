@@ -3,8 +3,14 @@ import Paragraph from "./StoryComponents/Paragraph"
 import Goto from "./StoryComponents/Goto"
 import Item from "./StoryComponents/Item"
 import DefaultNode from "./StoryComponents/DefaultNode"
-import DebugVerboseText from "./DebugVerboseText"
 import Give from "./StoryComponents/Give"
+import Choices from "./StoryComponents/Choices"
+import Outcomes from "./StoryComponents/Outcomes"
+import Table from "./StoryComponents/Table"
+import Choice from "./StoryComponents/Choice"
+import Outcome from "./StoryComponents/Outcome"
+import Result from "./StoryComponents/Result"
+import Lose from "./StoryComponents/Lose"
 
 const converters = {
     /*
@@ -28,19 +34,16 @@ const converters = {
     armour: (props) => ({ type: Item, props: { ...props, type: 'armor' } }),
     tool: (props) => ({ type: Item, props: { ...props, type: 'tool' } }),
 
-    // choices: (props) => ({ type: 'ul', props }),
-    // outcomes: (props) => ({ type: 'ul', props }),
-    // table: (props) => ({ type: 'ul', props }), // table?
-    choices: (props) => ({ type: ({ children, ...others }) => <><ul>{children}</ul><DebugVerboseText>[choices {JSON.stringify(others)}]</DebugVerboseText></>, props }),
-    outcomes: (props) => ({ type: ({ children, ...others }) => <><ul>{children}</ul><DebugVerboseText>[outcomes {JSON.stringify(others)}]</DebugVerboseText></>, props }),
-    table: (props) => ({ type: ({ children, ...others }) => <><ul>{children}</ul><DebugVerboseText>[table {JSON.stringify(others)}]</DebugVerboseText></>, props }),
+    choices: (props) => ({ type: Choices, props }),
+    outcomes: (props) => ({ type: Outcomes, props }),
+    table: (props) => ({ type: Table, props }),
 
-    choice: (props) => ({ type: ({ children, section, ...others }) => <li>{children} <Goto section={section} /><DebugVerboseText>[choice {JSON.stringify({ ...others, section })}]</DebugVerboseText></li>, props }),
-    outcome: (props) => ({ type: ({ children, section, ...others }) => <li>{children} <Goto section={section} /><DebugVerboseText>[outcome {JSON.stringify({ ...others, section })}]</DebugVerboseText></li>, props }),
+    choice: (props) => ({ type: Choice, props }),
+    outcome: (props) => ({ type: Outcome, props }),
 
     tick: (props) => ({ type: Give, props }),
     gain: (props) => ({ type: Give, props }),
-    lose: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'lose', isAction: true } }),
+    lose: (props) => ({ type: Lose, props }),
 
     if: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'if' } }),
     elseif: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'elseif' } }),
@@ -50,21 +53,19 @@ const converters = {
     difficulty: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'difficulty', isAction: true } }),
     rankcheck: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'rankcheck', isAction: true } }),
 
-    // success: (props) => ({ type: ({ children, section }) => <li>{children} <Goto section={section} /></li>, props }),
-    // failure: (props) => ({ type: ({ children, section }) => <li>{children} <Goto section={section} /></li>, props }),
-    success: (props) => ({ type: ({ children, section, ...others }) => <li>{children ?? 'If you succeed'} <Goto section={section} /><DebugVerboseText>[success {JSON.stringify({ ...others, section })}]</DebugVerboseText></li>, props }),
-    failure: (props) => ({ type: ({ children, section, ...others }) => <li>{children ?? 'If you fail'} <Goto section={section} /><DebugVerboseText>[failure {JSON.stringify({ ...others, section })}]</DebugVerboseText></li>, props }),
+    success: (props) => ({ type: Result, props: { ...props, nodeType: 'success' } }),
+    failure: (props) => ({ type: Result, props: { ...props, nodeType: 'failure' } }),
 
     group: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'group' } }),
 
     set: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'set' } }),
-    
+
     training: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'training' } }),
 
     rest: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'rest' } }),
-    
+
     adjust: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'adjust' } }),
-    
+
     itemcache: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'itemcache' } }),
     moneycache: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'moneycache' } }),
 
@@ -109,14 +110,14 @@ const converters = {
     h4: (props) => ({ type: 'h4', props }),
 
     image: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'image' } }),
-    
+
     'include item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'include item attributes' } }),
     'exclude item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'exclude item attributes' } }),
 
     reroll: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'reroll' } }),
-    
+
     sectionview: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'sectionview' } }),
-    
+
     while: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'while' } }),
 
     i: (props) => ({ type: 'em', props }),
@@ -130,115 +131,6 @@ export default converters
 
 
 /*
-TODO:
-<choices>, <outcomes>, <table>
-Groups a set of choices or outcomes. Generally the elements within the table can be mixed, as long as the number of columns matches up.
-
-var – Used only in the <outcomes> element, for a set of outcomes that use the same var and may be repeatedly enabled. See 6.731 for the only (buggy) example.
-
-<choice [box="S"] [god="S"] [item tags] [pay=”B”] [profession="S"] [shards="V" [currency="S"]]>
-One of a set of available choices, arranged in a table. Each choice consists of an automatic goto and a description (enclosed by the start and end tag). All attributes used by goto can be present here.
-
-box – The codeword that must be present for this option to be enabled. Changes to the codeword made within the section will immediately affect this option. To show a checkbox as part of the choice description, include the text '{box}'; this will match the codeword state.
-
-currency – The currency of the money indicated by shards. Defaults to 'Shards'.
-
-flee – If true, this option will be enabled when a fight within the section commences, and disabled afterwards.
-
-god – The god that the character must worship to select this option.
-
-item tags – The item that the character must possess to select this option.
-
-pay – Whether the money/item will be removed if the character takes this choice. If shards is present, defaults to true; if an item is present, defaults to false.
-
-profession – The profession that the character must belong to to select this option.
-
-shards – The amount of money the character must have to select this option.
-
-Blessings are specified by the blessing attribute (containing the name of the blessing). As usual, an '*' matches all blessings, and a '?' matches a single one. The possible values:
-
-defence – Defence through Faith. The bonus attribute optionally specifies the Defence bonus (defaults to 3).
-
-disease/poison – Immunity to Disease/Poison.
-
-injury – Immunity to Injury.
-
-luck – Luck.
-
-storm – Safety from Storms.
-
-
-
-TODO:
-<outcome [blessing="S"] [codeword="S"] [flag="S"] [range="S" [var="S"]] >
-Usually one of a set after a dice roll has occurred, with one being enabled. It can also be used to group a block of text and actions, as if it were an if tag. All attributes used by goto can be present here.
-
-blessing – A blessing that must be possessed for this option to enable.
-
-codeword – One or more codewords that must be possessed for this option to enable. Multiple codewords may be combined with '|' or '&', to indicate a logical OR or AND respectively. The default text will be the list of codewords, separated by commas and the appropriate 'or'/'and' before the last codeword.
-
-flag – The flag that must be set for this option to enable. Used in combination with other constraints (range or codewords) for a set of outcomes that can be repeatedly triggered.
-
-range – A dice result range, specified as a single number, a range (X-Y) or two numbers (X,Y). The dice result is gotten from the anonymous variable, unless var is specified.
-
-var – The variable holding the dice result with which range is compared.
-
-Codewords are kept as a set of strings mapping to integers. A codeword is 'present' if it is in the set and maps to any integer other than 0. Tick counts are also kept with the codewords, with a codeword in the form 'book/section' mapping to the number of ticks. An arbitrary 'count' is also kept with the codewords (eg. your status at the Uttaku court).
-
-
-
-TODO:
-<lose [ability="S" amount="V" [fatal="B"]] [blessing="S" [permanent=”B”]] [cache="S"] [cargo="S"] [codeword="S"] [crew="N"] [curse attributes] [flag="S"] [force="B"] [itemAt=”V”] [price="S"] [resurrection="B"] [shards="V"] [ship="B"] [stamina="S"] [staminato="V"] [item attributes [chance="S"] [multiple="V"]] [title=”S”]>
-'Remove' something from the character. Note that multiple actions can be included here, and all will be executed (eg. item="*" shards="*" will remove all shards and items). If the action would do nothing, it remains disabled and execution continues.
-
-ability – The ability to deduct amount from. This may be one of the six abilities, 'stamina', or 'rank'. A '?' lets the player choose which of the six abilities will be affected; a '*' means it affects all six abilities.
-
-amount – The amount to deduct from ability. This may be a number, a variable name, or a dice expression. If an adjustment would reduce the ability to 0 or less this will kill the character (depending on the fatal attribute).
-
-blessing – The blessing(s) to remove from the character. This can be one of the standard types, '?' or '*'.
-
-cache – The name of the money or item cache to remove money and items from.
-
-cargo – The cargo type to remove from the ship. If it's one of the known types, removes all cargo of that type from the current ship. It can also be '?', to remove a single cargo unit of the player's choice, or '*' to remove all cargo.
-
-chance – This is only relevant if item="*" is present; it gives the probability (given as a fraction 'X/Y', between 0 and 1) for each item's removal.
-
-codeword – A codeword to remove from the character. The default text if this is present is 'erase the codeword CODEWORD'. If the codeword is found in the action text, it will be automatically italicised.
-
-crew – An integer 'step' to deduct from the current ship's crew. For example, a value of 1 will downgrade the crew from excellent to good, good to average, or average to poor. A negative value can also be used here to upgrade the crew, which complements the <gain crew="S"> action nicely.
-
-curse attributes – The curse, poison or disease to remove from the character. The name of the curse will be used for the default text, if present.
-
-fatal – Determines whether an adjustment made by ability and amount can kill the character. If true, and an ability would be reduced to 0, current stamina is reduced to 0 instead. Either way, the ability will only be reduced to 1.
-
-flag – The name of the flag that must be set before this action can be activated. Activating the action will clear the flag.
-
-force – Whether this action needs to be activated before execution can continue. Defaults to true.
-
-item attributes – An item (or items) to remove from the character, or an item cache if cache is present. See also the chance and multiple attributes. If present, the default text will be the item description.
-
-itemAt – Removes the item at the given position (from a cache or the character's possession). A '1' indicates the first item, a '2' the second, and so on. Currency will be skipped in this count; items with the 'keep' tag will remain.
-
-multiple – The number of items removed from the character, or an item cache. Generally used with item="?" (or another item type).
-
-permanent – If true, a blessing can be removed even if permanent.
-
-price – The name of the flag that must be clear for this action to be enabled. Activating the action will set the flag (and disable the action).
-
-resurrection – If true, clears the character's resurrection arrangements.
-
-shards – The number of shards to remove from the character, or a cache if cache is present. This may be a number, a variable name, or '*' to indicate all available shards. If cache is present, the shards will be removed from the cache instead. The default text if this is present is 'X Shards'.
-
-ship – If true, removes the 'current' ship (which the character is on, or is at the same location).
-
-stamina – The amount to deduct from current stamina. This may be a number, a variable name, or in the form 'Xd + Y', where X is the number of dice to be rolled and Y is added to the result. The default text if this is present is 'lose X Stamina point(s)'.
-
-staminato – The value to set the current stamina to. This may be a number or a variable name. This may actually restore stamina, if it is currently lower than the value given.
-
-title – The name of a title that the character will lose. This will provide the default text if present.
-
-
-
 TODO:
 <if [ability="S" [modifier="S"]] [blessing="S"] [book="S"] [cache="S"] [cargo="S"] [codeword="S"] [crew="S"] [curse|poison|disease="S"] [dead="B"] [docked="S"] [equals="V"] [gender="M/F"] [god="S"] [greaterthan="V"] [item attributes] [lessthan="V"] [name="S"] [not="B"] [profession="S"] [resurrection="B"] [shards="V"] [ship="S"] [ticks="N"] [title="S"] [var="S"]>
 <elseif ... >
@@ -344,21 +236,6 @@ dice – The number of dice to roll; defaults to 1. The default text is 'roll on
 force – Whether this action is forced; defaults to true.
 
 var – The variable into which the 'result' is stored. The result, in this case, is the character's Rank plus 1, minus the result of the dice. This means that success is indicated by the result being greater than zero, failure being less than or equal to zero (as for the <difficulty> action).
-
-
-
-TODO:
-<success [ability="S"] [section="S" [book=”S”]] [var="S"]>
-<failure ... >
-Handle the results of a <difficulty> or <rankcheck> action. This can either be used as part of a group of choices (within a <outcomes> or <choices> tag) or as an <if> node, containing a block of text and actions. Success is defined by the variable (by default, the anonymous one) containing a value greater than zero; a lower value indicates failure.
-
-ability – The ability that was being tested, used in describing the default text. Usually unnecessary, since the previous <difficulty> action will define the ability being tested.
-
-book – Used with the section attribute, as in a <goto> tag.
-
-section – The section to which the player is directed; used when the tag is part of a group of outcomes.
-
-var – The variable tested for success.
 
 
 
