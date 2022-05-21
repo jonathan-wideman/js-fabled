@@ -10,7 +10,7 @@ Jumps to another section.
 
 section – The filename (without extension) of the section to turn to. If book isn't present, the default text is 'turn to S', where S is the new section. If the section name is found in the content, it will be shown as bold.
 
-TODO: book – The book containing the new section. If this is present, the default text is 'book title S', where S is the new section. If this book isn't available, the action will be disabled.
+book – The book containing the new section. If this is present, the default text is TODO: 'book title S', where S is the new section. If this book isn't available, the action will be disabled.
 
 TODO: force – If true, this action will block any later ones from execution; if false, the action is optional. The default is true, unless sail is also true.
 
@@ -28,7 +28,7 @@ TODO: revisit – If the player may immediately <return> to this section, settin
 
 TODO: price – If the indicated price has been 'paid' (or set with a <tick> element), this goto will be disabled. See sections 5.365 or 6.628 for examples.
 
-flag – If the indicated price has not been paid, this goto will be disabled.
+TODO: flag – If the indicated price has not been paid, this goto will be disabled.
 */
 
 // export default function Goto({ children, section, book, force, sail, visit, dead, flee, codeword, revisit, price, flag }) {
@@ -43,6 +43,6 @@ export default function Goto({ children, section, ...others }) {
     return (
         // TODO: start with capital only if necessary
         // TODO: internal text replacement
-        <a className='instruction action' onClick={() => gotoPage(section)}>{children ?? <>Turn to {book && <>{book} </>}{section}</>}<DebugVerboseText>[goto {JSON.stringify({ ...others, section })}]</DebugVerboseText></a>
+        <a className='instruction action' onClick={() => gotoPage(section, book)}>{children ?? <>Turn to {book && <>{book} </>}{section}</>}<DebugVerboseText>[goto {JSON.stringify({ ...others, section })}]</DebugVerboseText></a>
     )
 }

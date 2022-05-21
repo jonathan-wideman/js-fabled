@@ -57,7 +57,7 @@ export function GameProvider({ children }) {
     const gotoPage = (newPage, newBook = null) => {
         newBook && setBook(newBook)
         setPage(newPage)
-        addHistory({ book, page: newPage })
+        addHistory({ book: newBook ?? book, page: newPage })
     }
 
     const addHistory = (node) => {
