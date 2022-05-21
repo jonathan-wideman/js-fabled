@@ -1,7 +1,7 @@
 import React from 'react'
 import DebugVerboseText from './DebugVerboseText'
 import { useGameContext } from './GameContext'
-import { bookFromNumber } from './helpers'
+import { bookFromNumber, getBookTitle } from './helpers'
 
 /*
 <goto section="S" [book="S"] [force="B"] [sail="B"] [visit="B"] [dead=”B”] [flee=”B”] [codeword=”S”] [revisit=”B”] [price/flag=”S”]>
@@ -38,11 +38,12 @@ export default function Goto({ children, section, ...others }) {
 
     const { book: bookNumber } = others
     const book = bookFromNumber(bookNumber)
-    // TODO: get book title
+    const bookTitle = getBookTitle(book)
 
     return (
         // TODO: start with capital only if necessary
         // TODO: internal text replacement
-        <a className='instruction action' onClick={() => gotoPage(section, book)}>{children ?? <>Turn to {book && <>{book} </>}{section}</>}<DebugVerboseText>[goto {JSON.stringify({ ...others, section })}]</DebugVerboseText></a>
+        // TODO: better error handling for missing book title
+        <a className='instruction action' onClick={() => gotoPage(section, book)}>{children ?? <>Turn to {book && <>{bookTitle ?? book} </>}{section}</>}<DebugVerboseText>[goto {JSON.stringify({ ...others, section })}]</DebugVerboseText></a>
     )
 }

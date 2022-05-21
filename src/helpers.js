@@ -173,3 +173,24 @@ export const sectionTickCodeword = (book, page, n) => `${book.replace('book', ''
 export const conditionalElements = (condition, ...elements) => condition ? elements : []
 
 export const range = (n) => [...Array(n)]
+
+
+
+
+// TODO: read from server
+export const bookMetadata = {
+    book1: { title: 'The War-Torn Kingdom' },
+    book2: { title: 'Cities of Gold and Glory' },
+    book3: { title: 'Over the Blood-Dark Sea' },
+    book4: { title: 'Devils & Howling Darkness' },
+    book5: { title: 'The Court of Hidden Faces' },
+    book6: { title: 'Lords of the Rising Sun' },
+    book7: { title: 'The Serpent-King\u2019s Domain' },
+    book8: { title: 'The Lone and Level Sands' },
+    book9: { title: 'The Isle of a Thousand Spires' },
+    book10: { title: 'Legions of the Labyrinth' },
+    book11: { title: 'The City in the Clouds' },
+    book12: { title: 'Into The Underworld' },
+}
+
+export const getBookTitle = (book) => bookMetadata[book]?.title
