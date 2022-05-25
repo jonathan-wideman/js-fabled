@@ -11,6 +11,12 @@ import Choice from "./StoryComponents/Choice"
 import Outcome from "./StoryComponents/Outcome"
 import Result from "./StoryComponents/Result"
 import Lose from "./StoryComponents/Lose"
+import If from "./StoryComponents/If"
+import Else from "./StoryComponents/Else"
+import ElseIf from "./StoryComponents/ElseIf"
+import Random from "./StoryComponents/Random"
+import Difficulty from "./StoryComponents/Difficulty"
+import RankCheck from "./StoryComponents/RankCheck"
 
 const converters = {
     /*
@@ -45,13 +51,19 @@ const converters = {
     gain: (props) => ({ type: Give, props }),
     lose: (props) => ({ type: Lose, props }),
 
-    if: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'if' } }),
-    elseif: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'elseif' } }),
-    else: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'else' } }),
+    // if: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'if' } }),
+    // elseif: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'elseif' } }),
+    // else: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'else' } }),
+    if: (props) => ({ type: If, props }),
+    elseif: (props) => ({ type: Else, props }),
+    else: (props) => ({ type: ElseIf, props }),
 
-    random: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'random', isAction: true } }),
-    difficulty: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'difficulty', isAction: true } }),
-    rankcheck: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'rankcheck', isAction: true } }),
+    // random: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'random', isAction: true } }),
+    // difficulty: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'difficulty', isAction: true } }),
+    // rankcheck: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'rankcheck', isAction: true } }),
+    random: (props) => ({ type: Random, props }),
+    difficulty: (props) => ({ type: Difficulty, props }),
+    rankcheck: (props) => ({ type: RankCheck, props }),
 
     success: (props) => ({ type: Result, props: { ...props, nodeType: 'success' } }),
     failure: (props) => ({ type: Result, props: { ...props, nodeType: 'failure' } }),
@@ -131,114 +143,6 @@ export default converters
 
 
 /*
-TODO:
-<if [ability="S" [modifier="S"]] [blessing="S"] [book="S"] [cache="S"] [cargo="S"] [codeword="S"] [crew="S"] [curse|poison|disease="S"] [dead="B"] [docked="S"] [equals="V"] [gender="M/F"] [god="S"] [greaterthan="V"] [item attributes] [lessthan="V"] [name="S"] [not="B"] [profession="S"] [resurrection="B"] [shards="V"] [ship="S"] [ticks="N"] [title="S"] [var="S"]>
-<elseif ... >
-<else>
-Test whether any one of the conditions defined by the attributes are met; if so, the text and actions between the start and end tag will be activated. If the conditions in a leading <if> tag are not met, any following <elseif> tags will be tested until one matches. A final <else> tag (without attributes) will match if all preceding tags have failed to. <if>s may be nested, though I'd advise keeping it simple.
-
-ability – An ability value to be tested against (see equals, lessthan and greaterthan). See also modifier, which affects the ability value.
-
-blessing – Test whether the character possesses the given blessing.
-
-book – Test whether the system can find the given book.
-
-cache – If present, the name of the cache location of which any item or shards tested.
-
-cargo – Test whether a ship at the current location has the given cargo. A '?' may be used to test for any cargo. See also docked.
-
-codeword – Test whether the character has the given codeword. Multiple codewords may be given, separated by '|' or '&', to indicate a logical OR or AND respectively. If one of the codewords is found in the enclosed text, it will rendered in italics.
-
-curse|poison|disease – Test whether the character has a curse with the given name. A '?' will test for any curse of the given type.
-
-crew – Test whether a ship at the current location has a crew of this quality. See also docked.
-
-dead – If true, test whether the character is dead (current stamina at zero, or natural score of any ability at zero); if false, the opposite.
-
-docked – Matches a ship at the given location, rather than at the current location. Used in combination with cargo, crew or ship to match a ship at this location; if these are missing, tests for the presence of any ship at this dock.
-
-equals – Test whether a number is equal to the value given by this attribute (a number or variable). Only one of equals, greaterthan or lessthan must be successful. The value being tested is given by ability, name or var. The number of items matched by the item attributes may also be tested against.
-
-gender – Test the gender of the character ('m' or 'M' for male, 'f' or 'F' for female).
-
-god – Test whether the character worships the given god. May be '*' to test whether the character worships any god.
-
-greaterthan – Tests whether a number is greater than the value given by this attribute (a number or variable). See equals.
-
-item attributes – Tests whether the character possesses the given item. If cache is present, the items matched must be in the named cache. See also equals.
-
-lessthan – Tests whether a number is less than the value given by this attribute (a number or variable). See equals.
-
-modifier – A modifier to any ability given by ability. This may be 'noweapon', 'noarmour', 'notool' or 'natural'; these exclude (respectively) the ability bonuses of a weapon, armour, a tool, or any of these things. The default is to include these bonuses.
-
-name – Compares the value held by the codeword of this name. See equals.
-
-not – If true, reverses the result of the tag; the tag will only match if all tests fail.
-
-profession – Tests whether the character belongs to the given profession.
-
-resurrection – Tests whether the character has any resurrection arrangements.
-
-shards – Tests whether the character has at least this number of Shards. If cache is present, the Shards must be in the named cache.
-
-ship – Tests whether there is a ship of the given type at the current location. See also docked.
-
-ticks – Tests whether this section has this number of ticks.
-
-title – Tests whether the character has the given title. Multiple titles may be tested for, separated by '|' or '&' to test for logical OR or AND respectively.
-
-var – Tests whether the value held in this variable matches any comparisons. See equals.
-
-
-
-TODO:
-<random [dice="N"] [flag="S"] [force="B"] [type=”S”] [var="S"]>
-Simulate the roll of a number of dice. The result will be stored in a variable, and execution will continue from this point. This tag may contain a number of <adjust> tags, which modify the result.
-
-dice – The number of dice to roll (defaults to 2). This determines the default text – either 'roll one die', 'roll two dice', or 'roll X dice' for numbers larger than two.
-
-flag – The flag that must be set for this action to enable. When activated, this action doesn't clear the flag; this is usually done by a related <outcome> tag.
-
-force – Whether the player must activate this action to continue; defaults to true.
-
-type – If 'travel', a blessing of Safe Travel may be used to reroll.
-
-var – The variable that the result will be stored in; if missing, the anonymous variable is used.
-
-
-
-TODO:
-<difficulty ability="S" level="N" [flag="S"] [force="B"] [modifier="S"] [var="S"]>
-Handle an ability roll. This rolls two dice, adds the player's ability score, and subtracts the Difficulty of the roll from this. The result is stored in a variable, with a value greater than 0 being a success, and a non-positive result being a failure. The default text is 'make a A roll at Difficulty L', where A is the ability name and L is the Difficulty level. This tag may contain a number of <adjust> tags, which modify the result.
-
-ability – The ability being tested. This can be one or more ability names separated by a '|' character, or '?' to indicate a choice from all six abilities. If only one ability is given, it will be stored in a special variable so that the corresponding <success> and <failure> tags can use it automatically.
-
-flag – The flag that must be set for this action to be enabled. When the action is activated, the flag is cleared.
-
-force – Whether the player must activate this action to continue; defaults to true.
-
-level – The Difficulty level of the roll.
-
-modifier – A modifier to the ability used. This may be 'noweapon', 'noarmour', 'notool', or 'natural'; these exclude (respectively) the ability bonuses of a weapon, armour, a tool, or any of these things. The default is to include these bonuses. A final value, 'current', can be used with ability=”stamina” to make a roll against the current Stamina value.
-
-var – The variable that the result will be stored in; if missing, the anonymous variable is used.
-
-
-
-TODO:
-<rankcheck [add="N"] [dice="N"] [force="B"] [var="S"]>
-Roll one or more dice, comparing the result to the character's Rank ability. 'Success' is counted as rolling less than or equal to Rank; 'failure' is rolling more than Rank. The result can be tested for using the <success> and <failure> tags, as with the <difficulty> action.
-
-add – The number to be added to the dice roll.
-
-dice – The number of dice to roll; defaults to 1. The default text is 'roll one die', 'roll two dice', or 'roll X dice', depending on the value.
-
-force – Whether this action is forced; defaults to true.
-
-var – The variable into which the 'result' is stored. The result, in this case, is the character's Rank plus 1, minus the result of the dice. This means that success is indicated by the result being greater than zero, failure being less than or equal to zero (as for the <difficulty> action).
-
-
-
 TODO:
 <group [force="B"]>
 Perform a sequence of actions with one 'click'. The <group> tag should contain one or more action tags, usually preceded by a <text> tag giving the action text. Group tags are tricky; their initial enabled/disabled state is gotten from their first action 'child'; a reroll triggered after the group tag will backtrack to the last child action of the group. Use with care!
