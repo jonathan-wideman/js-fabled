@@ -43,6 +43,7 @@ export function GameProvider({ children }) {
     rng.d6 = () => rng.die(6)
     rng.sum2d6 = () => rng.dice(6, 2).reduce((sum, current) => sum += current)
 
+    const [debug, setDebug] = useState(true)
     const [debugVerbose, setDebugVerbose] = useState(true)
 
     const [character, setCharacter] = useState({ ...defaultCharacter })
@@ -228,6 +229,8 @@ export function GameProvider({ children }) {
 
     return (
         <GameContext.Provider value={{
+            debug,
+            setDebug,
             debugVerbose,
             setDebugVerbose,
             rng,
