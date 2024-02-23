@@ -16,6 +16,15 @@
   background-blend-mode: multiply;
 }
 
+*::-webkit-scrollbar {
+  width: 0.35rem;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 9999%;
+  background-color: rgb(255, 255, 255, 0.1);
+}
+
 .App {
   display: flex;
   flex-direction: row;
@@ -30,6 +39,7 @@
   width: 60ch;
   font-size: 1.2em;
   line-height: 1.5;
+  overflow-y: auto;
 }
 
 .section-title {
