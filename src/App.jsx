@@ -22,7 +22,6 @@ function App() {
 
   useEffect(() => {
     const onKeyUpHandler = (event) => {
-      console.log(event.key)
       if (event.key === '`') {
         setDebugOpen(prev => !prev)
       }
