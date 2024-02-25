@@ -11,7 +11,7 @@ force – whether this action must be clicked; defaults to false.
 
 export default function Group({ children, ...others }) {
 
-    return (
-        <DefaultNode {...others} nodeType='group'>{children}</DefaultNode>
-    )
+  return (
+    <DefaultNode {...others} nodeType='group'>{children}</DefaultNode>
+  )
 }

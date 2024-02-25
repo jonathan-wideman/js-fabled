@@ -18,7 +18,7 @@ var – The variable into which the 'result' is stored. The result, in this case
 
 export default function RankCheck({ children, ...others }) {
 
-    return (
-        <DefaultNode {...others} nodeType='rankcheck'>{children}</DefaultNode>
-    )
+  return (
+    <DefaultNode {...others} nodeType='rankcheck'>{children}</DefaultNode>
+  )
 }

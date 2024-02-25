@@ -64,7 +64,7 @@ var – Tests whether the value held in this variable matches any comparisons. S
 
 export default function ElseIf({ children, ...others }) {
 
-    return (
-        <DefaultNode {...others} nodeType='elseif'>{children}</DefaultNode>
-    )
+  return (
+    <DefaultNode {...others} nodeType='elseif'>{children}</DefaultNode>
+  )
 }

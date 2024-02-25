@@ -35,7 +35,7 @@ var – The variable to assign the result of value to; if missing, the result wi
 
 export default function SetSectionVariable({ children, ...others }) {
 
-    return (
-        <DefaultNode {...others} nodeType='set'>{children}</DefaultNode>
-    )
+  return (
+    <DefaultNode {...others} nodeType='set'>{children}</DefaultNode>
+  )
 }

@@ -37,7 +37,7 @@ storm – Safety from Storms.
 */
 
 export default function Choice({ children, book, section, ...others }) {
-    return (
-        <li>{children} <Goto book={book} section={section} /><DebugVerboseText>[choice {JSON.stringify({ ...others, section })}]</DebugVerboseText></li>
-    )
+  return (
+    <li>{children} <Goto book={book} section={section} /><DebugVerboseText>[choice {JSON.stringify({ ...others, section })}]</DebugVerboseText></li>
+  )
 }

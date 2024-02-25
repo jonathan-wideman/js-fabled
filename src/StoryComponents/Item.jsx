@@ -47,15 +47,15 @@ is an action that will remove a weapon with a bonus of +1 from the character.
 
 export default function Item({ children, ...others }) {
 
-    const { giveCharacter } = useGameContext()
-    const item = {
-        name: others.name,
-        type: others.type,
-        ability: others.ability,
-        bonus: parseInt(others.bonus) || undefined
-    }
+  const { giveCharacter } = useGameContext()
+  const item = {
+    name: others.name,
+    type: others.type,
+    ability: others.ability,
+    bonus: parseInt(others.bonus) || undefined
+  }
 
-    return (
-        <a className='action' onClick={() => giveCharacter('item', item)}><strong>{children ?? item.name}</strong><DebugVerboseText>[item {JSON.stringify(others)}]</DebugVerboseText></a>
-    )
+  return (
+    <a className='action' onClick={() => giveCharacter('item', item)}><strong>{children ?? item.name}</strong><DebugVerboseText>[item {JSON.stringify(others)}]</DebugVerboseText></a>
+  )
 }

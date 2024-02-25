@@ -10,7 +10,7 @@ var – Used only in the <outcomes> element, for a set of outcomes that use the 
 */
 
 export default function Table({ children, ...others }) {
-    return (
-        <><ul>{children}</ul><DebugVerboseText>[table {JSON.stringify(others)}]</DebugVerboseText></>
-    )
+  return (
+    <><ul>{children}</ul><DebugVerboseText>[table {JSON.stringify(others)}]</DebugVerboseText></>
+  )
 }

@@ -18,7 +18,7 @@ var – The variable tested for success.
 */
 
 export default function Result({ children, nodeType, book, section, ...others }) {
-    return (
-        <li>{children ?? (nodeType === 'success' ? 'If you succeed' : 'If you fail')} <Goto book={book} section={section} /><DebugVerboseText>[{nodeType} {JSON.stringify({ ...others, book, section })}]</DebugVerboseText></li>
-    )
+  return (
+    <li>{children ?? (nodeType === 'success' ? 'If you succeed' : 'If you fail')} <Goto book={book} section={section} /><DebugVerboseText>[{nodeType} {JSON.stringify({ ...others, book, section })}]</DebugVerboseText></li>
+  )
 }

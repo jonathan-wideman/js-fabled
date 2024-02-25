@@ -56,7 +56,7 @@ title – The name of a title that the character will lose. This will provide th
 */
 export default function Lose({ children, ...others }) {
 
-    return (
-        <span className='action'>{children}<DebugVerboseText>[lose {JSON.stringify(others)}]</DebugVerboseText></span>
-    )
+  return (
+    <span className='action'>{children}<DebugVerboseText>[lose {JSON.stringify(others)}]</DebugVerboseText></span>
+  )
 }

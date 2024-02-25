@@ -20,7 +20,7 @@ var – The variable that the result will be stored in; if missing, the anonymou
 
 export default function Random({ children, ...others }) {
 
-    return (
-        <DefaultNode {...others} nodeType='random'>{children}</DefaultNode>
-    )
+  return (
+    <DefaultNode {...others} nodeType='random'>{children}</DefaultNode>
+  )
 }

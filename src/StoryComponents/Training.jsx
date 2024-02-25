@@ -17,7 +17,7 @@ var – The variable to store the result in. The result, in this case, is the re
 
 export default function Training({ children, ...others }) {
 
-    return (
-        <DefaultNode {...others} nodeType='training'>{children}</DefaultNode>
-    )
+  return (
+    <DefaultNode {...others} nodeType='training'>{children}</DefaultNode>
+  )
 }

@@ -34,16 +34,16 @@ TODO: flag – If the indicated price has not been paid, this goto will be disab
 // export default function Goto({ children, section, book, force, sail, visit, dead, flee, codeword, revisit, price, flag }) {
 export default function Goto({ children, section, ...others }) {
 
-    const { gotoPage } = useGameContext()
+  const { gotoPage } = useGameContext()
 
-    const { book: bookNumber } = others
-    const book = bookFromNumber(bookNumber)
-    const bookTitle = getBookTitle(book)
+  const { book: bookNumber } = others
+  const book = bookFromNumber(bookNumber)
+  const bookTitle = getBookTitle(book)
 
-    return (
-        // TODO: start with capital only if necessary
-        // TODO: internal text replacement
-        // TODO: better error handling for missing book title
-        <a className='instruction action' onClick={() => gotoPage(section, book)}>{children ?? <>Turn to {book && <>{bookTitle ?? book} </>}{section}</>}<DebugVerboseText>[goto {JSON.stringify({ ...others, section })}]</DebugVerboseText></a>
-    )
+  return (
+    // TODO: start with capital only if necessary
+    // TODO: internal text replacement
+    // TODO: better error handling for missing book title
+    <a className='instruction action' onClick={() => gotoPage(section, book)}>{children ?? <>Turn to {book && <>{bookTitle ?? book} </>}{section}</>}<DebugVerboseText>[goto {JSON.stringify({ ...others, section })}]</DebugVerboseText></a>
+  )
 }

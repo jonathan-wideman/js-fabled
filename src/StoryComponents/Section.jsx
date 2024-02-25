@@ -27,31 +27,31 @@ TODO: todock – When the character leaves this section, any ships at sea that t
 
 // export default function Section({ children, name, boxes, dock, image, profession, start, tag, todock }) {
 export default function Section({ children, name, ...others }) {
-    const { book, page, sectionVars, setSectionVars, setupStartingCharacter, characterHas } = useGameContext()
+  const { book, page, sectionVars, setSectionVars, setupStartingCharacter, characterHas } = useGameContext()
 
-    const { profession, boxes: boxesStr, tag: tagsStr } = others
-    const boxes = parseInt(boxesStr) || undefined
-    const tags = tagsStr?.split(',')
+  const { profession, boxes: boxesStr, tag: tagsStr } = others
+  const boxes = parseInt(boxesStr) || undefined
+  const tags = tagsStr?.split(',')
 
-    // If there is a profession, set up the character
-    useEffect(() => {
-        if (profession) { setupStartingCharacter(name, profession) }
-    }, [profession])
+  // If there is a profession, set up the character
+  useEffect(() => {
+    if (profession) { setupStartingCharacter(name, profession) }
+  }, [profession])
 
-    useEffect(() => {
-        setSectionVars({
-            boxes,
-            tags // TODO: activate player extra choices if applicable
-        })
-    }, [])
+  useEffect(() => {
+    setSectionVars({
+      boxes,
+      tags // TODO: activate player extra choices if applicable
+    })
+  }, [])
 
-    return (
-        <div>
-            <h2 className='section-title'>{name ?? page}</h2>
-            {/* {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={characterHas('codeword', sectionCodeword(book, page))} />)} </div>} */}
-            {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={characterHas('codeword', sectionTickCodeword(book, page, i))} />)} </div>}
-            <DebugVerboseText>[section {JSON.stringify({ ...others, name })}]</DebugVerboseText>
-            <section>{children}</section>
-        </div>
-    )
+  return (
+    <div>
+      <h2 className='section-title'>{name ?? page}</h2>
+      {/* {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={characterHas('codeword', sectionCodeword(book, page))} />)} </div>} */}
+      {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={characterHas('codeword', sectionTickCodeword(book, page, i))} />)} </div>}
+      <DebugVerboseText>[section {JSON.stringify({ ...others, name })}]</DebugVerboseText>
+      <section>{children}</section>
+    </div>
+  )
 }

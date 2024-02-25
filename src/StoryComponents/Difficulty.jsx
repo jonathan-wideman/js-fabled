@@ -22,7 +22,7 @@ var – The variable that the result will be stored in; if missing, the anonymou
 
 export default function Difficulty({ children, ...others }) {
 
-    return (
-        <DefaultNode {...others} nodeType='difficulty'>{children}</DefaultNode>
-    )
+  return (
+    <DefaultNode {...others} nodeType='difficulty'>{children}</DefaultNode>
+  )
 }

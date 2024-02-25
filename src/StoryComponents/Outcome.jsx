@@ -22,7 +22,7 @@ Codewords are kept as a set of strings mapping to integers. A codeword is 'prese
 */
 
 export default function Outcome({ children, book, section, ...others }) {
-    return (
-        <li>{children} <Goto book={book} section={section} /><DebugVerboseText>[outcome {JSON.stringify({ ...others, book, section })}]</DebugVerboseText></li>
-    )
+  return (
+    <li>{children} <Goto book={book} section={section} /><DebugVerboseText>[outcome {JSON.stringify({ ...others, book, section })}]</DebugVerboseText></li>
+  )
 }

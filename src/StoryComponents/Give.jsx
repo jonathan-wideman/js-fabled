@@ -54,15 +54,15 @@ TODO: shards – The number of Shards that can be gained. This provides the defa
 
 TODO: special – An unusual, 'game' action: one of {attack, defence, armourlock, weaponlock, lock, unlock, difficultycurse, difficultyrestore, godless}.
 
-    TODO: 'attack' gives a bonus to the character's rolls in the next fight; 'defence' gives a bonus to the character's Defence score during the next fight. Both of these actions use the bonus attribute, although the defence bonus defaults to 3.
+  TODO: 'attack' gives a bonus to the character's rolls in the next fight; 'defence' gives a bonus to the character's Defence score during the next fight. Both of these actions use the bonus attribute, although the defence bonus defaults to 3.
 
-    TODO: 'lock' (or 'freeze') and 'unlock' (or 'thaw') work on a cache, indicated by the cache attribute; the cache will temporarily ignore user access, or restore access.
+  TODO: 'lock' (or 'freeze') and 'unlock' (or 'thaw') work on a cache, indicated by the cache attribute; the cache will temporarily ignore user access, or restore access.
 
-    TODO: 'armourlock' stops the character from changing the worn armour, for the duration of the section; 'weaponlock', similarly, locks in the currently wielded weapon.
+  TODO: 'armourlock' stops the character from changing the worn armour, for the duration of the section; 'weaponlock', similarly, locks in the currently wielded weapon.
 
-    TODO: 'difficultycurse' changes all difficulty rolls to be made with one die, while 'difficultyrestore' restores them to the usual two dice.
+  TODO: 'difficultycurse' changes all difficulty rolls to be made with one die, while 'difficultyrestore' restores them to the usual two dice.
 
-    TODO: 'godless' removes the character's ability to worship a god (clearing the currently worshipped god in the process).
+  TODO: 'godless' removes the character's ability to worship a god (clearing the currently worshipped god in the process).
 
 TODO: ticks – The number of ticks to add to the checkboxes displayed with this section. If no attributes are present, this defaults to 1, with default text of 'put a tick there now'. Also used by the name attribute.
 
@@ -72,17 +72,17 @@ TODO: titlePattern, titleValue, titleAdjust – Occasionally a title can be adde
 */
 export default function Give({ children, ...others }) {
 
-    const { giveCharacter, tickNextSectionBox } = useGameContext()
-    const shards = parseInt(others?.shards) || undefined
+  const { giveCharacter, tickNextSectionBox } = useGameContext()
+  const shards = parseInt(others?.shards) || undefined
 
-    if (shards) {
-        return (
-            <span className='action' onClick={() => giveCharacter('money', shards)}>{children ?? `${shards} shards`}<DebugVerboseText>[give {JSON.stringify(others)}]</DebugVerboseText></span >
-        )
-    }
-
-    // default to putting a tick in the (TODO: *first empty* ) box of the current section
+  if (shards) {
     return (
-        <span className='action' onClick={() => tickNextSectionBox()}>{children ?? `<give>`}<DebugVerboseText>[gain/tick {JSON.stringify(others)}]</DebugVerboseText></span>
+      <span className='action' onClick={() => giveCharacter('money', shards)}>{children ?? `${shards} shards`}<DebugVerboseText>[give {JSON.stringify(others)}]</DebugVerboseText></span >
     )
+  }
+
+  // default to putting a tick in the (TODO: *first empty* ) box of the current section
+  return (
+    <span className='action' onClick={() => tickNextSectionBox()}>{children ?? `<give>`}<DebugVerboseText>[gain/tick {JSON.stringify(others)}]</DebugVerboseText></span>
+  )
 }
