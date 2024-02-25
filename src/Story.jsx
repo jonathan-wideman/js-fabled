@@ -7,6 +7,7 @@ import { useGameContext } from './GameContext'
 import XMLToReact from '@condenast/xml-to-react'
 import converters from './converters'
 import DebugVerboseText from './DebugVerboseText'
+import { matchTags } from './util'
 
 
 
@@ -48,6 +49,13 @@ export default function Story() {
 
             <DebugVerboseText>
                 {storyData.data && <pre>{storyData.data}</pre>}
+            </DebugVerboseText>
+
+            <DebugVerboseText>
+                {storyData.data && <pre>
+                    {`TAGS:\n`}
+                    {Object.entries(matchTags(storyData.data)).map(entry => `<${entry[0]}>: ${entry[1]}\n`)}
+                </pre>}
             </DebugVerboseText>
 
         </div>
