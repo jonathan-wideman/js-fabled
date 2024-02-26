@@ -4,7 +4,9 @@
   --color-txt: #eee;
   --color-txt-muted: #999;
   --color-txt-action: #29e;
+  --color-txt-action-wip: rgb(238, 173, 34);
   --color-txt-debug: #88b;
+  --color-txt-debug-warn: #ba8;
   --color-txt-die: #444;
 }
 
@@ -99,6 +101,14 @@
 .debug-verbose pre {
   font-size: 1.2em;
   white-space: pre-wrap;
+}
+
+.debug-wip {
+  color: var(--color-txt-debug-warn);
+}
+
+.wip {
+  color: var(--color-txt-action-wip);
 }
 
 .dice {
