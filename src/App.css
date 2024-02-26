@@ -129,3 +129,10 @@
 .d6.rolling {
   opacity: 0.6;
 }
+
+.story-image {
+  margin: 2em 0;
+  box-shadow:
+    0 0 3em hsla(0, 0%, 100%, 0.4),
+    0 0 0.5em hsla(0, 0%, 100%, 0.7);
+}

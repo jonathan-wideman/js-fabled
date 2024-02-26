@@ -56,6 +56,10 @@ export default function Item({ children, ...others }) {
   }
 
   return (
-    <a className='action' onClick={() => giveCharacter('item', item)}><strong>{children ?? item.name}</strong><DebugVerboseText>[item {JSON.stringify(others)}]</DebugVerboseText></a>
+    <a className='action' onClick={() => giveCharacter('item', item)}>
+      <strong>{children ?? item.name}</strong>
+      {/* <strong>{item.name}</strong> */}
+      <DebugVerboseText>[item {JSON.stringify(others)}]</DebugVerboseText>
+    </a>
   )
 }

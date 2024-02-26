@@ -1,5 +1,6 @@
-import React from 'react'
-import DefaultNode from "./DefaultNode"
+import React, { useState } from 'react'
+import { useGameContext } from '../GameContext'
+import DebugVerboseText from '../DebugVerboseText'
 
 /*
 
@@ -13,11 +14,38 @@ file – The filename of the image file, located within the directory of the cur
 
 title – The title of the popup window showing the image.
 
+JW:
+NB. <image> can occur within an <item>. If so, it should display the image when the item is used, rather than in the story text
+
+TODO: make image display prettier
+
 */
 
 export default function Image({ children, ...others }) {
 
+  const { book: gameContextBook } = useGameContext()
+  const { book, file, title } = others
+  const [open, setOpen] = useState(false)
+
+  const toggle = () => setOpen(prev => !prev)
+
+  if (!children) {
+    // <image> can occur within an <item>. If so, it should display the image when the item is used, rather than in the story text
+    // The only case where this occurs, the image does not have child nodes
+    // So, if we do not have child nodes, assume we should not display an image
+    // TODO: add the image functionality to the item it would affect
+    return <DebugVerboseText>[image {JSON.stringify(others)}]</DebugVerboseText>
+  }
+
   return (
-    <DefaultNode {...others} nodeType='image'>{children}</DefaultNode>
+    <>
+      <span className={'action'} onClick={toggle}>{children}</span>
+      {open && <img
+        src={`books/${gameContextBook}/${file}`}
+        onClick={toggle}
+        className='story-image'
+      />}
+      <DebugVerboseText>[image {JSON.stringify(others)}]</DebugVerboseText>
+    </>
   )
 }
