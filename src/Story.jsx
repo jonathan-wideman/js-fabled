@@ -51,12 +51,12 @@ export default function Story() {
         {storyData.data && <pre>{storyData.data}</pre>}
       </DebugVerboseText>
 
-      <DebugVerboseText>
+      {/* <DebugVerboseText>
         {storyData.data && <pre>
           {`TAGS:\n`}
           {Object.entries(matchTags(storyData.data)).map(entry => `<${entry[0]}>: ${entry[1]}\n`)}
         </pre>}
-      </DebugVerboseText>
+      </DebugVerboseText> */}
 
     </div>
   )
