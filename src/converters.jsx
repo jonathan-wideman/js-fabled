@@ -20,6 +20,36 @@ import RankCheck from "./StoryComponents/RankCheck"
 import Group from "./StoryComponents/Group"
 import SetSectionVariable from "./StoryComponents/Set"
 import Training from "./StoryComponents/Training"
+import Rest from "./StoryComponents/Rest"
+import Adjust from "./StoryComponents/Adjust"
+import ItemCache from "./StoryComponents/ItemCache"
+import MoneyCache from "./StoryComponents/MoneyCache"
+import AdjustMoney from "./StoryComponents/AdjustMoney"
+import Market from "./StoryComponents/Market"
+import Header from "./StoryComponents/Header"
+import Trade from "./StoryComponents/Trade"
+import Buy from "./StoryComponents/Buy"
+import Sell from "./StoryComponents/Sell"
+import Fight from "./StoryComponents/Fight"
+import FightRound from "./StoryComponents/FightRound"
+import FightDamage from "./StoryComponents/FightDamage"
+import Flee from "./StoryComponents/Flee"
+import Text from "./StoryComponents/Text"
+import Description from "./StoryComponents/Description"
+import Resurrection from "./StoryComponents/Resurrection"
+import Curse from "./StoryComponents/Curse"
+import Disease from "./StoryComponents/Disease"
+import Poison from "./StoryComponents/Poison"
+import Effect from "./StoryComponents/Effect"
+import Return from "./StoryComponents/Return"
+import Field from "./StoryComponents/Field"
+import Bought from "./StoryComponents/Bought"
+import Sold from "./StoryComponents/Sold"
+import ExtraChoice from "./StoryComponents/ExtraChoice"
+import Image from "./StoryComponents/Image"
+import Reroll from "./StoryComponents/Reroll"
+import SectionView from "./StoryComponents/SectionView"
+import While from "./StoryComponents/While"
 
 const converters = {
   /*
@@ -54,16 +84,10 @@ const converters = {
   gain: (props) => ({ type: Give, props }),
   lose: (props) => ({ type: Lose, props }),
 
-  // if: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'if' } }),
-  // elseif: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'elseif' } }),
-  // else: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'else' } }),
   if: (props) => ({ type: If, props }),
   elseif: (props) => ({ type: Else, props }),
   else: (props) => ({ type: ElseIf, props }),
 
-  // random: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'random', isAction: true } }),
-  // difficulty: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'difficulty', isAction: true } }),
-  // rankcheck: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'rankcheck', isAction: true } }),
   random: (props) => ({ type: Random, props }),
   difficulty: (props) => ({ type: Difficulty, props }),
   rankcheck: (props) => ({ type: RankCheck, props }),
@@ -77,64 +101,73 @@ const converters = {
 
   training: (props) => ({ type: Training, props }),
 
-  rest: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'rest' } }),
+  rest: (props) => ({ type: Rest, props }),
 
-  adjust: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'adjust' } }),
+  adjust: (props) => ({ type: Adjust, props }),
 
-  itemcache: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'itemcache' } }),
-  moneycache: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'moneycache' } }),
+  itemcache: (props) => ({ type: ItemCache, props }),
+  moneycache: (props) => ({ type: MoneyCache, props }),
 
-  adjustmoney: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'adjustmoney' } }),
+  adjustmoney: (props) => ({ type: AdjustMoney, props }),
 
-  market: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'market' } }),
+  market: (props) => ({ type: Market, props }),
 
-  header: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'header' } }),
+  header: (props) => ({ type: Header, props }),
 
-  trade: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'trade' } }),
-  buy: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'buy' } }),
-  sell: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'sell' } }),
+  trade: (props) => ({ type: Trade, props }),
+  buy: (props) => ({ type: Buy, props }),
+  sell: (props) => ({ type: Sell, props }),
 
-  fight: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'fight' } }),
-  fightround: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'fightround' } }),
-  fightdamage: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'fightdamage' } }),
-  flee: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'flee' } }),
+  fight: (props) => ({ type: Fight, props }),
+  fightround: (props) => ({ type: FightRound, props }),
+  fightdamage: (props) => ({ type: FightDamage, props }),
+  flee: (props) => ({ type: Flee, props }),
 
-  text: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'text' } }),
-  desc: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'desc' } }),
+  text: (props) => ({ type: Text, props }),
+  desc: (props) => ({ type: Description, props }),
 
-  resurrection: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'resurrection' } }),
+  resurrection: (props) => ({ type: Resurrection, props }),
 
-  curse: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'curse' } }),
-  disease: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'disease' } }),
-  poison: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'poison' } }),
+  curse: (props) => ({ type: Curse, props }),
+  disease: (props) => ({ type: Disease, props }),
+  poison: (props) => ({ type: Poison, props }),
 
-  effect: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'effect' } }),
+  effect: (props) => ({ type: Effect, props }),
 
-  return: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'return' } }),
+  return: (props) => ({ type: Return, props }),
 
-  field: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'field' } }),
+  field: (props) => ({ type: Field, props }),
 
-  bought: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'bought' } }),
-  sold: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'sold' } }),
+  bought: (props) => ({ type: Bought, props }),
+  sold: (props) => ({ type: Sold, props }),
 
-  extrachoice: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'extrachoice' } }),
+  extrachoice: (props) => ({ type: ExtraChoice, props }),
 
+  image: (props) => ({ type: Image, props }),
+
+  // TODO: Not yet implemented; what are these?
+  'include item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'include item attributes' } }),
+  'exclude item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'exclude item attributes' } }),
+
+  reroll: (props) => ({ type: Reroll, props }),
+
+  sectionview: (props) => ({ type: SectionView, props }),
+
+  while: (props) => ({ type: While, props }),
+
+
+
+  // ===== Style Only ===== //
+
+  // <h1>, <h2>, <h3>, <h4>
+  // A heading within the text. <h1> is the largest heading, <h4> the smallest. Only used within the rule files (QuickRules.xml and Rules.xml), though it could (theoretically) be used within a section.
   h1: (props) => ({ type: 'h1', props }),
   h2: (props) => ({ type: 'h2', props }),
   h3: (props) => ({ type: 'h3', props }),
   h4: (props) => ({ type: 'h4', props }),
 
-  image: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'image' } }),
-
-  'include item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'include item attributes' } }),
-  'exclude item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'exclude item attributes' } }),
-
-  reroll: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'reroll' } }),
-
-  sectionview: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'sectionview' } }),
-
-  while: (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'while' } }),
-
+  // <i>, <b>
+  // Italics and Bold
   i: (props) => ({ type: 'em', props }),
   b: (props) => ({ type: 'strong', props }),
 
