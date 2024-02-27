@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { GameProvider } from './GameContext'
-import Story from './Story'
+import Story from './story/meta/Story'
 import './App.css'
-import DebugPanel from './DebugPanel'
-import AdventureSheet from './AdventureSheet'
+import DebugPanel from './interface/DebugPanel'
+import AdventureSheet from './interface/AdventureSheet'
 import { useEffect, useState } from 'react'
 
 function Providers({ children }) {

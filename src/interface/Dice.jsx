@@ -1,7 +1,7 @@
 import React from 'react'
 import D6 from './D6'
-import { range } from './helpers'
-import { useDice } from './useDice'
+import { range } from '../helpers'
+import { useDice } from '../hooks/useDice'
 
 export default function Dice({ count }) {
 

@@ -1,9 +1,9 @@
 import React from 'react'
-import { useGameContext } from './GameContext'
-import { calculateStat, getRankTitle } from './helpers'
-import SheetItem from './SheetItem'
-import SheetStat from './SheetStat'
-import StatLabel from './StatLabel'
+import { useGameContext } from '../GameContext'
+import { calculateStat, getRankTitle } from '../helpers'
+import SheetItem from '../story/meta/SheetItem'
+import SheetStat from '../story/meta/SheetStat'
+import StatLabel from '../story/meta/StatLabel'
 
 export default function AdventureSheet() {
 

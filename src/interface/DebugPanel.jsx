@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import D6 from './D6'
 import Dice from './Dice'
-import { useGameContext } from './GameContext'
-import { nextPage, prevPage } from './helpers'
+import { useGameContext } from '../GameContext'
+import { nextPage, prevPage } from '../helpers'
 
 export default function DebugPanel() {
 

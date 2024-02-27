@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import DebugVerboseText from './DebugVerboseText'
-import { useGameContext } from './GameContext'
-import { conditionalElements, formatModifier, isEquipment } from './helpers'
+import { useGameContext } from '../../GameContext'
+import { conditionalElements, formatModifier, isEquipment } from '../../helpers'
 
 const formatBrief = (item) => {
   const ability = item.ability ?? (item.type ? { armor: 'defense', weapon: 'combat' }[item.type] : undefined)

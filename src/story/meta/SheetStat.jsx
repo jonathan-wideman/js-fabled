@@ -1,7 +1,7 @@
 import React from 'react'
 import DebugVerboseText from './DebugVerboseText'
-import { useGameContext } from './GameContext'
-import { calculateStat, formatModifier } from './helpers'
+import { useGameContext } from '../../GameContext'
+import { calculateStat, formatModifier } from '../../helpers'
 import StatLabel from './StatLabel'
 
 export default function SheetStat({ statName }) {

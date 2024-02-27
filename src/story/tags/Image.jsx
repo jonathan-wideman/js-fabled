@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useGameContext } from '../GameContext'
-import DebugVerboseText from '../DebugVerboseText'
+import { useGameContext } from '../../GameContext'
+import DebugVerboseText from '../meta/DebugVerboseText'
 
 /*
 

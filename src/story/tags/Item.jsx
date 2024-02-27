@@ -1,6 +1,6 @@
 import React from 'react'
-import DebugVerboseText from '../DebugVerboseText'
-import { useGameContext } from '../GameContext'
+import DebugVerboseText from '../meta/DebugVerboseText'
+import { useGameContext } from '../../GameContext'
 
 /*
 TODO:

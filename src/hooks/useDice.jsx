@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
-import { useGameContext } from './GameContext'
-import { range } from './helpers'
+import { useGameContext } from '../GameContext'
+import { range } from '../helpers'
 
 export function useDice(count) {
   const { rng } = useGameContext()

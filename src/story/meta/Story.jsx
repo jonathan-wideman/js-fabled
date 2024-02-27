@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useGameContext } from './GameContext'
+import { useGameContext } from '../../GameContext'
 // import Goto from './Goto'
 
 
@@ -7,7 +7,7 @@ import { useGameContext } from './GameContext'
 import XMLToReact from '@condenast/xml-to-react'
 import converters from './converters'
 import DebugVerboseText from './DebugVerboseText'
-import { matchTags } from './util'
+import { matchTags } from '../../util'
 
 
 

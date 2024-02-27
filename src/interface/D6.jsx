@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useGameContext } from './GameContext'
+import { useGameContext } from '../GameContext'
 
 export default function D6({ rolling, value }) {
   // const { rng } = useGameContext()

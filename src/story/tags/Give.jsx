@@ -1,7 +1,7 @@
 import React from 'react'
-import DebugVerboseText from '../DebugVerboseText'
-import { useGameContext } from '../GameContext'
-import { sectionCodeword } from '../helpers'
+import DebugVerboseText from '../meta/DebugVerboseText'
+import { useGameContext } from '../../GameContext'
+import { sectionCodeword } from '../../helpers'
 
 /*
 <tick [ability="S" [effect=”S”]] [addbonus="V"] [addtag="S"] [amount="V"] [blessing="S" [permanent=”B”]] [bonus="V"] [cache="S"] [cargo="S"] [codeword="S"] [crew="S"] [flag="S"] [force="B"] [god="S"] [hidden="B"] [item tags] [name="S"] [price="S"] [profession=”S”] [removetag="S"] [shards="V"] [special="S"] [ticks="N"] [title="S" [titlePattern="S" titleValue="N" titleAdjust="N"]]>
