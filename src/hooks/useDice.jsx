@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { useGameContext } from '../GameContext'
 import { range } from '../helpers'
 
-export function useDice(count) {
+export function useDice(id, count, callback) {
   const { rng } = useGameContext()
   // const [dice, setDice] = useState([...Array(count)].map((e, id) => ({ id, rolling: false, value: 6 })))
   // const [values, setValues] = useState(range(count).map(i => 6))
@@ -73,9 +73,13 @@ export function useDice(count) {
 
 
 
-  
+
   const rollAll = () => {
-    setDice(dice.map(d => ({ ...d, value: rng.d6() })))
+    const result = dice.map(d => ({ ...d, value: rng.d6() }))
+    setDice(result)
+    if (typeof callback === 'function') {
+      callback(id, result)
+    }
   }
 
   const total = useMemo(() => {

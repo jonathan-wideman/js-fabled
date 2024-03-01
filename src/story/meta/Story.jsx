@@ -8,6 +8,7 @@ import XMLToReact from '@condenast/xml-to-react'
 import converters from './converters'
 import DebugVerboseText from './DebugVerboseText'
 import { matchTags } from '../../util'
+import { PageProvider } from './PageContext'
 
 
 
@@ -22,6 +23,27 @@ const xmlToReact = new XMLToReact(converters)
 //   return converted
 // }
 
+function Page({ page, storyData }) {
+
+  // const reactTree = xmlToReact.convert(`
+  //   <Example name="simple">
+  //   <Item i="1">one</Item>
+  //   <Item>two</Item>
+  //   <Item>three</Item>
+  //   </Example>
+  // `)
+
+  const reactTree = useMemo(() => {
+    if (storyData.isLoading || storyData.error) { return null }
+    // console.log(storyData.data)
+    return xmlToReact.convert(storyData.data)
+  }, [storyData])
+
+  return <PageProvider page={page}>
+    {reactTree}
+  </PageProvider>
+}
+
 export default function Story() {
 
   const { page, storyData } = useGameContext()
@@ -34,18 +56,20 @@ export default function Story() {
   //   </Example>
   // `)
 
-  // const reactTree = xmlToReact.convert(storyData)
-
-  const reactTree = useMemo(() => {
-    if (storyData.isLoading || storyData.error) { return null }
-    // console.log(storyData.data)
-    return xmlToReact.convert(storyData.data)
-  }, [storyData])
+  // const reactTree = useMemo(() => {
+  //   if (storyData.isLoading || storyData.error) { return null }
+  //   // console.log(storyData.data)
+  //   return xmlToReact.convert(storyData.data)
+  // }, [storyData])
 
   return (
     <div className='story'>
 
-      {reactTree}
+      {/* <PageProvider page={page}>
+        {reactTree}
+      </PageProvider> */}
+
+      <Page storyData={storyData} page={page}/>
 
       <DebugVerboseText>
         {storyData.data && <pre>{storyData.data}</pre>}

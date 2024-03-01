@@ -22,6 +22,6 @@ export default function D6({ rolling, value }) {
 
   return (
     // <div className={'d6' + (rolling ? ' rolling' : '')} onClick={roll}>{result}</div>
-    <div className={'d6' + (rolling ? ' rolling' : '')}>{value}</div>
+    <span className={'d6' + (rolling ? ' rolling' : '')}>{value}</span>
   )
 }
