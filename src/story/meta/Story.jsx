@@ -1,19 +1,16 @@
-import React, { useMemo } from 'react'
-import { useGameContext } from '../../GameContext'
+import React, { useMemo } from "react";
+import { useGameContext } from "../../GameContext";
 // import Goto from './Goto'
 
-
 // import { ReactDOM } from 'react'
-import XMLToReact from '@condenast/xml-to-react'
-import converters from './converters'
-import DebugVerboseText from './DebugVerboseText'
-import { matchTags } from '../../util'
-import { PageProvider } from './PageContext'
+import XMLToReact from "@condenast/xml-to-react";
+import converters from "./converters";
+import DebugVerboseText from "./DebugVerboseText";
+import { matchTags } from "../../util";
+import { PageProvider } from "./PageContext";
+import { xmlAst } from "./parser";
 
-
-
-
-const xmlToReact = new XMLToReact(converters)
+const xmlToReact = new XMLToReact(converters);
 
 // xmlToReact.baseConvert = xmlToReact.convert
 // xmlToReact.convert = function (xml, data) {
@@ -24,7 +21,6 @@ const xmlToReact = new XMLToReact(converters)
 // }
 
 function Page({ page, storyData }) {
-
   // const reactTree = xmlToReact.convert(`
   //   <Example name="simple">
   //   <Item i="1">one</Item>
@@ -34,19 +30,26 @@ function Page({ page, storyData }) {
   // `)
 
   const reactTree = useMemo(() => {
-    if (storyData.isLoading || storyData.error) { return null }
+    if (storyData.isLoading || storyData.error) {
+      return null;
+    }
     // console.log(storyData.data)
-    return xmlToReact.convert(storyData.data)
-  }, [storyData])
+    return xmlToReact.convert(storyData.data);
+  }, [storyData]);
 
-  return <PageProvider page={page}>
-    {reactTree}
-  </PageProvider>
+  const ast = useMemo(() => {
+    if (storyData.isLoading || storyData.error) {
+      return null;
+    }
+    const ast = xmlAst(storyData.data);
+    console.log(ast);
+  });
+
+  return <PageProvider page={page}>{reactTree}</PageProvider>;
 }
 
 export default function Story() {
-
-  const { page, storyData } = useGameContext()
+  const { page, storyData } = useGameContext();
 
   // const reactTree = xmlToReact.convert(`
   //   <Example name="simple">
@@ -63,13 +66,12 @@ export default function Story() {
   // }, [storyData])
 
   return (
-    <div className='story'>
-
+    <div className="story">
       {/* <PageProvider page={page}>
         {reactTree}
       </PageProvider> */}
 
-      <Page storyData={storyData} page={page}/>
+      <Page storyData={storyData} page={page} />
 
       <DebugVerboseText>
         {storyData.data && <pre>{storyData.data}</pre>}
@@ -81,7 +83,6 @@ export default function Story() {
           {Object.entries(matchTags(storyData.data)).map(entry => `<${entry[0]}>: ${entry[1]}\n`)}
         </pre>}
       </DebugVerboseText> */}
-
     </div>
-  )
+  );
 }
