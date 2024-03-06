@@ -8,7 +8,7 @@ import converters from "./converters";
 import DebugVerboseText from "./DebugVerboseText";
 import { matchTags } from "../../util";
 import { PageProvider } from "./PageContext";
-import { xmlAst } from "./parser";
+import { processAst, xmlAst } from "./parser";
 
 const xmlToReact = new XMLToReact(converters);
 
@@ -43,7 +43,12 @@ function Page({ page, storyData }) {
     }
     const ast = xmlAst(storyData.data);
     console.log(ast);
-  });
+    const result = processAst(ast, (element) => {
+      // console.log(element.name);
+      return element.name;
+    });
+    console.log(result);
+  }, [storyData]);
 
   return <PageProvider page={page}>{reactTree}</PageProvider>;
 }
