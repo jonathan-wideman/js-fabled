@@ -1,12 +1,24 @@
 import { parse } from "@xml-tools/parser";
 import { buildAst, accept } from "@xml-tools/ast";
 import converters from "./converters";
-import { createElement } from "react";
+import React, { createElement } from "react";
+
+const obfuscateHTMLEntities = (text) => {
+  return text.replaceAll(/&(.*?);/g, "||HTML Entity||$1||");
+};
+
+const deobfuscateHTMLEntities = (text) => {
+  return text.replaceAll(/\|\|HTML Entity\|\|(.*?)\|\|/g, "&$1;");
+};
 
 export const xmlAst = (xmlText) => {
-  const { cst, tokenVector } = parse(xmlText);
+  // console.log("xmlText", xmlText);
+  // const { cst, tokenVector } = parse(xmlText);
+  const replacedHTMLEntities = obfuscateHTMLEntities(xmlText);
+  const { cst, tokenVector } = parse(replacedHTMLEntities);
+  // console.log('cst', cst)
   const xmlDocAst = buildAst(cst, tokenVector);
-  // console.log("xmlDocAst", xmlDocAst);
+  console.log("xmlDocAst", xmlDocAst);
   return xmlDocAst;
 };
 
@@ -35,10 +47,49 @@ export const traverseBreadthFirst = (
     //     traverseBreadthFirst(child, i, depth + 1, visitorCallback)
     //   ),
     // };
-    return result;
+
+    // const childrenResults = children.map((child, i) =>
+    //   traverseBreadthFirst(child, i, depth + 1, visitorCallback)
+    // );
+    // return { ...result, children: childrenResults };
+
+    // const childElements = children.map((child, i) =>
+    //   traverseBreadthFirst(child, i, depth + 1, visitorCallback)
+    // );
+
+    const childElements = [...element.subElements, ...element.textContents]
+      .filter(
+        (el) => el.type === "XMLElement" || reservedTrim(el?.text).length > 0
+      )
+      .toSorted((a, b) => a.position.startOffset - b.position.startOffset)
+      .map((el, i) =>
+        el.type === "XMLElement" ? (
+          traverseBreadthFirst(el, i, depth + 1, visitorCallback)
+        ) : (
+          <React.Fragment key={`text-${depth}-${index}-${i}`}>
+            {reservedTrim(deobfuscateHTMLEntities(el.text))}
+          </React.Fragment>
+        )
+      );
+    // return createElement(result.type, result.props, ...childElements);\
+    // console.log("result", result, childElements)
+    return createElement(result.type, result.props, childElements);
   } else {
     // no children; this is a leaf node
-    return result;
+    // return result;
+    // console.log(element.textContents);
+    const textChildren = element.textContents
+      .filter((el) => reservedTrim(deobfuscateHTMLEntities(el.text)).length > 0)
+      .map((el, i) => (
+        <React.Fragment key={`text-${depth}-${index}-${i}`}>
+          {reservedTrim(deobfuscateHTMLEntities(el.text))}
+        </React.Fragment>
+      ));
+    return createElement(
+      result.type,
+      result.props,
+      textChildren.length > 0 ? textChildren : undefined
+    );
   }
 };
 
@@ -59,7 +110,9 @@ export const traverseBreadthFirst = (
 
 // group ??
 
-
+// Special text characters like quotes
+// egs.
+// 2:449
 
 export const visitElement = (
   node,
@@ -88,7 +141,7 @@ export const visitElement = (
 
   const converter = converters[tagName];
 
-  if (typeof converter !== 'function') {
+  if (typeof converter !== "function") {
     return null;
   }
 
@@ -102,12 +155,13 @@ export const visitElement = (
   // const children = getChildren(node);
   // const visitChildren = (child, childIndex) => visitNode(child, childIndex, converters, data);
   // const childElements = children.map(visitChildren);
-  const childElements = [];
+  // const childElements = [];
 
-  // instead, we could return the hydrated converter and let the visitor create the react elements
-  return createElement(type, newProps, ...childElements);
+  // instead, we could return the hydrated converter and let the traverser create the react elements
+  // return createElement(type, newProps, ...childElements);
 
-}
+  return { type, props: newProps };
+};
 
 // export function visitNode(node, index, converters, data) {
 //   if (!node) {
@@ -157,13 +211,16 @@ export function getAttributes(node) {
 
   const result = {};
 
-  Array.from(attributes)
-    .forEach(({ key, value }) => {
-      result[key] = value;
-    });
-    // .forEach(({ name, value }) => {
-    //   result[name] = value;
-    // });
+  Array.from(attributes).forEach(({ key, value }) => {
+    result[key] = value;
+  });
+  // .forEach(({ name, value }) => {
+  //   result[name] = value;
+  // });
 
   return result;
 }
+
+const reservedTrim = (text) => {
+  return text.replaceAll(/[\r\n\t]*/g, "").replaceAll(/ +/g, " ");
+};

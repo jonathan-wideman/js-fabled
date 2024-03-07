@@ -42,7 +42,6 @@ function Page({ page, storyData }) {
       return null;
     }
     const ast = xmlAst(storyData.data);
-    console.log(ast);
     const result = processAst(ast, visitElement);
     // const result = processAst(ast, (element) => {
     //   // console.log(element.name);
@@ -51,13 +50,15 @@ function Page({ page, storyData }) {
     // console.log(result);
 
     // return createElement(() => <div>hi</div>, {}, [])
-    return result
+    return result;
   }, [storyData]);
 
-  return <PageProvider page={page}>
-    {reactTree}
-    {ast}
-  </PageProvider>;
+  return (
+    <PageProvider page={page}>
+      {reactTree}
+      {ast}
+    </PageProvider>
+  );
 }
 
 export default function Story() {
