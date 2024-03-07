@@ -2,13 +2,15 @@ import { parse } from "@xml-tools/parser";
 import { buildAst, accept } from "@xml-tools/ast";
 import converters from "./converters";
 import React, { createElement } from "react";
+import { decodeHTMLEntities } from "./htmlEntities";
 
 const obfuscateHTMLEntities = (text) => {
   return text.replaceAll(/&(.*?);/g, "||HTML Entity||$1||");
 };
-
 const deobfuscateHTMLEntities = (text) => {
-  return text.replaceAll(/\|\|HTML Entity\|\|(.*?)\|\|/g, "&$1;");
+  return decodeHTMLEntities(
+    text.replaceAll(/\|\|HTML Entity\|\|(.*?)\|\|/g, "&$1;")
+  );
 };
 
 export const xmlAst = (xmlText) => {
@@ -212,7 +214,8 @@ export function getAttributes(node) {
   const result = {};
 
   Array.from(attributes).forEach(({ key, value }) => {
-    result[key] = value;
+    // result[key] = value;
+    result[key] = deobfuscateHTMLEntities(value);
   });
   // .forEach(({ name, value }) => {
   //   result[name] = value;
