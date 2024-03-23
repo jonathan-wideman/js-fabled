@@ -21,6 +21,7 @@ const xmlToReact = new XMLToReact(converters);
 // }
 
 function Page({ page, storyData }) {
+  const { debugParserXmlToReact, debugParserXmlTools } = useGameContext();
   // const reactTree = xmlToReact.convert(`
   //   <Example name="simple">
   //   <Item i="1">one</Item>
@@ -55,8 +56,18 @@ function Page({ page, storyData }) {
 
   return (
     <PageProvider page={page}>
-      {reactTree}
-      {ast}
+      {debugParserXmlToReact && (
+        <>
+          {reactTree}
+          <DebugVerboseText>xml-to-react output</DebugVerboseText>
+        </>
+      )}
+      {debugParserXmlTools && (
+        <>
+          {ast}
+          <DebugVerboseText>xml-tools output</DebugVerboseText>
+        </>
+      )}
     </PageProvider>
   );
 }
@@ -88,6 +99,7 @@ export default function Story() {
 
       <DebugVerboseText>
         {storyData.data && <pre>{storyData.data}</pre>}
+        storyData
       </DebugVerboseText>
 
       {/* <DebugVerboseText>
