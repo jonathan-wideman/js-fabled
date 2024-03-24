@@ -30,6 +30,7 @@ export default function DebugPanel() {
   const gotoNextPage = () => {
     const next = nextPage(page);
     if (next) {
+      setInputPage(next);
       gotoPage(next);
     }
   };
@@ -37,6 +38,7 @@ export default function DebugPanel() {
   const gotoPrevPage = () => {
     const prev = prevPage(page);
     if (prev) {
+      setInputPage(prev);
       gotoPage(prev);
     }
   };
@@ -45,21 +47,32 @@ export default function DebugPanel() {
     <div className="debug pane">
       <h3>Debug Panel</h3>
       <div>
-        <button onClick={() => gotoPage(inputPage, inputBook)}>goto</button>
-        <input
-          name="inputBook"
-          type="text"
-          onChange={(e) => setInputBook(e.target.value)}
-          value={inputBook}
-        />
-        <input
-          name="inputPage"
-          type="text"
-          onChange={(e) => setInputPage(e.target.value)}
-          value={inputPage}
-        />
-        <button onClick={gotoPrevPage}>prev</button>
-        <button onClick={gotoNextPage}>next</button>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            gotoPage(inputPage, inputBook);
+          }}
+        >
+          <button type="submit">goto</button>
+          <input
+            name="inputBook"
+            type="text"
+            onChange={(e) => setInputBook(e.target.value)}
+            value={inputBook}
+          />
+          <input
+            name="inputPage"
+            type="text"
+            onChange={(e) => setInputPage(e.target.value)}
+            value={inputPage}
+          />
+          <button type="button" onClick={gotoPrevPage}>
+            prev
+          </button>
+          <button type="button" onClick={gotoNextPage}>
+            next
+          </button>
+        </form>
       </div>
       <div>
         History:
