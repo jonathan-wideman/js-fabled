@@ -87,8 +87,8 @@ const converters = {
   lose: (props) => ({ type: Lose, props }),
 
   if: (props) => ({ type: If, props }),
-  elseif: (props) => ({ type: Else, props }),
-  else: (props) => ({ type: ElseIf, props }),
+  elseif: (props) => ({ type: ElseIf, props }),
+  else: (props) => ({ type: Else, props }),
 
   random: (props) => ({ type: Random, props }),
   difficulty: (props) => ({ type: Difficulty, props }),
