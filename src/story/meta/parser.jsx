@@ -21,72 +21,40 @@ export const processAst = (ast, visitorCallback) => {
   return traverseBreadthFirst(ast.rootElement, 0, 0, visitorCallback);
 };
 
-export const traverseBreadthFirst = (
-  element,
-  index,
-  depth,
-  visitorCallback
-) => {
-  const children = element.subElements;
-  const data = null;
-  const result = visitorCallback(element, index, depth, data);
-  if (children.length > 0) {
-    // has children
-    // for (const child of children) {
-    //   traverseBreadthFirst(child, depth + 1, visitorCallback);
-    // }
-    // return {
-    //   node: result,
-    //   children: children.map((child, i) =>
-    //     traverseBreadthFirst(child, i, depth + 1, visitorCallback)
-    //   ),
-    // };
+/**
+ * Traverses a tree breadth-first starting from a given node, calling a visitor callback on each node.
+ *
+ * @param {object} node - The starting node of the traversal.
+ * @param {number} index - The index of the node.
+ * @param {number} depth - The depth of the current node in the tree.
+ * @param {function} visitorCallback - The callback function to be called on each node.
+ * @return {element} The root element of the tree after traversal.
+ */
+export const traverseBreadthFirst = (node, index, depth, visitorCallback) => {
+  const hasChildren = node.subElements.length > 0;
+  const childrenAndText = [...node.subElements, ...node.textContents];
 
-    // const childrenResults = children.map((child, i) =>
-    //   traverseBreadthFirst(child, i, depth + 1, visitorCallback)
-    // );
-    // return { ...result, children: childrenResults };
+  const converter = visitorCallback(node, index, depth);
 
-    // const childElements = children.map((child, i) =>
-    //   traverseBreadthFirst(child, i, depth + 1, visitorCallback)
-    // );
-
-    const childElements = [...element.subElements, ...element.textContents]
-      .filter(
-        (el) => el.type === "XMLElement" || cleanWhitespace(el?.text).length > 0
-      )
-      .toSorted((a, b) => a.position.startOffset - b.position.startOffset)
-      .map((el, i) =>
-        el.type === "XMLElement" ? (
-          traverseBreadthFirst(el, i, depth + 1, visitorCallback)
-        ) : (
-          <React.Fragment key={`text-${depth}-${index}-${i}`}>
-            {cleanWhitespace(deobfuscateHTMLEntities(el.text))}
-          </React.Fragment>
-        )
-      );
-    // return createElement(result.type, result.props, ...childElements);\
-    // console.log("result", result, childElements)
-    return createElement(result.type, result.props, childElements);
-  } else {
-    // no children; this is a leaf node
-    // return result;
-    // console.log(element.textContents);
-    const textChildren = element.textContents
-      .filter(
-        (el) => cleanWhitespace(deobfuscateHTMLEntities(el.text)).length > 0
-      )
-      .map((el, i) => (
+  const children = childrenAndText
+    .filter(
+      (el) => el.type === "XMLElement" || cleanWhitespace(el?.text).length > 0
+    )
+    .toSorted((a, b) => a.position.startOffset - b.position.startOffset)
+    .map((el, i) =>
+      el.type === "XMLElement" ? (
+        traverseBreadthFirst(el, i, depth + 1, visitorCallback)
+      ) : (
         <React.Fragment key={`text-${depth}-${index}-${i}`}>
           {cleanWhitespace(deobfuscateHTMLEntities(el.text))}
         </React.Fragment>
-      ));
-    return createElement(
-      result.type,
-      result.props,
-      textChildren.length > 0 ? textChildren : undefined
+      )
     );
-  }
+  return createElement(
+    converter.type,
+    converter.props,
+    children.length > 0 ? children : undefined
+  );
 };
 
 // <outcomes> => always seems to relate to a single, default variable from <random> or from <difficulty> or it will have a var
@@ -110,54 +78,44 @@ export const traverseBreadthFirst = (
 // egs.
 // 2:449
 
-export const visitElement = (
-  node,
-  index,
-  depth,
-  // converters,
-  data
-) => {
-  if (!node) {
-    return null;
-  }
+/**
+ * Visits an XML element node and returns a converter function and props that will produce a React element.
+ *
+ * @param {Object} node - The XML element node to visit.
+ * @param {number} index - The index of the element node in its parent.
+ * @param {number} depth - The depth of the element node in the XML tree.
+ * @param {Object} data - Additional data to be passed to the converter function.
+ * @return {Object|null} The converter function and props, or null if the element node has no name or no converter function is found.
+ */
+export const visitElement = (node, index, depth, data) => {
+  if (!node.name) return null;
 
-  const {
-    name: tagName,
-    // type: nodeType,
-  } = node;
+  const converter = converters[node.name];
+  if (typeof converter !== "function") return null;
 
-  //   // if this is a text node
-  //   if (nodeType === 3) {
-  //     return node.nodeValue;
-  //   }
-
-  if (!tagName) {
-    return null;
-  }
-
-  const converter = converters[tagName];
-
-  if (typeof converter !== "function") {
-    return null;
-  }
-
-  const attributes = getAttributes(node);
-  // const attributes = {};
-
+  const attributes = xmlNodeAttributes(node);
   const { type, props } = converter(attributes, data);
-  const newProps = Object.assign({}, { key: `node-${index}` }, props);
-  // const newProps = {};
+  const key = `node-${index}`;
 
-  // const children = getChildren(node);
-  // const visitChildren = (child, childIndex) => visitNode(child, childIndex, converters, data);
-  // const childElements = children.map(visitChildren);
-  // const childElements = [];
-
-  // instead, we could return the hydrated converter and let the traverser create the react elements
-  // return createElement(type, newProps, ...childElements);
-
-  return { type, props: newProps };
+  return { type, props: { ...props, key } };
 };
+
+/**
+ * Extracts the attributes from an XML node and returns them as an object.
+ *
+ * @param {Object} node - The XML node to extract attributes from.
+ * @return {Object} - An object containing the extracted attributes, with the attribute keys as object keys and the attribute values as object values.
+ */
+export function xmlNodeAttributes(node) {
+  const attributes = node.attributes || [];
+  const result = {};
+
+  Array.from(attributes).forEach(({ key, value }) => {
+    result[key] = deobfuscateHTMLEntities(value);
+  });
+
+  return result;
+}
 
 // export function visitNode(node, index, converters, data) {
 //   if (!node) {
@@ -181,7 +139,7 @@ export const visitElement = (
 //     return null;
 //   }
 
-//   const attributes = getAttributes(node);
+//   const attributes = xmlNodeAttributes(node);
 //   const { type, props } = converter(attributes, data);
 //   const newProps = Object.assign({}, { key: index }, props);
 
@@ -191,29 +149,3 @@ export const visitElement = (
 
 //   return createElement(type, newProps, ...childElements);
 // }
-
-export function getAttributes(node) {
-  if (!node) {
-    return {};
-  }
-
-  const { attributes } = node;
-
-  if (!attributes || !attributes.length) {
-    return {};
-  }
-
-  // return attributes.reduce((prev, cur) => prev[cur.key] = cur.value, {})
-
-  const result = {};
-
-  Array.from(attributes).forEach(({ key, value }) => {
-    // result[key] = value;
-    result[key] = deobfuscateHTMLEntities(value);
-  });
-  // .forEach(({ name, value }) => {
-  //   result[name] = value;
-  // });
-
-  return result;
-}
