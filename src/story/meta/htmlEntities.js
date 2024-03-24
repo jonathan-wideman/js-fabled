@@ -1,5 +1,3 @@
-import { decodeHTMLEntities } from "./htmlEntities";
-
 export const decodeHTMLEntities = (text) => {
   return text.replaceAll(/&(.*?);/g, (match, p1) => ENTITY_MAP[p1] ?? match);
 };
