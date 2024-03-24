@@ -2,16 +2,8 @@ import { parse } from "@xml-tools/parser";
 import { buildAst, accept } from "@xml-tools/ast";
 import converters from "./converters";
 import React, { createElement } from "react";
-import { decodeHTMLEntities } from "./htmlEntities";
-
-const obfuscateHTMLEntities = (text) => {
-  return text.replaceAll(/&(.*?);/g, "||HTML Entity||$1||");
-};
-const deobfuscateHTMLEntities = (text) => {
-  return decodeHTMLEntities(
-    text.replaceAll(/\|\|HTML Entity\|\|(.*?)\|\|/g, "&$1;")
-  );
-};
+import { cleanWhitespace } from "./stringUtils";
+import { obfuscateHTMLEntities, deobfuscateHTMLEntities } from "./htmlEntities";
 
 export const xmlAst = (xmlText) => {
   // console.log("xmlText", xmlText);
@@ -61,7 +53,7 @@ export const traverseBreadthFirst = (
 
     const childElements = [...element.subElements, ...element.textContents]
       .filter(
-        (el) => el.type === "XMLElement" || reservedTrim(el?.text).length > 0
+        (el) => el.type === "XMLElement" || cleanWhitespace(el?.text).length > 0
       )
       .toSorted((a, b) => a.position.startOffset - b.position.startOffset)
       .map((el, i) =>
@@ -69,7 +61,7 @@ export const traverseBreadthFirst = (
           traverseBreadthFirst(el, i, depth + 1, visitorCallback)
         ) : (
           <React.Fragment key={`text-${depth}-${index}-${i}`}>
-            {reservedTrim(deobfuscateHTMLEntities(el.text))}
+            {cleanWhitespace(deobfuscateHTMLEntities(el.text))}
           </React.Fragment>
         )
       );
@@ -81,10 +73,12 @@ export const traverseBreadthFirst = (
     // return result;
     // console.log(element.textContents);
     const textChildren = element.textContents
-      .filter((el) => reservedTrim(deobfuscateHTMLEntities(el.text)).length > 0)
+      .filter(
+        (el) => cleanWhitespace(deobfuscateHTMLEntities(el.text)).length > 0
+      )
       .map((el, i) => (
         <React.Fragment key={`text-${depth}-${index}-${i}`}>
-          {reservedTrim(deobfuscateHTMLEntities(el.text))}
+          {cleanWhitespace(deobfuscateHTMLEntities(el.text))}
         </React.Fragment>
       ));
     return createElement(
@@ -223,7 +217,3 @@ export function getAttributes(node) {
 
   return result;
 }
-
-const reservedTrim = (text) => {
-  return text.replaceAll(/[\r\n\t]*/g, "").replaceAll(/ +/g, " ");
-};
