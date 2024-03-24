@@ -18,7 +18,8 @@ import {
 } from "./helpers";
 import { Random } from "random-js";
 
-const GameContext = createContext();
+const STARTING_BOOK = "book2";
+const STARTING_PAGE = "New";
 
 const defaultCharacter = {
   name: undefined,
@@ -46,6 +47,8 @@ const defaultCharacter = {
   variables: {},
 };
 
+const GameContext = createContext();
+
 export function useGameContext() {
   return useContext(GameContext);
 }
@@ -61,11 +64,13 @@ export function GameProvider({ children }) {
   const [debugParserXmlTools, setDebugParserXmlTools] = useState(true);
 
   const [character, setCharacter] = useState({ ...defaultCharacter });
-  const [page, setPage] = useState("New");
+  const [page, setPage] = useState(STARTING_PAGE);
   // const [page, setPage] = useState('Test')
   // const [page, setPage] = useState('1')
-  const [book, setBook] = useState("book2");
-  const [history, setHistory] = useState([]);
+  const [book, setBook] = useState(STARTING_BOOK);
+  const [history, setHistory] = useState([
+    { book: STARTING_BOOK, page: STARTING_PAGE },
+  ]);
   const [sectionVars, setSectionVars] = useState({});
 
   const gotoPage = (newPage, newBook = null) => {
