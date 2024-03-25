@@ -60,7 +60,7 @@ export function GameProvider({ children }) {
 
   const [debug, setDebug] = useState(true);
   const [debugVerbose, setDebugVerbose] = useState(true);
-  const [debugParserXmlToReact, setDebugParserXmlToReact] = useState(true);
+  const [debugParserXmlToReact, setDebugParserXmlToReact] = useState(false);
   const [debugParserXmlTools, setDebugParserXmlTools] = useState(true);
 
   const [character, setCharacter] = useState({ ...defaultCharacter });
@@ -72,6 +72,8 @@ export function GameProvider({ children }) {
     { book: STARTING_BOOK, page: STARTING_PAGE },
   ]);
   const [sectionVars, setSectionVars] = useState({});
+  // const [codewords, setCodewords] = useState({});
+  const [codewords, setCodewords] = useState({ Altitude: true });
 
   const gotoPage = (newPage, newBook = null) => {
     newBook && setBook(newBook);
@@ -311,6 +313,28 @@ export function GameProvider({ children }) {
     return ticks.reduce((sum, tick) => (sum += tick ? 1 : 0), 0);
   };
 
+  const addCodeword = (codeword, value = undefined) => {
+    setCodewords({
+      ...codewords,
+      [codeword]: value !== undefined ? value : true,
+    });
+  };
+
+  const getCodeword = (codeword) => {
+    return codewords[codeword];
+  };
+
+  const addSectionVar = (key, value = undefined) => {
+    setSectionVars({
+      ...sectionVars,
+      [key]: value !== undefined ? value : true,
+    });
+  };
+
+  const getSectionVar = (key) => {
+    return sectionVars[key];
+  };
+
   /* ===== XML Queries ===== */
 
   const storyData = useQuery(["storyData", book, page], () =>
@@ -335,6 +359,10 @@ export function GameProvider({ children }) {
         rng,
         sectionVars,
         setSectionVars,
+        addSectionVar,
+        getSectionVar,
+        addCodeword,
+        getCodeword,
         character,
         book,
         page,

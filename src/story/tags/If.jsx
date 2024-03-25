@@ -1,5 +1,9 @@
-import React from 'react'
-import DefaultNode from "./DefaultNode"
+import React, { useEffect, useMemo } from "react";
+import DefaultNode from "./DefaultNode";
+import DebugVerboseText from "../meta/DebugVerboseText";
+import { useGameContext } from "../../GameContext";
+import { addPageVarAtom, pageLoadedAtom } from "../../store";
+import { useAtom } from "jotai";
 
 /*
 TODO:
@@ -62,9 +66,50 @@ var – Tests whether the value held in this variable matches any comparisons. S
 
 */
 
+/* EXAMPLE SECTIONS:
+  1:9
+  2:567
+*/
+
 export default function If({ children, ...others }) {
+  // console.log("If component meta", others.meta);
+
+  const { getCodeword, character, addSectionVar } = useGameContext();
+
+  const [, addPageVar] = useAtom(addPageVarAtom);
+  const [pageLoaded] = useAtom(pageLoadedAtom);
+
+  const { codeword, god, meta } = others;
+
+  // const logicResult = true;
+  // const logicResult = useMemo(
+  //   () => (codeword && getCodeword(codeword)) || (god && character.god === god),
+  //   [getCodeword, character, addSectionVar]
+  // );
+  const logicResult =
+    (codeword && getCodeword(codeword)) || (god && character.god === god);
+
+  const sectionVarKey = `if-result-${meta.depth}-${meta.index}`;
+
+  useEffect(() => {
+    console.log("addPageVar", sectionVarKey, logicResult);
+    addPageVar(sectionVarKey, logicResult);
+  }, [pageLoaded]);
+
+  // useEffect(() => {
+  //   console.log("useEffect", sectionVarKey, logicResult);
+  //   // addSectionVar(sectionVarKey, logicResult);
+  //   // addSectionVar("foo", "bar");
+  //   addPageVar(sectionVarKey, logicResult);
+  // }, [logicResult]);
+  // }, [getCodeword, character, logicResult]);
 
   return (
-    <DefaultNode {...others} nodeType='if'>{children}</DefaultNode>
-  )
+    <DefaultNode {...others} nodeType="if">
+      <DebugVerboseText>
+        If result: {logicResult ? "true" : "false"}
+      </DebugVerboseText>
+      {children}
+    </DefaultNode>
+  );
 }

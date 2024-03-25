@@ -62,6 +62,11 @@ var – Tests whether the value held in this variable matches any comparisons. S
 
 */
 
+/* EXAMPLE SECTIONS:
+  1:21
+  1:33
+*/
+
 export default function Else({ children, ...others }) {
 
   return (

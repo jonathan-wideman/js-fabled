@@ -1,4 +1,4 @@
-import React, { createElement, useMemo } from "react";
+import React, { createElement, useEffect, useMemo } from "react";
 import { useGameContext } from "../../GameContext";
 // import Goto from './Goto'
 
@@ -9,6 +9,8 @@ import DebugVerboseText from "./DebugVerboseText";
 import { matchTags } from "../../util";
 import { PageProvider } from "./PageContext";
 import { processAst, visitElement, xmlAst } from "./parser";
+import { useAtom } from "jotai";
+import { pageLoadedAtom, pageVarsAtom } from "../../store";
 
 const xmlToReact = new XMLToReact(converters);
 
@@ -58,14 +60,14 @@ function Page({ page, storyData }) {
     <PageProvider page={page}>
       {debugParserXmlToReact && (
         <>
+          <DebugVerboseText>XML-TO-REACT OUTPUT</DebugVerboseText>
           {reactTree}
-          <DebugVerboseText>xml-to-react output</DebugVerboseText>
         </>
       )}
       {debugParserXmlTools && (
         <>
+          <DebugVerboseText>XML-TOOLS OUTPUT</DebugVerboseText>
           {ast}
-          <DebugVerboseText>xml-tools output</DebugVerboseText>
         </>
       )}
     </PageProvider>
@@ -73,7 +75,13 @@ function Page({ page, storyData }) {
 }
 
 export default function Story() {
-  const { page, storyData } = useGameContext();
+  const { page, storyData, sectionVars } = useGameContext();
+  const [pageVars] = useAtom(pageVarsAtom);
+  const [pageLoaded, setPageLoaded] = useAtom(pageLoadedAtom);
+
+  useEffect(() => {
+    setPageLoaded(true);
+  }, [storyData]);
 
   // const reactTree = xmlToReact.convert(`
   //   <Example name="simple">
@@ -98,8 +106,25 @@ export default function Story() {
       <Page storyData={storyData} page={page} />
 
       <DebugVerboseText>
-        {storyData.data && <pre>{storyData.data}</pre>}
-        storyData
+        <div>
+          PAGE LOADED:
+          {pageLoaded ? "true" : "false"}
+        </div>
+
+        <div>
+          PAGE VARS:
+          {JSON.stringify(pageVars, null, 2)}
+        </div>
+
+        <div>
+          SECTION VARS:
+          {JSON.stringify(sectionVars, null, 2)}
+        </div>
+
+        <div>
+          STORY DATA:
+          {storyData.data && <pre>{storyData.data}</pre>}
+        </div>
       </DebugVerboseText>
 
       {/* <DebugVerboseText>

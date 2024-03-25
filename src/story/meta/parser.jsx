@@ -12,7 +12,7 @@ export const xmlAst = (xmlText) => {
   const { cst, tokenVector } = parse(replacedHTMLEntities);
   // console.log('cst', cst)
   const xmlDocAst = buildAst(cst, tokenVector);
-  console.log("xmlDocAst", xmlDocAst);
+  // console.log("xmlDocAst", xmlDocAst);
   return xmlDocAst;
 };
 
@@ -90,11 +90,24 @@ export const traverseBreadthFirst = (node, index, depth, visitorCallback) => {
 export const visitElement = (node, index, depth, data) => {
   if (!node.name) return null;
 
+  const meta = {
+    name: node.name,
+    index,
+    depth,
+  };
+
+  // const converterData = {...data, meta}
+
+  // if (node.name === "if") {
+  //   converterData["ifTarget"] = depth
+  //   console.log("if", node, converterData);
+  // }
+
   const converter = converters[node.name];
   if (typeof converter !== "function") return null;
 
   const attributes = xmlNodeAttributes(node);
-  const { type, props } = converter(attributes, data);
+  const { type, props } = converter({ ...attributes, meta }, data);
   const key = `node-${index}`;
 
   return { type, props: { ...props, key } };
