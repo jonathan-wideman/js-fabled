@@ -1,5 +1,7 @@
-import React from 'react'
-import DefaultNode from "./DefaultNode"
+import React, { useMemo } from "react";
+import DefaultNode from "./DefaultNode";
+import { useAtom } from "jotai";
+import { characterHasItemAtom } from "../../store/character";
 
 /*
 TODO:
@@ -63,8 +65,16 @@ var – Tests whether the value held in this variable matches any comparisons. S
 */
 
 export default function If({ children, ...others }) {
+  const { item: itemName } = others;
+  const item = useMemo(() => ({ name: itemName }), [itemName]);
+  const [hasItem] = useAtom(characterHasItemAtom(item));
+
+  const conditionalResult = hasItem;
 
   return (
-    <DefaultNode {...others} nodeType='if'>{children}</DefaultNode>
-  )
+    <DefaultNode {...others} nodeType="if">
+      <span>{conditionalResult ? "☑" : "☐"}</span>
+      {children}
+    </DefaultNode>
+  );
 }

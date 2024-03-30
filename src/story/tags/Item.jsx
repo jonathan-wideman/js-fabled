@@ -1,6 +1,7 @@
-import React from 'react'
-import DebugVerboseText from '../meta/DebugVerboseText'
-import { useGameContext } from '../../GameContext'
+import React from "react";
+import DebugVerboseText from "../meta/DebugVerboseText";
+import { useAtom } from "jotai";
+import { characterAddItemAtom } from "../../store/character";
 
 /*
 TODO:
@@ -46,20 +47,25 @@ is an action that will remove a weapon with a bonus of +1 from the character.
 */
 
 export default function Item({ children, ...others }) {
+  const [, addItem] = useAtom(characterAddItemAtom);
 
-  const { giveCharacter } = useGameContext()
   const item = {
     name: others.name,
     type: others.type,
     ability: others.ability,
-    bonus: parseInt(others.bonus) || undefined
-  }
+    bonus: parseInt(others.bonus) || undefined,
+  };
 
   return (
-    <a className='action' onClick={() => giveCharacter('item', item)}>
+    <a
+      className="action"
+      onClick={() => {
+        addItem(item);
+      }}
+    >
       <strong>{children ?? item.name}</strong>
       {/* <strong>{item.name}</strong> */}
       <DebugVerboseText>[item {JSON.stringify(others)}]</DebugVerboseText>
     </a>
-  )
+  );
 }

@@ -1,7 +1,9 @@
-import React from 'react'
-import DebugVerboseText from '../meta/DebugVerboseText'
-import { useGameContext } from '../../GameContext'
-import { sectionCodeword } from '../../helpers'
+import React from "react";
+import DebugVerboseText from "../meta/DebugVerboseText";
+import { useGameContext } from "../../GameContext";
+import { sectionCodeword } from "../../helpers";
+import { useAtom } from "jotai";
+import { characterAdjustMoneyAtom } from "../../store/character";
 
 /*
 <tick [ability="S" [effect=”S”]] [addbonus="V"] [addtag="S"] [amount="V"] [blessing="S" [permanent=”B”]] [bonus="V"] [cache="S"] [cargo="S"] [codeword="S"] [crew="S"] [flag="S"] [force="B"] [god="S"] [hidden="B"] [item tags] [name="S"] [price="S"] [profession=”S”] [removetag="S"] [shards="V"] [special="S"] [ticks="N"] [title="S" [titlePattern="S" titleValue="N" titleAdjust="N"]]>
@@ -71,18 +73,30 @@ TODO: title – The name of the title to grant to the character. This can provid
 TODO: titlePattern, titleValue, titleAdjust – Occasionally a title can be added that contains a value which may rise or fall (eg. Circle 1 Bokh master). In this case the form of the title is given by titlePattern, with '{0}' in the pattern being replaced by the current value. titleValue is the initial value displayed, if the character doesn't already have this title. titleAdjust is the amount to modify the value by, if the character does already have the title.
 */
 export default function Give({ children, ...others }) {
+  const { tickNextSectionBox } = useGameContext();
+  const [, characterAdjustMoney] = useAtom(characterAdjustMoneyAtom);
 
-  const { giveCharacter, tickNextSectionBox } = useGameContext()
-  const shards = parseInt(others?.shards) || undefined
+  const shards = parseInt(others?.shards) || undefined;
 
   if (shards) {
     return (
-      <span className='action' onClick={() => giveCharacter('money', shards)}>{children ?? `${shards} shards`}<DebugVerboseText>[give {JSON.stringify(others)}]</DebugVerboseText></span >
-    )
+      <span
+        className="action"
+        onClick={() => {
+          characterAdjustMoney(shards);
+        }}
+      >
+        {children ?? `${shards} shards`}
+        <DebugVerboseText>[give {JSON.stringify(others)}]</DebugVerboseText>
+      </span>
+    );
   }
 
   // default to putting a tick in the (TODO: *first empty* ) box of the current section
   return (
-    <span className='action' onClick={() => tickNextSectionBox()}>{children ?? `<give>`}<DebugVerboseText>[gain/tick {JSON.stringify(others)}]</DebugVerboseText></span>
-  )
+    <span className="action" onClick={() => tickNextSectionBox()}>
+      {children ?? `<give>`}
+      <DebugVerboseText>[gain/tick {JSON.stringify(others)}]</DebugVerboseText>
+    </span>
+  );
 }

@@ -33,7 +33,7 @@ export function PageProvider({ children, page }) {
     setData(prev => ({...prev, [id]: {type: 'roll', value}}))
   }
 
-  useEffect(() => console.log('data', data), [data])
+  // useEffect(() => console.log('data', data), [data])
 
 
 

@@ -1,24 +1,39 @@
-import {
-  React,
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
+import { React, createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
-import XMLToReact from "@condenast/xml-to-react";
 import {
   elementToItem,
   elementToStartingAbilities,
-  getEquippedItem,
-  isEquipment,
   range,
   sectionTickCodeword,
 } from "./helpers";
 import { Random } from "random-js";
+import { useAtom } from "jotai";
+import {
+  characterActionsAtom,
+  characterBioAtom,
+  characterBlessingsAtom,
+  characterCharismaAtom,
+  characterCodewordsAtom,
+  characterCombatAtom,
+  characterCursesAtom,
+  characterDefenseAtom,
+  characterGodAtom,
+  characterInventoryAtom,
+  characterMagicAtom,
+  characterMoneyAtom,
+  characterNameAtom,
+  characterProfessionAtom,
+  characterRankAtom,
+  characterRevivesAtom,
+  characterSanctityAtom,
+  characterScoutingAtom,
+  characterStaminaAtom,
+  characterThieveryAtom,
+  characterTitlesAtom,
+  characterVariablesAtom,
+} from "./store/character";
 
-const STARTING_BOOK = "book2";
+const STARTING_BOOK = "book99";
 const STARTING_PAGE = "New";
 
 const defaultCharacter = {
@@ -63,15 +78,35 @@ export function GameProvider({ children }) {
   const [debugParserXmlToReact, setDebugParserXmlToReact] = useState(true);
   const [debugParserXmlTools, setDebugParserXmlTools] = useState(true);
 
-  const [character, setCharacter] = useState({ ...defaultCharacter });
   const [page, setPage] = useState(STARTING_PAGE);
-  // const [page, setPage] = useState('Test')
-  // const [page, setPage] = useState('1')
   const [book, setBook] = useState(STARTING_BOOK);
   const [history, setHistory] = useState([
     { book: STARTING_BOOK, page: STARTING_PAGE },
   ]);
   const [sectionVars, setSectionVars] = useState({});
+
+  const [, setCharacterName] = useAtom(characterNameAtom);
+  const [, setCharacterProfession] = useAtom(characterProfessionAtom);
+  const [, setCharacterRank] = useAtom(characterRankAtom);
+  const [, setCharacterBio] = useAtom(characterBioAtom);
+  const [, setCharacterStamina] = useAtom(characterStaminaAtom);
+  const [, setCharacterDefense] = useAtom(characterDefenseAtom);
+  const [, setCharacterCharisma] = useAtom(characterCharismaAtom);
+  const [, setCharacterCombat] = useAtom(characterCombatAtom);
+  const [, setCharacterMagic] = useAtom(characterMagicAtom);
+  const [, setCharacterSanctity] = useAtom(characterSanctityAtom);
+  const [, setCharacterScouting] = useAtom(characterScoutingAtom);
+  const [, setCharacterThievery] = useAtom(characterThieveryAtom);
+  const [, setCharacterMoney] = useAtom(characterMoneyAtom);
+  const [, setCharacterInventory] = useAtom(characterInventoryAtom);
+  const [, setCharacterTitles] = useAtom(characterTitlesAtom);
+  const [, setCharacterGod] = useAtom(characterGodAtom);
+  const [, setCharacterBlessings] = useAtom(characterBlessingsAtom);
+  const [, setCharacterCurses] = useAtom(characterCursesAtom);
+  const [, setCharacterRevives] = useAtom(characterRevivesAtom);
+  const [, setCharacterCodewords] = useAtom(characterCodewordsAtom);
+  const [, setCharacterActions] = useAtom(characterActionsAtom);
+  const [, setCharacterVariables] = useAtom(characterVariablesAtom);
 
   const gotoPage = (newPage, newBook = null) => {
     newBook && setBook(newBook);
@@ -87,6 +122,7 @@ export function GameProvider({ children }) {
     setHistory([]);
   };
 
+  // FIXME: extract this to character.js also
   const setupStartingCharacter = (name, profession) => {
     // TODO: error handling if adventurers file isn't loaded yet
     // TODO: make parsing more flexible
@@ -148,167 +184,31 @@ export function GameProvider({ children }) {
       // { name: 'compass', type: 'tool', ability: 'scouting', bonus: 1 }
     ];
 
-    setCharacter({
-      ...defaultCharacter,
-      name,
-      profession,
-      // rank: { value: rankValue, title: undefined },
-      rank,
-      // bio: undefined,
-      stamina: { current: staminaMax, max: staminaMax },
-      // defense: 0,
-      charisma: abilities?.[0],
-      combat: abilities?.[1],
-      magic: abilities?.[2],
-      sanctity: abilities?.[3],
-      scouting: abilities?.[4],
-      thievery: abilities?.[5],
-      money,
-      inventory: {
-        ...defaultCharacter.inventory,
-        items: [
-          ...defaultCharacter.inventory.items,
-          ...equipped,
-          ...extraItems,
-        ],
-      },
-      // titles: [],
-      // god: undefined,
-      // blessings: [],
-      // curses: [],
-      // revives: [],
-      // codewords: [],
-      // actions: [],
-      // variables: {}
+    setCharacterName(name);
+    setCharacterProfession(profession);
+    setCharacterRank(rank);
+    // setCharacterBio();
+    setCharacterStamina({ current: staminaMax, max: staminaMax });
+    // setCharacterDefense();
+    setCharacterCharisma(abilities?.[0]);
+    setCharacterCombat(abilities?.[1]);
+    setCharacterMagic(abilities?.[2]);
+    setCharacterSanctity(abilities?.[3]);
+    setCharacterScouting(abilities?.[4]);
+    setCharacterThievery(abilities?.[5]);
+    setCharacterMoney(money);
+    setCharacterInventory({
+      ...defaultCharacter.inventory,
+      items: [...defaultCharacter.inventory.items, ...equipped, ...extraItems],
     });
-  };
-
-  const giveCharacter = (type, value) => {
-    switch (type) {
-      case "item":
-        setCharacter({
-          ...character,
-          inventory: {
-            ...character.inventory,
-            items: [...character.inventory.items, value],
-          },
-        });
-        break;
-
-      case "money":
-        setCharacter({ ...character, money: character.money + value });
-        break;
-
-      case "codeword":
-        if (character.codewords.includes(value)) {
-          return;
-        }
-        setCharacter({
-          ...character,
-          codewords: [...character.codewords, value],
-        });
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const takeCharacter = (type, value) => {
-    switch (type) {
-      case "item":
-        // setCharacter({ ...character, inventory: { ...character.inventory, items: [...character.inventory.items, value] } })
-        setCharacter({
-          ...character,
-          inventory: {
-            ...character.inventory,
-            items: character.inventory.items.filter((item) => item !== value),
-          },
-        });
-        // TODO: rough equivalency of items
-        break;
-
-      case "money":
-        setCharacter({
-          ...character,
-          money: Math.max(character.money - value, 0),
-        });
-        break;
-
-      case "codeword":
-        if (!character.codewords.includes(value)) {
-          return;
-        }
-        setCharacter({
-          ...character,
-          codewords: character.codewords.filter(
-            (codeword) => codeword !== value
-          ),
-        });
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const characterHas = (type, value) => {
-    switch (type) {
-      case "item":
-        // // setCharacter({ ...character, inventory: { ...character.inventory, items: [...character.inventory.items, value] } })
-        // setCharacter({ ...character, inventory: { ...character.inventory, items: character.inventory.items.filter(item => item !== value) } })
-        // // TODO: rough equivalency of items
-        break;
-
-      case "money":
-        // setCharacter({ ...character, money: Math.max(character.money - value, 0) })
-        break;
-
-      case "codeword":
-        return character.codewords.includes(value);
-
-      default:
-        break;
-    }
-  };
-
-  const equipCharacter = (item) => {
-    if (!isEquipment(item)) {
-      return;
-    }
-    const itemIndex = character.inventory.items.indexOf(item);
-    const current = getEquippedItem(character, item.type);
-    const currentIndex = character.inventory.items.indexOf(current);
-    let newItems = [...character.inventory.items];
-    if (itemIndex >= 0) {
-      newItems[itemIndex] = { ...item, equipped: true };
-    }
-    if (currentIndex >= 0) {
-      newItems[currentIndex] = { ...current, equipped: undefined };
-    }
-    setCharacter({
-      ...character,
-      inventory: { ...character.inventory, items: newItems },
-    });
-  };
-
-  const tickNextSectionBox = (section) => {
-    const s = section ?? page;
-    const max = sectionVars.boxes ?? 0;
-    const ticked = getSectionTickedBoxes(s);
-    if (ticked >= max) {
-      return;
-    }
-    giveCharacter("codeword", sectionTickCodeword(book, s, ticked));
-  };
-
-  const getSectionTickedBoxes = (section) => {
-    const s = section ?? page;
-    const max = sectionVars.boxes ?? 0;
-    const ticks = range(max).map((box, i) =>
-      characterHas("codeword", sectionTickCodeword(book, s, i))
-    );
-    return ticks.reduce((sum, tick) => (sum += tick ? 1 : 0), 0);
+    // setCharacterTitles();
+    // setCharacterGod();
+    // setCharacterBlessings();
+    // setCharacterCurses();
+    // setCharacterRevives();
+    // setCharacterCodewords();
+    // setCharacterActions();
+    // setCharacterVariables();
   };
 
   /* ===== XML Queries ===== */
@@ -335,7 +235,6 @@ export function GameProvider({ children }) {
         rng,
         sectionVars,
         setSectionVars,
-        character,
         book,
         page,
         history,
@@ -344,12 +243,6 @@ export function GameProvider({ children }) {
         gotoPage,
         storyData,
         setupStartingCharacter,
-        giveCharacter,
-        takeCharacter,
-        equipCharacter,
-        characterHas,
-        tickNextSectionBox,
-        getSectionTickedBoxes,
       }}
     >
       {children}

@@ -12,7 +12,7 @@ export const xmlAst = (xmlText) => {
   const { cst, tokenVector } = parse(replacedHTMLEntities);
   // console.log('cst', cst)
   const xmlDocAst = buildAst(cst, tokenVector);
-  console.log("xmlDocAst", xmlDocAst);
+  // console.log("xmlDocAst", xmlDocAst);
   return xmlDocAst;
 };
 
