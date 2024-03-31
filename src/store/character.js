@@ -256,7 +256,8 @@ export const characterRemoveCodewordAtom = atom(null, (get, set, value) => {
 // FIXME: replace references to characterHas
 
 // FIXME: Memory leaks, see https://jotai.org/docs/utilities/family#caveat-memory-leaks
-// TODO: Maybe this should be a hook instead, but it would also nned a helper function to be used in other atoms
+// TODO: Maybe this should be a hook instead, but it would also need a helper function to be used in other atoms
+// or it could be done like we do other inventory functions above; just as helper functions rather than atoms or hooks
 export const characterHasItemAtom = atomFamily((item) =>
   atom((get) => {
     const inventory = get(characterInventoryAtom);
@@ -265,48 +266,12 @@ export const characterHasItemAtom = atomFamily((item) =>
   })
 );
 
-// FIXME: not a great way to provide an atom for this function; seems like it should be a hook instead
-// export const characterHasMoneyAtom = atom((get) => {
-//   const money = get(characterMoneyAtom);
-//   return money >= value;
-// });
-
 // FIXME: Memory leaks, see https://jotai.org/docs/utilities/family#caveat-memory-leaks
-// TODO: Maybe this should be a hook instead, but it would also nned a helper function to be used in other atoms
+// TODO: Maybe this should be a hook instead, but it would also need a helper function to be used in other atoms
+// or it could be done like we do other inventory functions above; just as helper functions rather than atoms or hooks
 export const characterHasCodewordAtom = atomFamily((codeword) =>
   atom((get) => {
     const codewords = get(characterCodewordsAtom);
     return codewords.includes(codeword);
   })
 );
-
-// FIXME: reimplement these
-
-// const tickNextSectionBox = (section) => {
-//   const s = section ?? page;
-//   const max = sectionVars.boxes ?? 0;
-//   const ticked = getSectionTickedBoxes(s);
-//   if (ticked >= max) {
-//     return;
-//   }
-//   giveCharacter("codeword", sectionTickCodeword(book, s, ticked));
-// };
-
-const tickNextSectionBoxAtom = atom(null, (get, set, { section, max }) => {
-  // const ticked = getSectionTickedBoxes(section);
-  // FIXME: characterCodewordsAtom doesn't support values, only in/not in list; make this a separate atom
-  const ticked = get(characterCodewordsAtom);
-  if (ticked >= max) {
-    return;
-  }
-  set(characterAddCodewordAtom, sectionTickCodeword(book, s, ticked));
-});
-
-// const getSectionTickedBoxes = (section) => {
-//   const s = section ?? page;
-//   const max = sectionVars.boxes ?? 0;
-//   const ticks = range(max).map((box, i) =>
-//     characterHas("codeword", sectionTickCodeword(book, s, i))
-//   );
-//   return ticks.reduce((sum, tick) => (sum += tick ? 1 : 0), 0);
-// };

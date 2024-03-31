@@ -28,6 +28,7 @@ import {
   characterTitlesAtom,
   characterVariablesAtom,
 } from "../store/character";
+import { sectionTicksAtom } from "../store/section";
 
 export default function AdventureSheet() {
   const [name] = useAtom(characterNameAtom);
@@ -52,6 +53,8 @@ export default function AdventureSheet() {
   const [codewords] = useAtom(characterCodewordsAtom);
   const [actions] = useAtom(characterActionsAtom);
   const [variables] = useAtom(characterVariablesAtom);
+
+  const [sectionTicks] = useAtom(sectionTicksAtom);
 
   return (
     <>
@@ -160,6 +163,10 @@ export default function AdventureSheet() {
         <div>
           <StatLabel>Variables:</StatLabel>
           {JSON.stringify(variables)}
+        </div>
+        <div>
+          <StatLabel>SECTION INFO:</StatLabel>
+          Section ticks: {JSON.stringify(sectionTicks, null, 2)}
         </div>
       </div>
     </>

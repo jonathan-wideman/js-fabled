@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 import DebugVerboseText from "../meta/DebugVerboseText";
 import { useGameContext } from "../../GameContext";
 import { sectionCodeword } from "../../helpers";
 import { useAtom } from "jotai";
-import { characterAddCodewordAtom, characterAdjustMoneyAtom } from "../../store/character";
+import {
+  characterAddCodewordAtom,
+  characterAdjustMoneyAtom,
+} from "../../store/character";
+import { tickNextSectionBoxAtom } from "../../store/section";
 
 /*
 <tick [ability="S" [effect=”S”]] [addbonus="V"] [addtag="S"] [amount="V"] [blessing="S" [permanent=”B”]] [bonus="V"] [cache="S"] [cargo="S"] [codeword="S"] [crew="S"] [flag="S"] [force="B"] [god="S"] [hidden="B"] [item tags] [name="S"] [price="S"] [profession=”S”] [removetag="S"] [shards="V"] [special="S"] [ticks="N"] [title="S" [titlePattern="S" titleValue="N" titleAdjust="N"]]>
@@ -73,7 +77,18 @@ TODO: title – The name of the title to grant to the character. This can provid
 TODO: titlePattern, titleValue, titleAdjust – Occasionally a title can be added that contains a value which may rise or fall (eg. Circle 1 Bokh master). In this case the form of the title is given by titlePattern, with '{0}' in the pattern being replaced by the current value. titleValue is the initial value displayed, if the character doesn't already have this title. titleAdjust is the amount to modify the value by, if the character does already have the title.
 */
 export default function Give({ children, ...others }) {
-  const { tickNextSectionBox } = useGameContext();
+  // const { tickNextSectionBox } = useGameContext();
+  // TODO: this can probably move to an atom lookup once the book info, etc are in jotai
+  const { book, page, sectionVars } = useGameContext();
+  const tickArgs = useMemo(
+    () => ({
+      book,
+      section: page,
+      max: sectionVars.boxes ?? 0,
+    }),
+    [book, page, sectionVars]
+  );
+  const [, tickNextSectionBox] = useAtom(tickNextSectionBoxAtom);
   const [, characterAdjustMoney] = useAtom(characterAdjustMoneyAtom);
   const [, characterAddCodeword] = useAtom(characterAddCodewordAtom);
 
@@ -108,10 +123,12 @@ export default function Give({ children, ...others }) {
     );
   }
 
-  // default to putting a tick in the (TODO: *first empty* ) box of the current section
+  // default to putting a tick in the first empty box of the current section
   return (
-    <span className="action" onClick={() => tickNextSectionBox()}>
-      {children ?? `<give>`}
+    <span className="action" onClick={() => tickNextSectionBox(tickArgs)}>
+      {/* {children ?? `<give>`} */}
+      {/* {children ?? "put a tick in the box"} */}
+      {children ?? "tick the first empty box above"}
       <DebugVerboseText>[gain/tick {JSON.stringify(others)}]</DebugVerboseText>
     </span>
   );

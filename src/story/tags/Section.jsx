@@ -3,6 +3,8 @@ import Checkbox from './Checkbox'
 import DebugVerboseText from '../meta/DebugVerboseText'
 import { useGameContext } from '../../GameContext'
 import { range, sectionCodeword, sectionTickCodeword } from '../../helpers'
+import { useAtom } from 'jotai'
+import { bookSectionKey, sectionTicksAtom } from '../../store/section'
 
 /*
 <section name="S" [dock="S"] [boxes="N"] [profession="S"] [start="B"] [tag="S"] [image=”S”] [todock=”S”]>
@@ -29,6 +31,11 @@ TODO: todock – When the character leaves this section, any ships at sea that t
 export default function Section({ children, name, ...others }) {
   const { book, page, sectionVars, setSectionVars, setupStartingCharacter, characterHas } = useGameContext()
 
+  // TODO: combine this to a single atom or hook or something
+  const [sectionTicks] = useAtom(sectionTicksAtom);
+  const ticks = sectionTicks[bookSectionKey(book, page)] ?? 0
+
+
   const { profession, boxes: boxesStr, tag: tagsStr } = others
   const boxes = parseInt(boxesStr) || undefined
   const tags = tagsStr?.split(',')
@@ -48,8 +55,7 @@ export default function Section({ children, name, ...others }) {
   return (
     <div>
       <h2 className='section-title'>{name ?? page}</h2>
-      {/* {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={characterHas('codeword', sectionCodeword(book, page))} />)} </div>} */}
-      {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={characterHas('codeword', sectionTickCodeword(book, page, i))} />)} </div>}
+      {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={i < ticks} />)} </div>}
       <DebugVerboseText>[section {JSON.stringify({ ...others, name })}]</DebugVerboseText>
       <section>{children}</section>
     </div>
