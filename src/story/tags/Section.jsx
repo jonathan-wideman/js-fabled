@@ -5,6 +5,7 @@ import { useGameContext } from '../../GameContext'
 import { range, sectionCodeword, sectionTickCodeword } from '../../helpers'
 import { useAtom } from 'jotai'
 import { bookSectionKey, sectionTicksAtom } from '../../store/section'
+import { initializeCharacterAtom } from '../../store/character'
 
 /*
 <section name="S" [dock="S"] [boxes="N"] [profession="S"] [start="B"] [tag="S"] [image=”S”] [todock=”S”]>
@@ -30,6 +31,7 @@ TODO: todock – When the character leaves this section, any ships at sea that t
 // export default function Section({ children, name, boxes, dock, image, profession, start, tag, todock }) {
 export default function Section({ children, name, ...others }) {
   const { book, page, sectionVars, setSectionVars, setupStartingCharacter, characterHas } = useGameContext()
+  const [, initializeCharacter] = useAtom(initializeCharacterAtom);
 
   // TODO: combine this to a single atom or hook or something
   const [sectionTicks] = useAtom(sectionTicksAtom);
@@ -42,7 +44,8 @@ export default function Section({ children, name, ...others }) {
 
   // If there is a profession, set up the character
   useEffect(() => {
-    if (profession) { setupStartingCharacter(name, profession) }
+    // if (profession) { setupStartingCharacter(name, profession) }
+    if (profession) { initializeCharacter(profession) }
   }, [profession])
 
   useEffect(() => {
