@@ -219,15 +219,19 @@ export const characterAdjustMoneyAtom = atom(null, (get, set, value) => {
 export const characterAddCodewordAtom = atom(null, (get, set, value) => {
   const codewords = get(characterCodewordsAtom);
   // Don't need to update state if the player already has the codeword
-  if (get(characterHasCodewordAtom)) {
+  // TODO: can we maybe use a helper function instead of atom family?
+  if (get(characterHasCodewordAtom(value))) {
     return;
   }
   set(characterCodewordsAtom, [...codewords, value]);
 });
 
+// TODO: not tested
 export const characterRemoveItemAtom = atom(null, (get, set, value) => {
   const inventory = get(characterInventoryAtom);
-  if (!get(characterHasItemAtom)) {
+  // FIXME: characterHasItemAtom usage is wrong
+  // FIXME: also will need to use vague equivalency here for story actions
+  if (!get(characterHasItemAtom(item))) {
     return;
   }
   set(characterInventoryAtom, {
@@ -236,10 +240,11 @@ export const characterRemoveItemAtom = atom(null, (get, set, value) => {
   });
 });
 
+// TODO: not tested
 export const characterRemoveCodewordAtom = atom(null, (get, set, value) => {
   const codewords = get(characterCodewordsAtom);
   // Don't need to update state if the player already doesn't have the codeword
-  if (!get(characterHasCodewordAtom)) {
+  if (!get(characterHasCodewordAtom(value))) {
     return;
   }
   set(
@@ -250,54 +255,30 @@ export const characterRemoveCodewordAtom = atom(null, (get, set, value) => {
 
 // FIXME: replace references to characterHas
 
-// const characterHas = (type, value) => {
-//   switch (type) {
-//     case "item":
-//       // // setCharacter({ ...character, inventory: { ...character.inventory, items: [...character.inventory.items, value] } })
-//       // setCharacter({ ...character, inventory: { ...character.inventory, items: character.inventory.items.filter(item => item !== value) } })
-//       // // TODO: rough equivalency of items
-//       break;
-
-// // Using atomFamily to create a derived atom for a single thing by ID
-// const thingByIdAtom = atomFamily((id) => atom((get) => {
-//   const things = get(thingsAtom);
-//   return things.find(thing => thing.id === id);
-//  }));
-
-// FIXME: value
+// FIXME: Memory leaks, see https://jotai.org/docs/utilities/family#caveat-memory-leaks
+// TODO: Maybe this should be a hook instead, but it would also nned a helper function to be used in other atoms
 export const characterHasItemAtom = atomFamily((item) =>
   atom((get) => {
     const inventory = get(characterInventoryAtom);
     // TODO: fuzzy equivalency for items, based on multiple properties
-    const hasItem = inventory.items.some((i) => i.name === item.name);
-    console.log("item", item, "hasItem", hasItem);
-    return hasItem;
-    // return inventory.items.includes(value);
+    return inventory.items.some((i) => i.name === item.name);
   })
 );
-//     case "money":
-//       // setCharacter({ ...character, money: Math.max(character.money - value, 0) })
-//       break;
 
-// FIXME: value
-export const characterHasMoneyAtom = atom((get) => {
-  const money = get(characterMoneyAtom);
-  return money >= value;
-});
+// FIXME: not a great way to provide an atom for this function; seems like it should be a hook instead
+// export const characterHasMoneyAtom = atom((get) => {
+//   const money = get(characterMoneyAtom);
+//   return money >= value;
+// });
 
-//     case "codeword":
-//       return character.codewords.includes(value);
-
-// FIXME: value
-export const characterHasCodewordAtom = atom((get) => {
-  const codewords = get(characterCodewordsAtom);
-  return codewords.includes(value);
-});
-
-//     default:
-//       break;
-//   }
-// };
+// FIXME: Memory leaks, see https://jotai.org/docs/utilities/family#caveat-memory-leaks
+// TODO: Maybe this should be a hook instead, but it would also nned a helper function to be used in other atoms
+export const characterHasCodewordAtom = atomFamily((codeword) =>
+  atom((get) => {
+    const codewords = get(characterCodewordsAtom);
+    return codewords.includes(codeword);
+  })
+);
 
 // FIXME: reimplement these
 
@@ -313,7 +294,7 @@ export const characterHasCodewordAtom = atom((get) => {
 
 const tickNextSectionBoxAtom = atom(null, (get, set, { section, max }) => {
   // const ticked = getSectionTickedBoxes(section);
-  // FIXME: characterCodewordsAtom
+  // FIXME: characterCodewordsAtom doesn't support values, only in/not in list; make this a separate atom
   const ticked = get(characterCodewordsAtom);
   if (ticked >= max) {
     return;

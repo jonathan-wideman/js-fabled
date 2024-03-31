@@ -1,7 +1,10 @@
 import React, { useMemo } from "react";
 import DefaultNode from "./DefaultNode";
 import { useAtom } from "jotai";
-import { characterHasItemAtom } from "../../store/character";
+import {
+  characterHasCodewordAtom,
+  characterHasItemAtom,
+} from "../../store/character";
 
 /*
 TODO:
@@ -65,11 +68,19 @@ var – Tests whether the value held in this variable matches any comparisons. S
 */
 
 export default function If({ children, ...others }) {
+  // Temp logic for items
+  // TODO: finish implementing variations (see docs above)
   const { item: itemName } = others;
   const item = useMemo(() => ({ name: itemName }), [itemName]);
   const [hasItem] = useAtom(characterHasItemAtom(item));
 
-  const conditionalResult = hasItem;
+  // Temp logic for codewords
+  // TODO: finish implementing variations (see docs above)
+  const { codeword } = others;
+  const [hasCodeword] = useAtom(characterHasCodewordAtom(codeword));
+
+  // TODO: from docs it seems like this should be an OR by default
+  const conditionalResult = hasItem || hasCodeword;
 
   return (
     <DefaultNode {...others} nodeType="if">

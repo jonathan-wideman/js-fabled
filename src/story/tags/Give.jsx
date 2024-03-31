@@ -3,7 +3,7 @@ import DebugVerboseText from "../meta/DebugVerboseText";
 import { useGameContext } from "../../GameContext";
 import { sectionCodeword } from "../../helpers";
 import { useAtom } from "jotai";
-import { characterAdjustMoneyAtom } from "../../store/character";
+import { characterAddCodewordAtom, characterAdjustMoneyAtom } from "../../store/character";
 
 /*
 <tick [ability="S" [effect=”S”]] [addbonus="V"] [addtag="S"] [amount="V"] [blessing="S" [permanent=”B”]] [bonus="V"] [cache="S"] [cargo="S"] [codeword="S"] [crew="S"] [flag="S"] [force="B"] [god="S"] [hidden="B"] [item tags] [name="S"] [price="S"] [profession=”S”] [removetag="S"] [shards="V"] [special="S"] [ticks="N"] [title="S" [titlePattern="S" titleValue="N" titleAdjust="N"]]>
@@ -75,6 +75,7 @@ TODO: titlePattern, titleValue, titleAdjust – Occasionally a title can be adde
 export default function Give({ children, ...others }) {
   const { tickNextSectionBox } = useGameContext();
   const [, characterAdjustMoney] = useAtom(characterAdjustMoneyAtom);
+  const [, characterAddCodeword] = useAtom(characterAddCodewordAtom);
 
   const shards = parseInt(others?.shards) || undefined;
 
@@ -88,6 +89,21 @@ export default function Give({ children, ...others }) {
       >
         {children ?? `${shards} shards`}
         <DebugVerboseText>[give {JSON.stringify(others)}]</DebugVerboseText>
+      </span>
+    );
+  }
+
+  const { codeword } = others;
+  if (codeword) {
+    return (
+      <span
+        className="action"
+        onClick={() => {
+          characterAddCodeword(codeword);
+        }}
+      >
+        {children ?? `record the codeword ${codeword}`}
+        <DebugVerboseText>[gain {JSON.stringify(others)}]</DebugVerboseText>
       </span>
     );
   }
