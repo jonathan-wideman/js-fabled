@@ -17,6 +17,7 @@ import {
   characterCalcualtedThieveryAtom,
   characterCodewordsAtom,
   characterCursesAtom,
+  characterGenderAtom,
   characterGodAtom,
   characterInventoryAtom,
   characterMoneyAtom,
@@ -29,12 +30,14 @@ import {
   characterVariablesAtom,
 } from "../store/character";
 import { sectionTicksAtom } from "../store/section";
+import DebugVerboseText from "../story/meta/DebugVerboseText";
 
 export default function AdventureSheet() {
   const [name] = useAtom(characterNameAtom);
   const [profession] = useAtom(characterProfessionAtom);
   const [rank] = useAtom(characterRankAtom);
   const [bio] = useAtom(characterBioAtom);
+  const [gender] = useAtom(characterGenderAtom);
   const [stamina] = useAtom(characterStaminaAtom);
   const [calculatedDefense] = useAtom(characterCalcualtedDefenseAtom);
   const [calculatedCharisma] = useAtom(characterCalcualtedCharismaAtom);
@@ -72,8 +75,13 @@ export default function AdventureSheet() {
           {rank} ({getRankTitle(rank)})
         </div>
         <div>
+          <StatLabel>Gender:</StatLabel>
+          {gender}
+        </div>
+        <div>
           <StatLabel>Bio:</StatLabel>
-          {bio}...
+          {/* TODO: expandable, styled bio */}
+          {bio || "..."}
         </div>
         <div>
           <StatLabel>Stamina:</StatLabel>
@@ -165,8 +173,9 @@ export default function AdventureSheet() {
           {JSON.stringify(variables)}
         </div>
         <div>
-          <StatLabel>SECTION INFO:</StatLabel>
-          Section ticks: {JSON.stringify(sectionTicks, null, 2)}
+          <DebugVerboseText>
+            Section ticks: {JSON.stringify(sectionTicks, null, 2)}
+          </DebugVerboseText>
         </div>
       </div>
     </>

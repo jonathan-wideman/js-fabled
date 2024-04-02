@@ -1,11 +1,15 @@
-import React, { useEffect } from 'react'
-import Checkbox from './Checkbox'
-import DebugVerboseText from '../meta/DebugVerboseText'
-import { useGameContext } from '../../GameContext'
-import { range, sectionCodeword, sectionTickCodeword } from '../../helpers'
-import { useAtom } from 'jotai'
-import { bookSectionKey, sectionTicksAtom } from '../../store/section'
-import { initializeCharacterAtom } from '../../store/character'
+import React, { useEffect } from "react";
+import Checkbox from "./Checkbox";
+import DebugVerboseText from "../meta/DebugVerboseText";
+import { useGameContext } from "../../GameContext";
+import { range, sectionCodeword, sectionTickCodeword } from "../../helpers";
+import { useAtom } from "jotai";
+import { bookSectionKey, sectionTicksAtom } from "../../store/section";
+import {
+  adventurerStartingDataAtom,
+  initializeCharacterAtom,
+} from "../../store/character";
+import { parseAdventurerStartingData } from "../meta/parser";
 
 /*
 <section name="S" [dock="S"] [boxes="N"] [profession="S"] [start="B"] [tag="S"] [image=”S”] [todock=”S”]>
@@ -30,37 +34,57 @@ TODO: todock – When the character leaves this section, any ships at sea that t
 
 // export default function Section({ children, name, boxes, dock, image, profession, start, tag, todock }) {
 export default function Section({ children, name, ...others }) {
-  const { book, page, sectionVars, setSectionVars, setupStartingCharacter, characterHas } = useGameContext()
+  const {
+    book,
+    page,
+    sectionVars,
+    setSectionVars,
+    adventurerStartingDataText,
+  } = useGameContext();
   const [, initializeCharacter] = useAtom(initializeCharacterAtom);
+  const [, setAdventurerStartingData] = useAtom(adventurerStartingDataAtom);
 
   // TODO: combine this to a single atom or hook or something
   const [sectionTicks] = useAtom(sectionTicksAtom);
-  const ticks = sectionTicks[bookSectionKey(book, page)] ?? 0
+  const ticks = sectionTicks[bookSectionKey(book, page)] ?? 0;
 
-
-  const { profession, boxes: boxesStr, tag: tagsStr } = others
-  const boxes = parseInt(boxesStr) || undefined
-  const tags = tagsStr?.split(',')
+  const { profession, boxes: boxesStr, tag: tagsStr } = others;
+  const boxes = parseInt(boxesStr) || undefined;
+  const tags = tagsStr?.split(",");
 
   // If there is a profession, set up the character
   useEffect(() => {
-    // if (profession) { setupStartingCharacter(name, profession) }
-    if (profession) { initializeCharacter(profession) }
-  }, [profession])
+    if (!adventurerStartingDataText.isSuccess) return;
+
+    const xmlText = adventurerStartingDataText.data;
+
+    if (profession) {
+      setAdventurerStartingData(parseAdventurerStartingData(xmlText));
+      initializeCharacter(profession);
+    }
+  }, [profession, adventurerStartingDataText]);
 
   useEffect(() => {
     setSectionVars({
       boxes,
-      tags // TODO: activate player extra choices if applicable
-    })
-  }, [])
+      tags, // TODO: activate player extra choices if applicable
+    });
+  }, []);
 
   return (
     <div>
-      <h2 className='section-title'>{name ?? page}</h2>
-      {boxes && <div className='section-subtitle'>{range(boxes).map((box, i) => <Checkbox key={i} active={i < ticks} />)} </div>}
-      <DebugVerboseText>[section {JSON.stringify({ ...others, name })}]</DebugVerboseText>
+      <h2 className="section-title">{name ?? page}</h2>
+      {boxes && (
+        <div className="section-subtitle">
+          {range(boxes).map((box, i) => (
+            <Checkbox key={i} active={i < ticks} />
+          ))}{" "}
+        </div>
+      )}
+      <DebugVerboseText>
+        [section {JSON.stringify({ ...others, name })}]
+      </DebugVerboseText>
       <section>{children}</section>
     </div>
-  )
+  );
 }

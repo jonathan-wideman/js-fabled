@@ -149,3 +149,78 @@ export function xmlNodeAttributes(node) {
 
 //   return createElement(type, newProps, ...childElements);
 // }
+
+const nodeAttributeValue = (node, key) => {
+  return node.attributes.find((a) => a.key === key)?.value;
+};
+
+const nodeByProfessionAttribute = (nodes, profession) => {
+  return nodes.find(
+    (node) => nodeAttributeValue(node, "profession") === profession
+  );
+};
+
+const nodeByNameAttribute = (nodes, name) => {
+  return nodes.find((node) => nodeAttributeValue(node, "name") === name);
+};
+
+const filterNodesByProfession = (nodes, profession) => {
+  return nodes.filter((node) => {
+    const prof = nodeAttributeValue(node, "profession");
+    // Items that don't have a profession attribute are for anyone
+    return !prof || prof === profession;
+  });
+};
+
+export const parseAdventurerStartingData = (xmlText) => {
+  const ast = xmlAst(xmlText);
+
+  const abilityNodes = ast.rootElement.subElements[0].subElements.slice(1);
+  const staminaNode = ast.rootElement.subElements[1];
+  const rankNode = ast.rootElement.subElements[2];
+  const moneyNode = ast.rootElement.subElements[3];
+  const allItemNodes = ast.rootElement.subElements[4].subElements;
+  const bioNodes = ast.rootElement.subElements[5].subElements;
+
+  const professions = bioNodes.map((node) =>
+    nodeAttributeValue(node, "profession")
+  );
+
+  const data = Object.fromEntries(
+    professions.map((profession) => {
+      const bioNode = nodeByProfessionAttribute(bioNodes, profession);
+      const abilityNode = nodeByNameAttribute(abilityNodes, profession);
+      const itemNodes = filterNodesByProfession(allItemNodes, profession);
+      return [
+        profession,
+        {
+          name: nodeAttributeValue(bioNode, "name"),
+          gender: nodeAttributeValue(bioNode, "gender").toUpperCase(),
+          bio: bioNode.textContents
+            .map((node) => cleanWhitespace(node.text))
+            .join(""),
+          abilities: abilityNode.textContents[0].text
+            .split(" ")
+            .map((a) => parseInt(a)),
+          stamina: parseInt(nodeAttributeValue(staminaNode, "amount")),
+          rank: parseInt(nodeAttributeValue(rankNode, "amount")),
+          money: parseInt(nodeAttributeValue(moneyNode, "amount")),
+          items: itemNodes.map((node) => ({
+            name: nodeAttributeValue(node, "name"),
+            // UK to US english
+            type: node.name.replace("armour", "armor"),
+            bonus: parseInt(nodeAttributeValue(node, "bonus")) || undefined,
+            // TODO: only equip first item of each type
+            equipped: ["weapon", "armor"].includes(
+              node.name.replace("armour", "armor")
+            )
+              ? true
+              : undefined,
+          })),
+        },
+      ];
+    })
+  );
+
+  return data;
+};

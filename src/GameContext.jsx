@@ -85,29 +85,6 @@ export function GameProvider({ children }) {
   ]);
   const [sectionVars, setSectionVars] = useState({});
 
-  const [, setCharacterName] = useAtom(characterNameAtom);
-  const [, setCharacterProfession] = useAtom(characterProfessionAtom);
-  const [, setCharacterRank] = useAtom(characterRankAtom);
-  const [, setCharacterBio] = useAtom(characterBioAtom);
-  const [, setCharacterStamina] = useAtom(characterStaminaAtom);
-  const [, setCharacterDefense] = useAtom(characterDefenseAtom);
-  const [, setCharacterCharisma] = useAtom(characterCharismaAtom);
-  const [, setCharacterCombat] = useAtom(characterCombatAtom);
-  const [, setCharacterMagic] = useAtom(characterMagicAtom);
-  const [, setCharacterSanctity] = useAtom(characterSanctityAtom);
-  const [, setCharacterScouting] = useAtom(characterScoutingAtom);
-  const [, setCharacterThievery] = useAtom(characterThieveryAtom);
-  const [, setCharacterMoney] = useAtom(characterMoneyAtom);
-  const [, setCharacterInventory] = useAtom(characterInventoryAtom);
-  const [, setCharacterTitles] = useAtom(characterTitlesAtom);
-  const [, setCharacterGod] = useAtom(characterGodAtom);
-  const [, setCharacterBlessings] = useAtom(characterBlessingsAtom);
-  const [, setCharacterCurses] = useAtom(characterCursesAtom);
-  const [, setCharacterRevives] = useAtom(characterRevivesAtom);
-  const [, setCharacterCodewords] = useAtom(characterCodewordsAtom);
-  const [, setCharacterActions] = useAtom(characterActionsAtom);
-  const [, setCharacterVariables] = useAtom(characterVariablesAtom);
-
   const gotoPage = (newPage, newBook = null) => {
     newBook && setBook(newBook);
     setPage(newPage);
@@ -122,103 +99,15 @@ export function GameProvider({ children }) {
     setHistory([]);
   };
 
-  // FIXME: extract this to character.js also
-  const setupStartingCharacter = (name, profession) => {
-    // TODO: error handling if adventurers file isn't loaded yet
-    // TODO: make parsing more flexible
-
-    if (!startingCharacterData.isSuccess) {
-      return;
-    }
-
-    const adventurersData = new DOMParser().parseFromString(
-      startingCharacterData.data,
-      "text/xml"
-    );
-    // console.log(adventurersData)s
-    const staminaMax =
-      parseInt(
-        adventurersData
-          .getElementsByTagName("stamina")?.[0]
-          ?.getAttribute("amount")
-      ) || 0;
-    const rank =
-      parseInt(
-        adventurersData
-          .getElementsByTagName("rank")?.[0]
-          ?.getAttribute("amount")
-      ) || 0;
-    const money =
-      parseInt(
-        adventurersData
-          .getElementsByTagName("gold")?.[0]
-          ?.getAttribute("amount")
-      ) || 0;
-    // const abilities = adventurersData.querySelector(`profession[name="${profession}"]`)?.textContent?.split(' ')
-    const abilities = elementToStartingAbilities(
-      adventurersData.querySelector(`profession[name="${profession}"]`)
-    );
-
-    const items = Array.from(
-      adventurersData.querySelectorAll(
-        [
-          `weapon[profession="${profession}"]`,
-          `weapon:not([profession])`,
-          `armour[profession="${profession}"]`,
-          `armour:not([profession])`,
-          `armor[profession="${profession}"]`,
-          `armor:not([profession])`,
-          `item[profession="${profession}"]`,
-          `item:not([profession])`,
-        ].join(", ")
-      )
-    ).map((e) => elementToItem(e));
-    // console.log(items)
-    // TODO: only equip single best items
-    const equipped = items.map((item) =>
-      ["weapon", "armor"].includes(item.type)
-        ? { ...item, equipped: true }
-        : item
-    );
-    const extraItems = [
-      // { name: 'compass', type: 'tool', ability: 'scouting', bonus: 1 }
-    ];
-
-    setCharacterName(name);
-    setCharacterProfession(profession);
-    setCharacterRank(rank);
-    // setCharacterBio();
-    setCharacterStamina({ current: staminaMax, max: staminaMax });
-    // setCharacterDefense();
-    setCharacterCharisma(abilities?.[0]);
-    setCharacterCombat(abilities?.[1]);
-    setCharacterMagic(abilities?.[2]);
-    setCharacterSanctity(abilities?.[3]);
-    setCharacterScouting(abilities?.[4]);
-    setCharacterThievery(abilities?.[5]);
-    setCharacterMoney(money);
-    setCharacterInventory({
-      ...defaultCharacter.inventory,
-      items: [...defaultCharacter.inventory.items, ...equipped, ...extraItems],
-    });
-    // setCharacterTitles();
-    // setCharacterGod();
-    // setCharacterBlessings();
-    // setCharacterCurses();
-    // setCharacterRevives();
-    // setCharacterCodewords();
-    // setCharacterActions();
-    // setCharacterVariables();
-  };
-
   /* ===== XML Queries ===== */
 
   const storyData = useQuery(["storyData", book, page], () =>
     fetch(`/books/${book}/${page}.xml`).then((res) => res.text())
   );
 
-  const startingCharacterData = useQuery(["startingCharacterData", book], () =>
-    fetch(`/books/${book}/Adventurers.xml`).then((res) => res.text())
+  const adventurerStartingDataText = useQuery(
+    ["adventurerStartingDataText", book],
+    () => fetch(`/books/${book}/Adventurers.xml`).then((res) => res.text())
   );
 
   return (
@@ -242,7 +131,7 @@ export function GameProvider({ children }) {
         clearHistory,
         gotoPage,
         storyData,
-        setupStartingCharacter,
+        adventurerStartingDataText,
       }}
     >
       {children}

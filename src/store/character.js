@@ -6,6 +6,7 @@ import { isEquipment, sectionTickCodeword } from "../helpers";
 export const characterNameAtom = atom(undefined);
 export const characterProfessionAtom = atom(undefined);
 export const characterRankAtom = atom(0);
+export const characterGenderAtom = atom(undefined);
 export const characterBioAtom = atom(undefined);
 // Stats
 export const characterStaminaAtom = atom({ current: 0, max: 0 });
@@ -276,188 +277,20 @@ export const characterHasCodewordAtom = atomFamily((codeword) =>
   })
 );
 
-// // FIXME: extract this to character.js also
-// const setupStartingCharacter = (name, profession) => {
-//   // TODO: error handling if adventurers file isn't loaded yet
-//   // TODO: make parsing more flexible
-
-//   if (!startingCharacterData.isSuccess) {
-//     return;
-//   }
-
-//   const adventurersData = new DOMParser().parseFromString(
-//     startingCharacterData.data,
-//     "text/xml"
-//   );
-//   // console.log(adventurersData)s
-//   const staminaMax =
-//     parseInt(
-//       adventurersData
-//         .getElementsByTagName("stamina")?.[0]
-//         ?.getAttribute("amount")
-//     ) || 0;
-//   const rank =
-//     parseInt(
-//       adventurersData
-//         .getElementsByTagName("rank")?.[0]
-//         ?.getAttribute("amount")
-//     ) || 0;
-//   const money =
-//     parseInt(
-//       adventurersData
-//         .getElementsByTagName("gold")?.[0]
-//         ?.getAttribute("amount")
-//     ) || 0;
-//   // const abilities = adventurersData.querySelector(`profession[name="${profession}"]`)?.textContent?.split(' ')
-//   const abilities = elementToStartingAbilities(
-//     adventurersData.querySelector(`profession[name="${profession}"]`)
-//   );
-
-//   const items = Array.from(
-//     adventurersData.querySelectorAll(
-//       [
-//         `weapon[profession="${profession}"]`,
-//         `weapon:not([profession])`,
-//         `armour[profession="${profession}"]`,
-//         `armour:not([profession])`,
-//         `armor[profession="${profession}"]`,
-//         `armor:not([profession])`,
-//         `item[profession="${profession}"]`,
-//         `item:not([profession])`,
-//       ].join(", ")
-//     )
-//   ).map((e) => elementToItem(e));
-//   // console.log(items)
-//   // TODO: only equip single best items
-//   const equipped = items.map((item) =>
-//     ["weapon", "armor"].includes(item.type)
-//       ? { ...item, equipped: true }
-//       : item
-//   );
-//   const extraItems = [
-//     // { name: 'compass', type: 'tool', ability: 'scouting', bonus: 1 }
-//   ];
-
-//   setCharacterName(name);
-//   setCharacterProfession(profession);
-//   setCharacterRank(rank);
-//   // setCharacterBio();
-//   setCharacterStamina({ current: staminaMax, max: staminaMax });
-//   // setCharacterDefense();
-//   setCharacterCharisma(abilities?.[0]);
-//   setCharacterCombat(abilities?.[1]);
-//   setCharacterMagic(abilities?.[2]);
-//   setCharacterSanctity(abilities?.[3]);
-//   setCharacterScouting(abilities?.[4]);
-//   setCharacterThievery(abilities?.[5]);
-//   setCharacterMoney(money);
-//   setCharacterInventory({
-//     ...defaultCharacter.inventory,
-//     items: [...defaultCharacter.inventory.items, ...equipped, ...extraItems],
-//   });
-//   // setCharacterTitles();
-//   // setCharacterGod();
-//   // setCharacterBlessings();
-//   // setCharacterCurses();
-//   // setCharacterRevives();
-//   // setCharacterCodewords();
-//   // setCharacterActions();
-//   // setCharacterVariables();
-// };
-
 // FIXME: migrate ADVENTURER_STARTING_DATA back to parsing from the xml:
-
-const ADVENTURER_STARTING_DATA = {
-  Priest: {
-    name: "Ignatius the Devout",
-    gender: "m",
-    abilities: [4, 2, 3, 6, 4, 2],
-    stamina: 13,
-    rank: 2,
-    money: 16,
-    items: [
-      { name: "leather jerkin", type: "armor", bonus: 1, equipped: true },
-      { name: "mace", type: "weapon", equipped: true },
-      { name: "map", type: "item" },
-    ],
-  },
-  Mage: {
-    name: "Chalor the Exiled One",
-    gender: "m",
-    abilities: [2, 2, 6, 1, 5, 3],
-    stamina: 13,
-    rank: 2,
-    money: 16,
-    items: [
-      { name: "leather jerkin", type: "armor", bonus: 1, equipped: true },
-      { name: "staff", type: "weapon", equipped: true },
-      { name: "map", type: "item" },
-    ],
-  },
-  Rogue: {
-    name: "Andriel the Hammer",
-    gender: "m",
-    abilities: [5, 4, 4, 1, 2, 6],
-    stamina: 13,
-    rank: 2,
-    money: 16,
-    items: [
-      { name: "leather jerkin", type: "armor", bonus: 1, equipped: true },
-      { name: "sword", type: "weapon", equipped: true },
-      { name: "map", type: "item" },
-    ],
-  },
-  Troubadour: {
-    name: "Marana Fireheart",
-    gender: "f",
-    abilities: [6, 3, 4, 3, 2, 4],
-    stamina: 13,
-    rank: 2,
-    money: 16,
-    items: [
-      { name: "leather jerkin", type: "armor", bonus: 1, equipped: true },
-      { name: "sword", type: "weapon", equipped: true },
-      { name: "map", type: "item" },
-    ],
-  },
-  Warrior: {
-    name: "Astariel Skysong",
-    gender: "m",
-    abilities: [3, 6, 2, 4, 3, 2],
-    stamina: 13,
-    rank: 2,
-    money: 16,
-    items: [
-      { name: "leather jerkin", type: "armor", bonus: 1, equipped: true },
-      { name: "battle-axe", type: "weapon", equipped: true },
-      { name: "map", type: "item" },
-    ],
-  },
-  Wayfarer: {
-    name: "Liana the Swift",
-    gender: "f",
-    abilities: [2, 5, 2, 3, 6, 4],
-    stamina: 13,
-    rank: 2,
-    money: 16,
-    items: [
-      { name: "leather jerkin", type: "armor", bonus: 1, equipped: true },
-      { name: "spear", type: "weapon", equipped: true },
-      { name: "map", type: "item" },
-    ],
-  },
-};
 
 export const initializeCharacterAtom = atom(null, (get, set, profession) => {
   // FIXME: migrate ADVENTURER_STARTING_DATA back to parsing from the xml:
-  const data = ADVENTURER_STARTING_DATA;
+  const data = get(adventurerStartingDataAtom);
 
-  const { name, rank, stamina, money, abilities, items } = data[profession];
+  const { name, bio, gender, rank, stamina, money, abilities, items } =
+    data[profession];
 
   set(characterNameAtom, name);
   set(characterProfessionAtom, profession);
   set(characterRankAtom, rank);
-  // setCharacterBio();
+  set(characterGenderAtom, gender);
+  set(characterBioAtom, bio);
   set(characterStaminaAtom, { current: stamina, max: stamina });
   // setCharacterDefense();
   set(characterCharismaAtom, abilities?.[0]);
@@ -477,3 +310,5 @@ export const initializeCharacterAtom = atom(null, (get, set, profession) => {
   // setCharacterActions();
   // setCharacterVariables();
 });
+
+export const adventurerStartingDataAtom = atom({});
