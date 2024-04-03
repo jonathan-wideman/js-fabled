@@ -9,17 +9,17 @@ import { useAtom } from "jotai";
 import { debugParserXmlToolsAtom } from "../../store/debug";
 import { pageAtom } from "../../store/book";
 
-function Page({ page, storyData }) {
+function Page({ page, storyQuery }) {
   const [debugParserXmlTools] = useAtom(debugParserXmlToolsAtom);
 
   const ast = useMemo(() => {
-    if (storyData.isLoading || storyData.error) {
+    if (storyQuery.isLoading || storyQuery.error) {
       return null;
     }
-    const ast = xmlAst(storyData.data);
+    const ast = xmlAst(storyQuery.data);
     const result = processAst(ast, visitElement);
     return result;
-  }, [storyData]);
+  }, [storyQuery]);
 
   return (
     <PageProvider page={page}>
@@ -34,16 +34,16 @@ function Page({ page, storyData }) {
 }
 
 export default function Story() {
-  const { storyData } = useReaderContext();
+  const { storyQuery } = useReaderContext();
   const [page] = useAtom(pageAtom);
 
   return (
     <div className="story">
-      <Page storyData={storyData} page={page} />
+      <Page storyQuery={storyQuery} page={page} />
 
       <DebugVerboseText>
-        {storyData.data && <pre>{storyData.data}</pre>}
-        storyData
+        {storyQuery.data && <pre>{storyQuery.data}</pre>}
+        storyQuery
       </DebugVerboseText>
     </div>
   );

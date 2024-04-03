@@ -39,7 +39,7 @@ TODO: todock – When the character leaves this section, any ships at sea that t
 
 // export default function Section({ children, name, boxes, dock, image, profession, start, tag, todock }) {
 export default function Section({ children, name, ...others }) {
-  const { adventurerStartingDataText } = useReaderContext();
+  const { startingCharactersQuery } = useReaderContext();
   const [book] = useAtom(bookAtom);
   const [page] = useAtom(pageAtom);
   const [, setSectionVars] = useAtom(sectionVarsAtom);
@@ -56,15 +56,15 @@ export default function Section({ children, name, ...others }) {
 
   // If there is a profession, set up the character
   useEffect(() => {
-    if (!adventurerStartingDataText.isSuccess) return;
+    if (!startingCharactersQuery.isSuccess) return;
 
-    const xmlText = adventurerStartingDataText.data;
+    const xmlText = startingCharactersQuery.data;
 
     if (profession) {
       setAdventurerStartingData(parseAdventurerStartingData(xmlText));
       initializeCharacter(profession);
     }
-  }, [profession, adventurerStartingDataText]);
+  }, [profession, startingCharactersQuery]);
 
   useEffect(() => {
     setSectionVars({

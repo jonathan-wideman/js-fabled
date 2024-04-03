@@ -15,20 +15,20 @@ export function ReaderProvider({ children }) {
 
   /* ===== XML Queries ===== */
 
-  const storyData = useQuery(["storyData", book, page], () =>
+  const storyQuery = useQuery(["story", book, page], () =>
     fetch(`/books/${book}/${page}.xml`).then((res) => res.text())
   );
 
-  const adventurerStartingDataText = useQuery(
-    ["adventurerStartingDataText", book],
+  const startingCharactersQuery = useQuery(
+    ["startingCharacters", book],
     () => fetch(`/books/${book}/Adventurers.xml`).then((res) => res.text())
   );
 
   return (
     <ReaderContext.Provider
       value={{
-        storyData,
-        adventurerStartingDataText,
+        storyQuery,
+        startingCharactersQuery,
       }}
     >
       {children}
