@@ -11,9 +11,6 @@ export function useGameContext() {
 }
 
 export function GameProvider({ children }) {
-  const rng = new Random(); // uses the nativeMath engine
-  rng.d6 = () => rng.die(6);
-  rng.sum2d6 = () => rng.dice(6, 2).reduce((sum, current) => (sum += current));
 
   const [book] = useAtom(bookAtom);
   const [page] = useAtom(pageAtom);
@@ -34,7 +31,6 @@ export function GameProvider({ children }) {
   return (
     <GameContext.Provider
       value={{
-        rng,
         sectionVars,
         setSectionVars,
         storyData,

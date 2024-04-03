@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react'
-import { useGameContext } from '../GameContext'
+import { useMemo, useState } from 'react'
 import { range } from '../helpers'
+import { rng } from '../rng'
 
 export function useDice(id, count, callback) {
-  const { rng } = useGameContext()
   // const [dice, setDice] = useState([...Array(count)].map((e, id) => ({ id, rolling: false, value: 6 })))
   // const [values, setValues] = useState(range(count).map(i => 6))
   // const [rolling, setRolling] = useState(range(count).map(i => 6))

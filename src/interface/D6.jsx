@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useGameContext } from '../GameContext'
 
 export default function D6({ rolling, value }) {
-  // const { rng } = useGameContext()
   // const [result, setResult] = useState(6)
   // const [rolling, setRolling] = useState(false)
 
