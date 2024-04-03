@@ -5,16 +5,16 @@ import React, { createElement } from "react";
 import { cleanWhitespace } from "./stringUtils";
 import { obfuscateHTMLEntities, deobfuscateHTMLEntities } from "./htmlEntities";
 
-export const xmlAst = (xmlText) => {
-  // console.log("xmlText", xmlText);
-  // const { cst, tokenVector } = parse(xmlText);
-  const replacedHTMLEntities = obfuscateHTMLEntities(xmlText);
-  const { cst, tokenVector } = parse(replacedHTMLEntities);
-  // console.log('cst', cst)
-  const xmlDocAst = buildAst(cst, tokenVector);
-  // console.log("xmlDocAst", xmlDocAst);
-  return xmlDocAst;
+export const xmlAst = (xmlText, shouldEncodeHTMLEntities = true) => {
+  const { cst, tokenVector } = parse(
+    shouldEncodeHTMLEntities ? obfuscateHTMLEntities(xmlText) : xmlText
+  );
+  return buildAst(cst, tokenVector);
 };
+
+// ============================================================================
+// Story Parsing
+// ============================================================================
 
 export const processAst = (ast, visitorCallback) => {
   // accept(ast, visitorCallback);
@@ -149,6 +149,10 @@ export function xmlNodeAttributes(node) {
 
 //   return createElement(type, newProps, ...childElements);
 // }
+
+// ============================================================================
+// Starting Character Parsing
+// ============================================================================
 
 const nodeAttributeValue = (node, key) => {
   return node.attributes.find((a) => a.key === key)?.value;
