@@ -1,7 +1,8 @@
 import { atom } from "jotai";
 
+// these should be reset every time the section changes
 export const sectionVarsAtom = atom([]);
-export const sectionTempVarsAtom = atom([]);
+// export const sectionTempVarsAtom = atom([]);
 export const sectionTicksAtom = atom({});
 
 export const tickNextSectionBoxAtom = atom(
@@ -18,3 +19,6 @@ export const tickNextSectionBoxAtom = atom(
 );
 
 export const bookSectionKey = (book, section) => `${book}-${section}`;
+
+
+// const [sectionVars, setSectionVars] = useState({});

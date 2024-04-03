@@ -4,7 +4,11 @@ import DebugVerboseText from "../meta/DebugVerboseText";
 import { useGameContext } from "../../GameContext";
 import { range } from "../../helpers";
 import { useAtom } from "jotai";
-import { bookSectionKey, sectionTicksAtom } from "../../store/section";
+import {
+  bookSectionKey,
+  sectionTicksAtom,
+  sectionVarsAtom,
+} from "../../store/section";
 import {
   adventurerStartingDataAtom,
   initializeCharacterAtom,
@@ -35,9 +39,10 @@ TODO: todock – When the character leaves this section, any ships at sea that t
 
 // export default function Section({ children, name, boxes, dock, image, profession, start, tag, todock }) {
 export default function Section({ children, name, ...others }) {
-  const { setSectionVars, adventurerStartingDataText } = useGameContext();
+  const { adventurerStartingDataText } = useGameContext();
   const [book] = useAtom(bookAtom);
   const [page] = useAtom(pageAtom);
+  const [, setSectionVars] = useAtom(sectionVarsAtom);
   const [, initializeCharacter] = useAtom(initializeCharacterAtom);
   const [, setAdventurerStartingData] = useAtom(adventurerStartingDataAtom);
 

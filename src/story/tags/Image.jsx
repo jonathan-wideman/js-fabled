@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { useGameContext } from '../../GameContext'
-import DebugVerboseText from '../meta/DebugVerboseText'
+import React, { useState } from "react";
+import DebugVerboseText from "../meta/DebugVerboseText";
+import { bookAtom } from "../../store/book";
+import { useAtom } from "jotai";
 
 /*
 
@@ -22,30 +23,35 @@ TODO: make image display prettier
 */
 
 export default function Image({ children, ...others }) {
+  const [storeBook] = useAtom(bookAtom);
+  const { book, file, title } = others;
+  const [open, setOpen] = useState(false);
 
-  const { book: gameContextBook } = useGameContext()
-  const { book, file, title } = others
-  const [open, setOpen] = useState(false)
-
-  const toggle = () => setOpen(prev => !prev)
+  const toggle = () => setOpen((prev) => !prev);
 
   if (!children) {
     // <image> can occur within an <item>. If so, it should display the image when the item is used, rather than in the story text
     // The only case where this occurs, the image does not have child nodes
     // So, if we do not have child nodes, assume we should not display an image
     // TODO: add the image functionality to the item it would affect
-    return <DebugVerboseText>[image {JSON.stringify(others)}]</DebugVerboseText>
+    return (
+      <DebugVerboseText>[image {JSON.stringify(others)}]</DebugVerboseText>
+    );
   }
 
   return (
     <>
-      <span className={'action'} onClick={toggle}>{children}</span>
-      {open && <img
-        src={`books/${gameContextBook}/${file}`}
-        onClick={toggle}
-        className='story-image'
-      />}
+      <span className={"action"} onClick={toggle}>
+        {children}
+      </span>
+      {open && (
+        <img
+          src={`books/${storeBook}/${file}`}
+          onClick={toggle}
+          className="story-image"
+        />
+      )}
       <DebugVerboseText>[image {JSON.stringify(others)}]</DebugVerboseText>
     </>
-  )
+  );
 }

@@ -1,12 +1,11 @@
 import React, { useMemo } from "react";
 import DebugVerboseText from "../meta/DebugVerboseText";
-import { useGameContext } from "../../GameContext";
 import { useAtom } from "jotai";
 import {
   characterAddCodewordAtom,
   characterAdjustMoneyAtom,
 } from "../../store/character";
-import { tickNextSectionBoxAtom } from "../../store/section";
+import { sectionVarsAtom, tickNextSectionBoxAtom } from "../../store/section";
 import { bookAtom, pageAtom } from "../../store/book";
 
 /*
@@ -78,7 +77,7 @@ TODO: titlePattern, titleValue, titleAdjust – Occasionally a title can be adde
 */
 export default function Give({ children, ...others }) {
   // TODO: this can probably move to an atom lookup once the book info, etc are in jotai
-  const { sectionVars } = useGameContext();
+  const [sectionVars] = useAtom(sectionVarsAtom);
   const [book] = useAtom(bookAtom);
   const [page] = useAtom(pageAtom);
 

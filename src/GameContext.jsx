@@ -1,6 +1,5 @@
-import { React, createContext, useContext, useState } from "react";
+import { React, createContext, useContext } from "react";
 import { useQuery } from "react-query";
-import { Random } from "random-js";
 import { useAtom } from "jotai";
 import { bookAtom, pageAtom } from "./store/book";
 
@@ -11,11 +10,8 @@ export function useGameContext() {
 }
 
 export function GameProvider({ children }) {
-
   const [book] = useAtom(bookAtom);
   const [page] = useAtom(pageAtom);
-
-  const [sectionVars, setSectionVars] = useState({});
 
   /* ===== XML Queries ===== */
 
@@ -31,8 +27,6 @@ export function GameProvider({ children }) {
   return (
     <GameContext.Provider
       value={{
-        sectionVars,
-        setSectionVars,
         storyData,
         adventurerStartingDataText,
       }}
