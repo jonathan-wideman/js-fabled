@@ -61,6 +61,43 @@ export const characterCodewordsAtom = atom(defaultCharacter.codewords);
 export const characterVariablesAtom = atom(defaultCharacter.variables);
 
 // ============================================================================
+// Starting Characters
+// ============================================================================
+
+export const startingCharactersAtom = atom({});
+
+export const initializeCharacterAtom = atom(null, (get, set, profession) => {
+  const data = get(startingCharactersAtom);
+
+  const { name, bio, gender, rank, stamina, money, abilities, items } =
+    data[profession];
+
+  set(characterNameAtom, name);
+  set(characterProfessionAtom, profession);
+  set(characterRankAtom, rank);
+  set(characterGenderAtom, gender);
+  set(characterBioAtom, bio);
+  set(characterStaminaAtom, { current: stamina, max: stamina });
+  // setCharacterDefense();
+  set(characterCharismaAtom, abilities?.[0]);
+  set(characterCombatAtom, abilities?.[1]);
+  set(characterMagicAtom, abilities?.[2]);
+  set(characterSanctityAtom, abilities?.[3]);
+  set(characterScoutingAtom, abilities?.[4]);
+  set(characterThieveryAtom, abilities?.[5]);
+  set(characterMoneyAtom, money);
+  set(characterInventoryAtom, { max: 12, items });
+  // setCharacterTitles();
+  // setCharacterGod();
+  // setCharacterBlessings();
+  // setCharacterCurses();
+  // setCharacterRevives();
+  // setCharacterCodewords();
+  // setCharacterActions();
+  // setCharacterVariables();
+});
+
+// ============================================================================
 // Inventory
 // ============================================================================
 
@@ -304,38 +341,3 @@ export const characterHasCodewordAtom = atomFamily((codeword) =>
   })
 );
 
-// FIXME: migrate ADVENTURER_STARTING_DATA back to parsing from the xml:
-
-export const initializeCharacterAtom = atom(null, (get, set, profession) => {
-  // FIXME: migrate ADVENTURER_STARTING_DATA back to parsing from the xml:
-  const data = get(startingCharactersAtom);
-
-  const { name, bio, gender, rank, stamina, money, abilities, items } =
-    data[profession];
-
-  set(characterNameAtom, name);
-  set(characterProfessionAtom, profession);
-  set(characterRankAtom, rank);
-  set(characterGenderAtom, gender);
-  set(characterBioAtom, bio);
-  set(characterStaminaAtom, { current: stamina, max: stamina });
-  // setCharacterDefense();
-  set(characterCharismaAtom, abilities?.[0]);
-  set(characterCombatAtom, abilities?.[1]);
-  set(characterMagicAtom, abilities?.[2]);
-  set(characterSanctityAtom, abilities?.[3]);
-  set(characterScoutingAtom, abilities?.[4]);
-  set(characterThieveryAtom, abilities?.[5]);
-  set(characterMoneyAtom, money);
-  set(characterInventoryAtom, { max: 12, items });
-  // setCharacterTitles();
-  // setCharacterGod();
-  // setCharacterBlessings();
-  // setCharacterCurses();
-  // setCharacterRevives();
-  // setCharacterCodewords();
-  // setCharacterActions();
-  // setCharacterVariables();
-});
-
-export const startingCharactersAtom = atom({});
