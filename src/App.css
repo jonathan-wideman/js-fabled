@@ -70,15 +70,23 @@
   text-decoration: underline;
 }
 
+.sidebar {
+  display: flex;
+}
+
 .pane {
   padding: 1em 1.5em;
   background-color: rgba(25, 25, 25, 0.5)
 }
 
-.sheet {
+.sheet, .debug {
   display: flex;
   width: 40ch;
   flex-flow: column wrap;
+}
+
+.debug input[type=text] {
+  width: 12ch;
 }
 
 .stat-label {

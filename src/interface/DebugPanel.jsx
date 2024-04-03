@@ -64,7 +64,7 @@ export default function DebugPanel() {
   return (
     <>
       {open && (
-        <div className="debug pane">
+        <div className="debug">
           <h3>Debug Panel</h3>
           <div>
             <form

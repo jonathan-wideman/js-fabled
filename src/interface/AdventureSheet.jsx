@@ -61,7 +61,7 @@ export default function AdventureSheet() {
 
   return (
     <>
-      <div className="sheet pane">
+      <div className="sheet">
         <div>
           <StatLabel>Name:</StatLabel>
           {name}
