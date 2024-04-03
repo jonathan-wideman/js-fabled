@@ -318,8 +318,6 @@ export const characterRemoveCodewordAtom = atom(null, (get, set, value) => {
   );
 });
 
-// FIXME: replace references to characterHas
-
 // FIXME: Memory leaks, see https://jotai.org/docs/utilities/family#caveat-memory-leaks
 // TODO: Maybe this should be a hook instead, but it would also need a helper function to be used in other atoms
 // or it could be done like we do other inventory functions above; just as helper functions rather than atoms or hooks
