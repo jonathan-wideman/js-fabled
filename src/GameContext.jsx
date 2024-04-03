@@ -73,10 +73,6 @@ export function GameProvider({ children }) {
   rng.d6 = () => rng.die(6);
   rng.sum2d6 = () => rng.dice(6, 2).reduce((sum, current) => (sum += current));
 
-  const [debug, setDebug] = useState(true);
-  const [debugVerbose, setDebugVerbose] = useState(true);
-  const [debugParserXmlTools, setDebugParserXmlTools] = useState(true);
-
   const [page, setPage] = useState(STARTING_PAGE);
   const [book, setBook] = useState(STARTING_BOOK);
   const [history, setHistory] = useState([
@@ -112,12 +108,6 @@ export function GameProvider({ children }) {
   return (
     <GameContext.Provider
       value={{
-        debug,
-        setDebug,
-        debugVerbose,
-        setDebugVerbose,
-        debugParserXmlTools,
-        setDebugParserXmlTools,
         rng,
         sectionVars,
         setSectionVars,

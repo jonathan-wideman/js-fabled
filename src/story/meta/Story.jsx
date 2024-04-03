@@ -8,9 +8,11 @@ import DebugVerboseText from "./DebugVerboseText";
 import { matchTags } from "../../util";
 import { PageProvider } from "./PageContext";
 import { processAst, visitElement, xmlAst } from "./parser";
+import { useAtom } from "jotai";
+import { debugParserXmlToolsAtom } from "../../store/debug";
 
 function Page({ page, storyData }) {
-  const { debugParserXmlTools } = useGameContext();
+  const [debugParserXmlTools] = useAtom(debugParserXmlToolsAtom);
 
   const ast = useMemo(() => {
     if (storyData.isLoading || storyData.error) {
