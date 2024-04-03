@@ -8,7 +8,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@condenast/xml-to-react": "^1.0.0",
     "@xml-tools/ast": "^5.0.5",
     "jotai": "^2.7.1",
     "random-js": "^2.1.0",

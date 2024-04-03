@@ -6,7 +6,6 @@ import { nextPage, prevPage } from "../helpers";
 
 export default function DebugPanel() {
   const {
-    rng,
     book,
     page,
     history,
@@ -14,14 +13,11 @@ export default function DebugPanel() {
     clearHistory,
     debugVerbose,
     setDebugVerbose,
-    debugParserXmlToReact,
-    setDebugParserXmlToReact,
     debugParserXmlTools,
     setDebugParserXmlTools,
   } = useGameContext();
   const [inputBook, setInputBook] = useState(book);
   const [inputPage, setInputPage] = useState(page);
-  const [roll, setRoll] = useState();
 
   useEffect(() => {
     setInputPage(page);
@@ -94,14 +90,6 @@ export default function DebugPanel() {
         <label>
           <input
             type="checkbox"
-            onChange={() => setDebugParserXmlToReact((prev) => !prev)}
-            checked={debugParserXmlToReact}
-          />
-          xml-to-react
-        </label>
-        <label>
-          <input
-            type="checkbox"
             onChange={() => setDebugParserXmlTools((prev) => !prev)}
             checked={debugParserXmlTools}
           />
@@ -117,13 +105,6 @@ export default function DebugPanel() {
         </label>
       </div>
       <div>
-        {/* <button onClick={() => setRoll(rng.d6())}>d6</button>
-        <button onClick={() => setRoll(rng.sum2d6())}>2d6</button>
-        result: {roll} */}
-        {/* <div className='dice'>
-          <D6 />
-          <D6 />
-        </div> */}
         <Dice count={2} />
       </div>
     </div>

@@ -75,7 +75,6 @@ export function GameProvider({ children }) {
 
   const [debug, setDebug] = useState(true);
   const [debugVerbose, setDebugVerbose] = useState(true);
-  const [debugParserXmlToReact, setDebugParserXmlToReact] = useState(true);
   const [debugParserXmlTools, setDebugParserXmlTools] = useState(true);
 
   const [page, setPage] = useState(STARTING_PAGE);
@@ -117,8 +116,6 @@ export function GameProvider({ children }) {
         setDebug,
         debugVerbose,
         setDebugVerbose,
-        debugParserXmlToReact,
-        setDebugParserXmlToReact,
         debugParserXmlTools,
         setDebugParserXmlTools,
         rng,

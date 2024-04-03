@@ -3,40 +3,14 @@ import { useGameContext } from "../../GameContext";
 // import Goto from './Goto'
 
 // import { ReactDOM } from 'react'
-import XMLToReact from "@condenast/xml-to-react";
 import converters from "./converters";
 import DebugVerboseText from "./DebugVerboseText";
 import { matchTags } from "../../util";
 import { PageProvider } from "./PageContext";
 import { processAst, visitElement, xmlAst } from "./parser";
 
-const xmlToReact = new XMLToReact(converters);
-
-// xmlToReact.baseConvert = xmlToReact.convert
-// xmlToReact.convert = function (xml, data) {
-//   const converted = this.baseConvert(xml, data)
-//   // if (converted == null) { console.log('Could not convert', xml) }
-//   console.log(converted, xml)
-//   return converted
-// }
-
 function Page({ page, storyData }) {
-  const { debugParserXmlToReact, debugParserXmlTools } = useGameContext();
-  // const reactTree = xmlToReact.convert(`
-  //   <Example name="simple">
-  //   <Item i="1">one</Item>
-  //   <Item>two</Item>
-  //   <Item>three</Item>
-  //   </Example>
-  // `)
-
-  const reactTree = useMemo(() => {
-    if (storyData.isLoading || storyData.error) {
-      return null;
-    }
-    // console.log(storyData.data)
-    return xmlToReact.convert(storyData.data);
-  }, [storyData]);
+  const { debugParserXmlTools } = useGameContext();
 
   const ast = useMemo(() => {
     if (storyData.isLoading || storyData.error) {
@@ -56,12 +30,6 @@ function Page({ page, storyData }) {
 
   return (
     <PageProvider page={page}>
-      {debugParserXmlToReact && (
-        <>
-          {reactTree}
-          <DebugVerboseText>xml-to-react output</DebugVerboseText>
-        </>
-      )}
       {debugParserXmlTools && (
         <>
           {ast}
