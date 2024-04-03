@@ -172,7 +172,7 @@ const filterNodesByProfession = (nodes, profession) => {
   });
 };
 
-export const parseAdventurerStartingData = (xmlText) => {
+export const parseStartingCharacters = (xmlText) => {
   const ast = xmlAst(xmlText);
 
   const abilityNodes = ast.rootElement.subElements[0].subElements.slice(1);

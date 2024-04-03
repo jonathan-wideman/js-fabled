@@ -308,7 +308,7 @@ export const characterHasCodewordAtom = atomFamily((codeword) =>
 
 export const initializeCharacterAtom = atom(null, (get, set, profession) => {
   // FIXME: migrate ADVENTURER_STARTING_DATA back to parsing from the xml:
-  const data = get(adventurerStartingDataAtom);
+  const data = get(startingCharactersAtom);
 
   const { name, bio, gender, rank, stamina, money, abilities, items } =
     data[profession];
@@ -338,4 +338,4 @@ export const initializeCharacterAtom = atom(null, (get, set, profession) => {
   // setCharacterVariables();
 });
 
-export const adventurerStartingDataAtom = atom({});
+export const startingCharactersAtom = atom({});

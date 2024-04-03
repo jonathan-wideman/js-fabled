@@ -10,10 +10,10 @@ import {
   sectionVarsAtom,
 } from "../../store/section";
 import {
-  adventurerStartingDataAtom,
+  startingCharactersAtom,
   initializeCharacterAtom,
 } from "../../store/character";
-import { parseAdventurerStartingData } from "../meta/parser";
+import { parseStartingCharacters } from "../meta/parser";
 import { bookAtom, pageAtom } from "../../store/book";
 
 /*
@@ -44,7 +44,7 @@ export default function Section({ children, name, ...others }) {
   const [page] = useAtom(pageAtom);
   const [, setSectionVars] = useAtom(sectionVarsAtom);
   const [, initializeCharacter] = useAtom(initializeCharacterAtom);
-  const [, setAdventurerStartingData] = useAtom(adventurerStartingDataAtom);
+  const [, setStartingCharacters] = useAtom(startingCharactersAtom);
 
   // TODO: combine this to a single atom or hook or something
   const [sectionTicks] = useAtom(sectionTicksAtom);
@@ -61,7 +61,7 @@ export default function Section({ children, name, ...others }) {
     const xmlText = startingCharactersQuery.data;
 
     if (profession) {
-      setAdventurerStartingData(parseAdventurerStartingData(xmlText));
+      setStartingCharacters(parseStartingCharacters(xmlText));
       initializeCharacter(profession);
     }
   }, [profession, startingCharactersQuery]);
