@@ -1,37 +1,64 @@
 import { atom } from "jotai";
 import { atomFamily } from "jotai/utils";
-import { isEquipment, sectionTickCodeword } from "../helpers";
+import { isEquipment } from "../helpers";
+
+const defaultCharacter = {
+  name: undefined,
+  profession: undefined,
+  // rank: { value: 0, title: undefined },
+  rank: 0,
+  gender: undefined,
+  bio: undefined,
+  stamina: { current: 0, max: 0 },
+  defense: 0,
+  charisma: 0,
+  combat: 0,
+  magic: 0,
+  sanctity: 0,
+  scouting: 0,
+  thievery: 0,
+  money: 0,
+  inventory: { max: 12, items: [] },
+  titles: [],
+  god: undefined,
+  blessings: [],
+  curses: [],
+  revives: [],
+  codewords: [],
+  actions: [],
+  variables: {},
+};
 
 // Bio
-export const characterNameAtom = atom(undefined);
-export const characterProfessionAtom = atom(undefined);
-export const characterRankAtom = atom(0);
-export const characterGenderAtom = atom(undefined);
-export const characterBioAtom = atom(undefined);
+export const characterNameAtom = atom(defaultCharacter.name);
+export const characterProfessionAtom = atom(defaultCharacter.profession);
+export const characterRankAtom = atom(defaultCharacter.rank);
+export const characterGenderAtom = atom(defaultCharacter.gender);
+export const characterBioAtom = atom(defaultCharacter.bio);
 // Stats
-export const characterStaminaAtom = atom({ current: 0, max: 0 });
-export const characterDefenseAtom = atom(0);
-export const characterCharismaAtom = atom(0);
-export const characterCombatAtom = atom(0);
-export const characterMagicAtom = atom(0);
-export const characterSanctityAtom = atom(0);
-export const characterScoutingAtom = atom(0);
-export const characterThieveryAtom = atom(0);
+export const characterStaminaAtom = atom(defaultCharacter.stamina);
+export const characterDefenseAtom = atom(defaultCharacter.defense);
+export const characterCharismaAtom = atom(defaultCharacter.charisma);
+export const characterCombatAtom = atom(defaultCharacter.combat);
+export const characterMagicAtom = atom(defaultCharacter.magic);
+export const characterSanctityAtom = atom(defaultCharacter.sanctity);
+export const characterScoutingAtom = atom(defaultCharacter.scouting);
+export const characterThieveryAtom = atom(defaultCharacter.thievery);
 // Posessions
 export const characterMoneyAtom = atom(0);
-export const characterInventoryAtom = atom({ max: 12, items: [] });
+export const characterInventoryAtom = atom(defaultCharacter.inventory);
 // Titles
-export const characterTitlesAtom = atom([]);
+export const characterTitlesAtom = atom(defaultCharacter.titles);
 // Metaphysical
-export const characterGodAtom = atom(undefined);
-export const characterBlessingsAtom = atom([]);
-export const characterCursesAtom = atom([]);
-export const characterRevivesAtom = atom([]);
+export const characterGodAtom = atom(defaultCharacter.god);
+export const characterBlessingsAtom = atom(defaultCharacter.blessings);
+export const characterCursesAtom = atom(defaultCharacter.curses);
+export const characterRevivesAtom = atom(defaultCharacter.revives);
 // Special actions
-export const characterActionsAtom = atom([]);
+export const characterActionsAtom = atom(defaultCharacter.actions);
 // History
-export const characterCodewordsAtom = atom([]);
-export const characterVariablesAtom = atom({});
+export const characterCodewordsAtom = atom(defaultCharacter.codewords);
+export const characterVariablesAtom = atom(defaultCharacter.variables);
 
 // ============================================================================
 // Inventory

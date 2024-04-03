@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Dice from "./Dice";
-import { useGameContext } from "../GameContext";
 import { nextPage, prevPage } from "../helpers";
 import { useAtom } from "jotai";
 import { debugParserXmlToolsAtom, debugVerboseAtom } from "../store/debug";
+import {
+  bookAtom,
+  clearHistoryAtom,
+  gotoPageAtom,
+  historyAtom,
+  pageAtom,
+} from "../store/book";
 
 export default function DebugPanel() {
-  const { book, page, history, gotoPage, clearHistory } = useGameContext();
+  const [book] = useAtom(bookAtom);
+  const [page] = useAtom(pageAtom);
+  const [history] = useAtom(historyAtom);
+  const [, gotoPage] = useAtom(gotoPageAtom);
+  const [, clearHistory] = useAtom(clearHistoryAtom);
   const [debugVerbose, setDebugVerbose] = useAtom(debugVerboseAtom);
   const [debugParserXmlTools, setDebugParserXmlTools] = useAtom(
     debugParserXmlToolsAtom
@@ -39,7 +49,7 @@ export default function DebugPanel() {
     const next = nextPage(page);
     if (next) {
       setInputPage(next);
-      gotoPage(next);
+      gotoPage({ book, page: next });
     }
   };
 
@@ -47,7 +57,7 @@ export default function DebugPanel() {
     const prev = prevPage(page);
     if (prev) {
       setInputPage(prev);
-      gotoPage(prev);
+      gotoPage({ book, page: prev });
     }
   };
 
@@ -60,7 +70,7 @@ export default function DebugPanel() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                gotoPage(inputPage, inputBook);
+                gotoPage({ book: inputBook, page: inputPage });
               }}
             >
               <button type="submit">goto</button>

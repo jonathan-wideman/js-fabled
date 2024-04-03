@@ -1,7 +1,8 @@
-import React from 'react'
-import DebugVerboseText from '../meta/DebugVerboseText'
-import { useGameContext } from '../../GameContext'
-import { bookFromNumber, getBookTitle } from '../../helpers'
+import React from "react";
+import DebugVerboseText from "../meta/DebugVerboseText";
+import { bookFromNumber, getBookTitle } from "../../helpers";
+import { useAtom } from "jotai";
+import { bookAtom, gotoPageAtom } from "../../store/book";
 
 /*
 <goto section="S" [book="S"] [force="B"] [sail="B"] [visit="B"] [dead=”B”] [flee=”B”] [codeword=”S”] [revisit=”B”] [price/flag=”S”]>
@@ -33,17 +34,30 @@ TODO: flag – If the indicated price has not been paid, this goto will be disab
 
 // export default function Goto({ children, section, book, force, sail, visit, dead, flee, codeword, revisit, price, flag }) {
 export default function Goto({ children, section, ...others }) {
+  const [, gotoPage] = useAtom(gotoPageAtom);
+  const [storeBook] = useAtom(bookAtom);
 
-  const { gotoPage } = useGameContext()
-
-  const { book: bookNumber } = others
-  const book = bookFromNumber(bookNumber)
-  const bookTitle = getBookTitle(book)
+  const { book: bookNumber } = others;
+  const book = bookFromNumber(bookNumber);
+  const bookTitle = getBookTitle(book);
 
   return (
     // TODO: start with capital only if necessary
     // TODO: internal text replacement
     // TODO: better error handling for missing book title
-    <a className='instruction action' onClick={() => gotoPage(section, book)}>{children ?? <>Turn to {book && <>{bookTitle ?? book} </>}{section}</>}<DebugVerboseText>[goto {JSON.stringify({ ...others, section })}]</DebugVerboseText></a>
-  )
+    <a
+      className="instruction action"
+      onClick={() => gotoPage({ book: book || storeBook, page: section })}
+    >
+      {children ?? (
+        <>
+          Turn to {book && <>{bookTitle ?? book} </>}
+          {section}
+        </>
+      )}
+      <DebugVerboseText>
+        [goto {JSON.stringify({ ...others, section })}]
+      </DebugVerboseText>
+    </a>
+  );
 }
