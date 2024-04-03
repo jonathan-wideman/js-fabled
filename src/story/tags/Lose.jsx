@@ -1,7 +1,5 @@
 import React from 'react'
 import DebugVerboseText from '../meta/DebugVerboseText'
-import { useGameContext } from '../../GameContext'
-import { sectionCodeword } from '../../helpers'
 
 /*
 TODO:

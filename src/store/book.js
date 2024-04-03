@@ -16,7 +16,6 @@ export const clearHistoryAtom = atom(null, (get, set) => {
 });
 
 export const gotoPageAtom = atom(null, (get, set, { book, page }) => {
-  console.log("gotoPageAtom", { book, page });
   set(bookAtom, book);
   set(pageAtom, page);
   set(addHistoryAtom, { book, page });

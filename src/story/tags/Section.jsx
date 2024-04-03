@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Checkbox from "./Checkbox";
 import DebugVerboseText from "../meta/DebugVerboseText";
-import { useGameContext } from "../../GameContext";
+import { useReaderContext } from "../../ReaderContext";
 import { range } from "../../helpers";
 import { useAtom } from "jotai";
 import {
@@ -39,7 +39,7 @@ TODO: todock – When the character leaves this section, any ships at sea that t
 
 // export default function Section({ children, name, boxes, dock, image, profession, start, tag, todock }) {
 export default function Section({ children, name, ...others }) {
-  const { adventurerStartingDataText } = useGameContext();
+  const { adventurerStartingDataText } = useReaderContext();
   const [book] = useAtom(bookAtom);
   const [page] = useAtom(pageAtom);
   const [, setSectionVars] = useAtom(sectionVarsAtom);

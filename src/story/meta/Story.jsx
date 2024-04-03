@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { useGameContext } from "../../GameContext";
+import { useReaderContext } from "../../ReaderContext";
 
 import DebugVerboseText from "./DebugVerboseText";
 // import { matchTags } from "../../util";
@@ -34,7 +34,7 @@ function Page({ page, storyData }) {
 }
 
 export default function Story() {
-  const { storyData } = useGameContext();
+  const { storyData } = useReaderContext();
   const [page] = useAtom(pageAtom);
 
   return (

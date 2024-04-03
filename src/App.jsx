@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { GameProvider } from "./GameContext";
+import { ReaderProvider } from "./ReaderContext";
 import Story from "./story/meta/Story";
 import "./App.css";
 import DebugPanel from "./interface/DebugPanel";
@@ -9,7 +9,7 @@ function Providers({ children }) {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <GameProvider>{children}</GameProvider>
+      <ReaderProvider>{children}</ReaderProvider>
     </QueryClientProvider>
   );
 }

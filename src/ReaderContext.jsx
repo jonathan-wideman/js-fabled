@@ -3,13 +3,13 @@ import { useQuery } from "react-query";
 import { useAtom } from "jotai";
 import { bookAtom, pageAtom } from "./store/book";
 
-const GameContext = createContext();
+const ReaderContext = createContext();
 
-export function useGameContext() {
-  return useContext(GameContext);
+export function useReaderContext() {
+  return useContext(ReaderContext);
 }
 
-export function GameProvider({ children }) {
+export function ReaderProvider({ children }) {
   const [book] = useAtom(bookAtom);
   const [page] = useAtom(pageAtom);
 
@@ -25,13 +25,13 @@ export function GameProvider({ children }) {
   );
 
   return (
-    <GameContext.Provider
+    <ReaderContext.Provider
       value={{
         storyData,
         adventurerStartingDataText,
       }}
     >
       {children}
-    </GameContext.Provider>
+    </ReaderContext.Provider>
   );
 }
