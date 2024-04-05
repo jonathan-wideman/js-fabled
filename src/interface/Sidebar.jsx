@@ -1,26 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Sidebar({
   side = "left",
-  // children,
   tabs = [],
   defaultTabId,
   ...others
 }) {
-  // const [open, setOpen] = useState(defaultOpen);
-  // const [selected, setSelected] = useState(0);
   const [selectedId, setSelectedId] = useState(defaultTabId);
   const selectedTab = tabs.find((tab) => selectedId && tab.id === selectedId);
 
   const onClickTabButton = (id) => {
-    console.log("onClickTabButton", id);
-    // setOpen((prev) => !prev);
     setSelectedId((prev) => (prev === id ? undefined : id));
   };
-
-  useEffect(() => {
-    console.log("selectedId", selectedId);
-  }, [selectedId]);
 
   return (
     <div className="sidebar">
@@ -28,9 +19,6 @@ export default function Sidebar({
         <SidebarTabButtons tabs={tabs} onClickTabButton={onClickTabButton} />
       ) : null}
       {selectedTab ? (
-        // <div className="pane" {...others}>
-        //   {children[selected]}
-        // </div>
         <div key={selectedId} className="pane" {...others}>
           {selectedTab.content}
         </div>
