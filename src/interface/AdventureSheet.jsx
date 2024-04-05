@@ -61,7 +61,7 @@ export default function AdventureSheet() {
 
   return (
     <>
-      <div className="sheet">
+      <div className="sidebar-content sheet">
         <div>
           <StatLabel>Name:</StatLabel>
           {name}

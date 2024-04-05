@@ -79,7 +79,7 @@
   background-color: rgba(25, 25, 25, 0.5)
 }
 
-.sheet, .debug {
+.sidebar-content {
   display: flex;
   width: 40ch;
   flex-flow: column wrap;

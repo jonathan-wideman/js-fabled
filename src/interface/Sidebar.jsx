@@ -1,47 +1,60 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Sidebar({
   side = "left",
-  defaultOpen = true,
-  children,
+  // children,
+  tabs = [],
+  defaultTabId,
   ...others
 }) {
-  const [open, setOpen] = useState(defaultOpen);
+  // const [open, setOpen] = useState(defaultOpen);
+  // const [selected, setSelected] = useState(0);
+  const [selectedId, setSelectedId] = useState(defaultTabId);
+  const selectedTab = tabs.find((tab) => selectedId && tab.id === selectedId);
 
-  const onClickTab = () => {
-    console.log("onClickTab", open);
-    setOpen((prev) => !prev);
+  const onClickTabButton = (id) => {
+    console.log("onClickTabButton", id);
+    // setOpen((prev) => !prev);
+    setSelectedId((prev) => (prev === id ? undefined : id));
   };
+
+  useEffect(() => {
+    console.log("selectedId", selectedId);
+  }, [selectedId]);
 
   return (
     <div className="sidebar">
       {side === "right" ? (
-        <SidebarTabs side={side} onClickTab={onClickTab} />
+        <SidebarTabButtons tabs={tabs} onClickTabButton={onClickTabButton} />
       ) : null}
-      {open ? (
-        <div className="pane" {...others}>
-          {children}
+      {selectedTab ? (
+        // <div className="pane" {...others}>
+        //   {children[selected]}
+        // </div>
+        <div key={selectedId} className="pane" {...others}>
+          {selectedTab.content}
         </div>
       ) : null}
       {side === "left" ? (
-        <SidebarTabs side={side} onClickTab={onClickTab} />
+        <SidebarTabButtons tabs={tabs} onClickTabButton={onClickTabButton} />
       ) : null}
     </div>
   );
 }
 
-function SidebarTabs({ side, onClickTab }) {
+function SidebarTabButtons({ tabs, onClickTabButton }) {
   return (
     <div>
-      <div>
-        <button onClick={() => onClickTab()}>A</button>
-      </div>
-      <div>
-        <button onClick={() => onClickTab()}>B</button>
-      </div>
-      <div>
-        <button onClick={() => onClickTab()}>C</button>
-      </div>
+      {tabs.map((tab) => (
+        <div key={tab.id}>
+          <button
+            onClick={() => onClickTabButton(tab.id)}
+            style={{ padding: "0.3rem", width: "2rem", height: "2rem" }}
+          >
+            {tab.icon || tab.label}
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
