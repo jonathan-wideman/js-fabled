@@ -11,6 +11,8 @@ import IconSpider from "./icons/IconSpider";
 import IconMap from "./icons/IconMap";
 import IconPerson from "./icons/IconPerson";
 import IconPen from "./icons/IconPen";
+import { conditionalElements } from "./helpers";
+import { useEffect } from "react";
 
 function Providers({ children }) {
   const queryClient = new QueryClient();
@@ -22,19 +24,32 @@ function Providers({ children }) {
 }
 
 function App() {
-  const debug = useAtom(debugAtom);
+  const [debug, setDebug] = useAtom(debugAtom);
+
+  useEffect(() => {
+    const onKeyUpHandler = (event) => {
+      if (event.key === "`") {
+        setDebug((prev) => !prev);
+      }
+    };
+    document.addEventListener("keyup", onKeyUpHandler);
+    return () => {
+      document.removeEventListener("keyup", onKeyUpHandler);
+    };
+  }, [setDebug]);
+
   return (
     <Providers>
       <div className="App">
         <Sidebar
           side="left"
           tabs={[
-            {
+            ...conditionalElements(debug, {
               id: "debug",
               label: "Debug",
               icon: <IconSpider />,
               content: <DebugPanel />,
-            },
+            }),
             {
               id: "map",
               label: "Map",
