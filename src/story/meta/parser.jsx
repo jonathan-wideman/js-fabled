@@ -12,6 +12,23 @@ export const xmlAst = (xmlText, shouldEncodeHTMLEntities = true) => {
   return buildAst(cst, tokenVector);
 };
 
+export const preProcessAst = (node, index, depth) => {
+  const children = [...node.subElements];
+
+  const conditionalNodes = children.filter((el) =>
+    ["if", "elseif", "else"].includes(el.name)
+  );
+
+  if (conditionalNodes?.length > 0) {
+    console.log("conditionalNodes", conditionalNodes);
+  }
+
+  return {
+    node,
+    subElements: children.map((el, i) => preProcessAst(el, i, depth + 1)),
+  };
+};
+
 // ============================================================================
 // Story Parsing
 // ============================================================================

@@ -4,7 +4,7 @@ import { useReaderContext } from "../../ReaderContext";
 import DebugVerboseText from "./DebugVerboseText";
 // import { matchTags } from "../../util";
 import { PageProvider } from "./PageContext";
-import { processAst, visitElement, xmlAst } from "./parser";
+import { preProcessAst, processAst, visitElement, xmlAst } from "./parser";
 import { useAtom } from "jotai";
 import { debugParserXmlToolsAtom } from "../../store/debug";
 import { pageAtom } from "../../store/book";
@@ -17,6 +17,9 @@ function Page({ page, storyQuery }) {
       return null;
     }
     const ast = xmlAst(storyQuery.data);
+    console.log("ast", ast);
+    const preProcessed = preProcessAst(ast.rootElement, 0, 0);
+    console.log("preProcessed", preProcessed);
     const result = processAst(ast, visitElement);
     return result;
   }, [storyQuery]);
