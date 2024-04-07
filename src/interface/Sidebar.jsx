@@ -16,7 +16,12 @@ export default function Sidebar({
   return (
     <div className="sidebar">
       {side === "right" ? (
-        <SidebarTabButtons tabs={tabs} onClickTabButton={onClickTabButton} />
+        <SidebarTabButtons
+          tabs={tabs}
+          side={side}
+          selectedId={selectedId}
+          onClickTabButton={onClickTabButton}
+        />
       ) : null}
       {selectedTab ? (
         <div key={selectedId} className="pane" {...others}>
@@ -24,20 +29,28 @@ export default function Sidebar({
         </div>
       ) : null}
       {side === "left" ? (
-        <SidebarTabButtons tabs={tabs} onClickTabButton={onClickTabButton} />
+        <SidebarTabButtons
+          tabs={tabs}
+          side={side}
+          selectedId={selectedId}
+          onClickTabButton={onClickTabButton}
+        />
       ) : null}
     </div>
   );
 }
 
-function SidebarTabButtons({ tabs, onClickTabButton }) {
+function SidebarTabButtons({ tabs, side, selectedId, onClickTabButton }) {
   return (
     <div>
       {tabs.map((tab) => (
         <div key={tab.id}>
           <button
             onClick={() => onClickTabButton(tab.id)}
-            style={{ padding: "0.3rem", width: "2rem", height: "2rem" }}
+            className={`sidebar-tab-button ${side}${
+              selectedId === tab.id ? " selected-tab" : ""
+            }`}
+            // style={{ padding: "0.3rem", width: "2rem", height: "2rem" }}
           >
             {tab.icon || tab.label}
           </button>
