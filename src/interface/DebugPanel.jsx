@@ -21,21 +21,8 @@ export default function DebugPanel() {
   const [debugParserXmlTools, setDebugParserXmlTools] = useAtom(
     debugParserXmlToolsAtom
   );
-  const [open, setOpen] = useState(true);
   const [inputBook, setInputBook] = useState(book);
   const [inputPage, setInputPage] = useState(page);
-
-  useEffect(() => {
-    const onKeyUpHandler = (event) => {
-      if (event.key === "`") {
-        setOpen((prev) => !prev);
-      }
-    };
-    document.addEventListener("keyup", onKeyUpHandler);
-    return () => {
-      document.removeEventListener("keyup", onKeyUpHandler);
-    };
-  }, [setOpen]);
 
   useEffect(() => {
     setInputPage(page);
@@ -62,77 +49,73 @@ export default function DebugPanel() {
   };
 
   return (
-    <>
-      {open && (
-        <div className="sidebar-content debug">
-          <h3>Debug Panel</h3>
-          <div>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                gotoPage({ book: inputBook, page: inputPage });
-              }}
+    <div className="sidebar-content debug">
+      <h3>Debug Panel</h3>
+      <div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            gotoPage({ book: inputBook, page: inputPage });
+          }}
+        >
+          <button type="submit">goto</button>
+          <input
+            name="inputBook"
+            type="text"
+            onChange={(e) => setInputBook(e.target.value)}
+            value={inputBook}
+          />
+          <input
+            name="inputPage"
+            type="text"
+            onChange={(e) => setInputPage(e.target.value)}
+            value={inputPage}
+          />
+          <button type="button" onClick={gotoPrevPage}>
+            prev
+          </button>
+          <button type="button" onClick={gotoNextPage}>
+            next
+          </button>
+        </form>
+      </div>
+      <div>
+        History:
+        <ul>
+          {history.map((node, index) => (
+            <li
+              key={index}
+              className="action"
+              onClick={() => gotoPage(node.page, node.book)}
             >
-              <button type="submit">goto</button>
-              <input
-                name="inputBook"
-                type="text"
-                onChange={(e) => setInputBook(e.target.value)}
-                value={inputBook}
-              />
-              <input
-                name="inputPage"
-                type="text"
-                onChange={(e) => setInputPage(e.target.value)}
-                value={inputPage}
-              />
-              <button type="button" onClick={gotoPrevPage}>
-                prev
-              </button>
-              <button type="button" onClick={gotoNextPage}>
-                next
-              </button>
-            </form>
-          </div>
-          <div>
-            History:
-            <ul>
-              {history.map((node, index) => (
-                <li
-                  key={index}
-                  className="action"
-                  onClick={() => gotoPage(node.page, node.book)}
-                >
-                  {node.book} - {node.page}
-                </li>
-              ))}
-            </ul>
-            <button onClick={() => clearHistory()}>clear</button>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            Output:
-            <label>
-              <input
-                type="checkbox"
-                onChange={() => setDebugParserXmlTools((prev) => !prev)}
-                checked={debugParserXmlTools}
-              />
-              xml-tools
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                onChange={() => setDebugVerbose((prev) => !prev)}
-                checked={debugVerbose}
-              />
-              verbose
-            </label>
-          </div>
-          <div>
-            <Dice count={2} />
-          </div>
-        </div>
-      )}
-    </>
+              {node.book} - {node.page}
+            </li>
+          ))}
+        </ul>
+        <button onClick={() => clearHistory()}>clear</button>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        Output:
+        <label>
+          <input
+            type="checkbox"
+            onChange={() => setDebugParserXmlTools((prev) => !prev)}
+            checked={debugParserXmlTools}
+          />
+          xml-tools
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            onChange={() => setDebugVerbose((prev) => !prev)}
+            checked={debugVerbose}
+          />
+          verbose
+        </label>
+      </div>
+      <div>
+        <Dice count={2} />
+      </div>
+    </div>
   );
 }
