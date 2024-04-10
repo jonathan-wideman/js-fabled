@@ -19,12 +19,30 @@ export const preProcessAst = (node, index, depth) => {
     ["if", "elseif", "else"].includes(el.name)
   );
 
-  if (conditionalNodes?.length > 0) {
-    console.log("conditionalNodes", conditionalNodes);
+  // FIXME: preProcessAst should not modify tree
+  let priorConditionals = [];
+  for (const c of conditionalNodes) {
+    switch (c.name) {
+      case "if":
+        priorConditionals = [c];
+        break;
+
+      case "elseif":
+        priorConditionals.push(c);
+        c.priorConditionals = [...priorConditionals];
+        break;
+
+      case "else":
+        c.priorConditionals = [...priorConditionals];
+        break;
+
+      default:
+        break;
+    }
   }
 
   return {
-    node,
+    ...node,
     subElements: children.map((el, i) => preProcessAst(el, i, depth + 1)),
   };
 };
@@ -111,7 +129,15 @@ export const visitElement = (node, index, depth, data) => {
   if (typeof converter !== "function") return null;
 
   const attributes = xmlNodeAttributes(node);
-  const { type, props } = converter(attributes, data);
+  // TODO: this should probably be cleaner
+  const extraConditionals = node.priorConditionals?.map((c) =>
+    xmlNodeAttributes(c)
+  );
+  const attrs =
+    extraConditionals?.length > 0
+      ? { ...attributes, extraConditionals }
+      : attributes;
+  const { type, props } = converter(attrs, data);
   const key = `node-${index}`;
 
   return { type, props: { ...props, key } };

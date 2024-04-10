@@ -17,9 +17,8 @@ function Page({ page, storyQuery }) {
       return null;
     }
     const ast = xmlAst(storyQuery.data);
-    console.log("ast", ast);
+    // FIXME: preProcessAst should not modify tree
     const preProcessed = preProcessAst(ast.rootElement, 0, 0);
-    console.log("preProcessed", preProcessed);
     const result = processAst(ast, visitElement);
     return result;
   }, [storyQuery]);

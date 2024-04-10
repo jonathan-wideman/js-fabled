@@ -324,8 +324,7 @@ export const characterRemoveCodewordAtom = atom(null, (get, set, value) => {
 export const characterHasItemAtom = atomFamily((item) =>
   atom((get) => {
     const inventory = get(characterInventoryAtom);
-    // TODO: fuzzy equivalency for items, based on multiple properties
-    return inventory.items.some((i) => i.name === item.name);
+    return isItemInInventory(item, inventory);
   })
 );
 
@@ -335,7 +334,15 @@ export const characterHasItemAtom = atomFamily((item) =>
 export const characterHasCodewordAtom = atomFamily((codeword) =>
   atom((get) => {
     const codewords = get(characterCodewordsAtom);
-    return codewords.includes(codeword);
+    return isCodewordInCodewords(codeword, codewords);
   })
 );
 
+export const isItemInInventory = (item, inventory) => {
+  // TODO: fuzzy equivalency for items, based on multiple properties
+  return inventory.items.some((i) => i.name === item.name);
+};
+
+export const isCodewordInCodewords = (codeword, codewords) => {
+  return codewords.includes(codeword);
+};

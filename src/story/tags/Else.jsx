@@ -1,5 +1,6 @@
-import React from 'react'
-import DefaultNode from "./DefaultNode"
+import React from "react";
+import DefaultNode from "./DefaultNode";
+import { useNodeConditionals } from "../hooks/useNodeConditional";
 
 /*
 TODO:
@@ -63,8 +64,18 @@ var – Tests whether the value held in this variable matches any comparisons. S
 */
 
 export default function Else({ children, ...others }) {
+  console.log(others);
+  const { extraConditionals } = others;
+
+  // All prior conditionals in this conditional block should be false
+  const conditionals = useNodeConditionals(extraConditionals);
+  console.log("conditionals", conditionals);
+  const conditionalResult = conditionals.every((result) => !result);
 
   return (
-    <DefaultNode {...others} nodeType='else'>{children}</DefaultNode>
-  )
+    <DefaultNode {...others} nodeType="else">
+      <span>{conditionalResult ? "☑" : "☐"}</span>
+      {children}
+    </DefaultNode>
+  );
 }
