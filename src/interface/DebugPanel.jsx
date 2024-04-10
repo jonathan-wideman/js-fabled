@@ -86,7 +86,7 @@ export default function DebugPanel() {
             <li
               key={index}
               className="action"
-              onClick={() => gotoPage(node.page, node.book)}
+              onClick={() => gotoPage({ book: node.book, page: node.page })}
             >
               {node.book} - {node.page}
             </li>
