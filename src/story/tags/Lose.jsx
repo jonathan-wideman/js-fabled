@@ -1,5 +1,5 @@
-import React from 'react'
-import DebugVerboseText from '../meta/DebugVerboseText'
+import React from "react";
+import DebugVerboseText from "../meta/DebugVerboseText";
 
 /*
 TODO:
@@ -53,8 +53,13 @@ staminato – The value to set the current stamina to. This may be a number or a
 title – The name of a title that the character will lose. This will provide the default text if present.
 */
 export default function Lose({ children, ...others }) {
+  const { item } = others;
+  const defaultContent = item ? item : null;
 
   return (
-    <span className='action'>{children}<DebugVerboseText>[lose {JSON.stringify(others)}]</DebugVerboseText></span>
-  )
+    <span className="action">
+      {children ?? defaultContent}
+      <DebugVerboseText>[lose {JSON.stringify(others)}]</DebugVerboseText>
+    </span>
+  );
 }
