@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import {
   characterCodewordsAtom,
   characterInventoryAtom,
+  isCodewordInCodewords,
   isItemInInventory,
 } from "../../store/character";
 

@@ -1,10 +1,13 @@
-import React from 'react'
+import React from "react";
+import DebugVerboseText from "../meta/DebugVerboseText";
 
 export default function Wip({ children }) {
   return (
     <>
-      <span className='debug-verbose debug-wip'> ⚠ </span>
+      <DebugVerboseText applyWrapper={false}>
+        <span className="debug-verbose debug-wip"> ⚠ </span>
+      </DebugVerboseText>
       {children}
     </>
-  )
+  );
 }

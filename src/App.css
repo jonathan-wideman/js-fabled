@@ -136,6 +136,7 @@
 .debug-verbose pre {
   font-size: 1.2em;
   white-space: pre-wrap;
+  tab-size: 1.5em;
 }
 
 .debug-wip {

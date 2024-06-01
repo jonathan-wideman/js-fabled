@@ -1,6 +1,7 @@
 import React from "react";
 import DefaultNode from "./DefaultNode";
 import { useNodeConditionals } from "../hooks/useNodeConditional";
+import DebugVerboseText from "../meta/DebugVerboseText";
 
 /*
 TODO:
@@ -74,7 +75,9 @@ export default function Else({ children, ...others }) {
 
   return (
     <DefaultNode {...others} nodeType="else">
-      <span>{conditionalResult ? "☑" : "☐"}</span>
+      <DebugVerboseText applyWrapper={false}>
+        <span>{conditionalResult ? "☑" : "☐"}</span>
+      </DebugVerboseText>
       {children}
     </DefaultNode>
   );
