@@ -1,55 +1,56 @@
-import Section from "../tags/Section"
-import Paragraph from "../tags/Paragraph"
-import Goto from "../tags/Goto"
-import Item from "../tags/Item"
-import DefaultNode from "../tags/DefaultNode"
-import Give from "../tags/Give"
-import Choices from "../tags/Choices"
-import Outcomes from "../tags/Outcomes"
-import Table from "../tags/Table"
-import Choice from "../tags/Choice"
-import Outcome from "../tags/Outcome"
-import Result from "../tags/Result"
-import Lose from "../tags/Lose"
-import If from "../tags/If"
-import Else from "../tags/Else"
-import ElseIf from "../tags/ElseIf"
-import Random from "../tags/Random"
-import Difficulty from "../tags/Difficulty"
-import RankCheck from "../tags/RankCheck"
-import Group from "../tags/Group"
-import SetSectionVariable from "../tags/Set"
-import Training from "../tags/Training"
-import Rest from "../tags/Rest"
-import Adjust from "../tags/Adjust"
-import ItemCache from "../tags/ItemCache"
-import MoneyCache from "../tags/MoneyCache"
-import AdjustMoney from "../tags/AdjustMoney"
-import Market from "../tags/Market"
-import Header from "../tags/Header"
-import Trade from "../tags/Trade"
-import Buy from "../tags/Buy"
-import Sell from "../tags/Sell"
-import Fight from "../tags/Fight"
-import FightRound from "../tags/FightRound"
-import FightDamage from "../tags/FightDamage"
-import Flee from "../tags/Flee"
-import Text from "../tags/Text"
-import Description from "../tags/Description"
-import Resurrection from "../tags/Resurrection"
-import Curse from "../tags/Curse"
-import Disease from "../tags/Disease"
-import Poison from "../tags/Poison"
-import Effect from "../tags/Effect"
-import Return from "../tags/Return"
-import Field from "../tags/Field"
-import Bought from "../tags/Bought"
-import Sold from "../tags/Sold"
-import ExtraChoice from "../tags/ExtraChoice"
-import Image from "../tags/Image"
-import Reroll from "../tags/Reroll"
-import SectionView from "../tags/SectionView"
-import While from "../tags/While"
+import Section from "../tags/Section";
+import Paragraph from "../tags/Paragraph";
+import Goto from "../tags/Goto";
+import Item from "../tags/Item";
+import DefaultNode from "../tags/DefaultNode";
+import Give from "../tags/Give";
+import Choices from "../tags/Choices";
+import Outcomes from "../tags/Outcomes";
+import Table from "../tags/Table";
+import Choice from "../tags/Choice";
+import Outcome from "../tags/Outcome";
+import Result from "../tags/Result";
+import Lose from "../tags/Lose";
+import If from "../tags/If";
+import Else from "../tags/Else";
+import ElseIf from "../tags/ElseIf";
+import Random from "../tags/Random";
+import Difficulty from "../tags/Difficulty";
+import RankCheck from "../tags/RankCheck";
+import Group from "../tags/Group";
+import SetSectionVariable from "../tags/Set";
+import Training from "../tags/Training";
+import Rest from "../tags/Rest";
+import Adjust from "../tags/Adjust";
+import ItemCache from "../tags/ItemCache";
+import MoneyCache from "../tags/MoneyCache";
+import AdjustMoney from "../tags/AdjustMoney";
+import Market from "../tags/Market";
+import Header from "../tags/Header";
+import Trade from "../tags/Trade";
+import Buy from "../tags/Buy";
+import Sell from "../tags/Sell";
+import Fight from "../tags/Fight";
+import FightRound from "../tags/FightRound";
+import FightDamage from "../tags/FightDamage";
+import Flee from "../tags/Flee";
+import Text from "../tags/Text";
+import Description from "../tags/Description";
+import Resurrection from "../tags/Resurrection";
+import Curse from "../tags/Curse";
+import Disease from "../tags/Disease";
+import Poison from "../tags/Poison";
+import Effect from "../tags/Effect";
+import Return from "../tags/Return";
+import Field from "../tags/Field";
+import Bought from "../tags/Bought";
+import Sold from "../tags/Sold";
+import ExtraChoice from "../tags/ExtraChoice";
+import Image from "../tags/Image";
+import Reroll from "../tags/Reroll";
+import SectionView from "../tags/SectionView";
+import While from "../tags/While";
+import Items from "../tags/Items";
 
 const converters = {
   /*
@@ -65,15 +66,13 @@ const converters = {
   p: (props) => ({ type: Paragraph, props }),
   goto: (props) => ({ type: Goto, props }),
 
-
-
   // ===== TEMP ===== //
 
-  item: (props) => ({ type: Item, props: { ...props, type: 'item' } }),
-  weapon: (props) => ({ type: Item, props: { ...props, type: 'weapon' } }),
-  armor: (props) => ({ type: Item, props: { ...props, type: 'armor' } }),
-  armour: (props) => ({ type: Item, props: { ...props, type: 'armor' } }),
-  tool: (props) => ({ type: Item, props: { ...props, type: 'tool' } }),
+  item: (props) => ({ type: Item, props: { ...props, type: "item" } }),
+  weapon: (props) => ({ type: Item, props: { ...props, type: "weapon" } }),
+  armor: (props) => ({ type: Item, props: { ...props, type: "armor" } }),
+  armour: (props) => ({ type: Item, props: { ...props, type: "armor" } }),
+  tool: (props) => ({ type: Item, props: { ...props, type: "tool" } }),
 
   choices: (props) => ({ type: Choices, props }),
   outcomes: (props) => ({ type: Outcomes, props }),
@@ -94,8 +93,14 @@ const converters = {
   difficulty: (props) => ({ type: Difficulty, props }),
   rankcheck: (props) => ({ type: RankCheck, props }),
 
-  success: (props) => ({ type: Result, props: { ...props, nodeType: 'success' } }),
-  failure: (props) => ({ type: Result, props: { ...props, nodeType: 'failure' } }),
+  success: (props) => ({
+    type: Result,
+    props: { ...props, nodeType: "success" },
+  }),
+  failure: (props) => ({
+    type: Result,
+    props: { ...props, nodeType: "failure" },
+  }),
 
   group: (props) => ({ type: Group, props }),
 
@@ -106,6 +111,8 @@ const converters = {
   rest: (props) => ({ type: Rest, props }),
 
   adjust: (props) => ({ type: Adjust, props }),
+
+  items: (props) => ({ type: Items, props }),
 
   itemcache: (props) => ({ type: ItemCache, props }),
   moneycache: (props) => ({ type: MoneyCache, props }),
@@ -148,8 +155,14 @@ const converters = {
   image: (props) => ({ type: Image, props }),
 
   // TODO: Not yet implemented; what are these?
-  'include item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'include item attributes' } }),
-  'exclude item attributes': (props) => ({ type: DefaultNode, props: { ...props, nodeType: 'exclude item attributes' } }),
+  "include item attributes": (props) => ({
+    type: DefaultNode,
+    props: { ...props, nodeType: "include item attributes" },
+  }),
+  "exclude item attributes": (props) => ({
+    type: DefaultNode,
+    props: { ...props, nodeType: "exclude item attributes" },
+  }),
 
   reroll: (props) => ({ type: Reroll, props }),
 
@@ -157,22 +170,19 @@ const converters = {
 
   while: (props) => ({ type: While, props }),
 
-
-
   // ===== Style Only ===== //
 
   // <h1>, <h2>, <h3>, <h4>
   // A heading within the text. <h1> is the largest heading, <h4> the smallest. Only used within the rule files (QuickRules.xml and Rules.xml), though it could (theoretically) be used within a section.
-  h1: (props) => ({ type: 'h1', props }),
-  h2: (props) => ({ type: 'h2', props }),
-  h3: (props) => ({ type: 'h3', props }),
-  h4: (props) => ({ type: 'h4', props }),
+  h1: (props) => ({ type: "h1", props }),
+  h2: (props) => ({ type: "h2", props }),
+  h3: (props) => ({ type: "h3", props }),
+  h4: (props) => ({ type: "h4", props }),
 
   // <i>, <b>
   // Italics and Bold
-  i: (props) => ({ type: 'em', props }),
-  b: (props) => ({ type: 'strong', props }),
+  i: (props) => ({ type: "em", props }),
+  b: (props) => ({ type: "strong", props }),
+};
 
-}
-
-export default converters
+export default converters;
