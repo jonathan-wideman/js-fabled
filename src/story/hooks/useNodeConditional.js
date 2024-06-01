@@ -7,7 +7,6 @@ import {
 } from "../../store/character";
 
 export function useNodeConditionals(conditionals) {
-  console.log("useNodeConditionals conditionals", conditionals);
   const [inventory] = useAtom(characterInventoryAtom);
   const [codewords] = useAtom(characterCodewordsAtom);
 
