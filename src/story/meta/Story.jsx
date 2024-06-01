@@ -8,6 +8,7 @@ import { preProcessAst, processAst, visitElement, xmlAst } from "./parser";
 import { useAtom } from "jotai";
 import { debugParserXmlToolsAtom } from "../../store/debug";
 import { pageAtom } from "../../store/book";
+import DebugRawXmlText from "./DebugRawXmlText";
 
 function Page({ page, storyQuery }) {
   const [debugParserXmlTools] = useAtom(debugParserXmlToolsAtom);
@@ -42,11 +43,7 @@ export default function Story() {
   return (
     <div className="story">
       <Page storyQuery={storyQuery} page={page} />
-
-      <DebugVerboseText>
-        {storyQuery.data && <pre>{storyQuery.data}</pre>}
-        storyQuery
-      </DebugVerboseText>
+      <DebugRawXmlText />
     </div>
   );
 }

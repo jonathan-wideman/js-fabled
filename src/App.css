@@ -180,3 +180,13 @@
   margin: 2em 0;
   box-shadow: 0 0 3em hsla(0, 0%, 100%, 0.4), 0 0 0.5em hsla(0, 0%, 100%, 0.7);
 }
+
+.hr-border-fade {
+  border-image-source: linear-gradient(
+    to right,
+    hsl(0 0% 100% / 0),
+    hsl(0 0% 100% / 0.3),
+    hsl(0 0% 100% / 0)
+  );
+  border-image-slice: 1;
+}

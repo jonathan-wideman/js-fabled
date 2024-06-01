@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Dice from "./Dice";
 import { nextPage, prevPage } from "../helpers";
 import { useAtom } from "jotai";
-import { debugParserXmlToolsAtom, debugVerboseAtom } from "../store/debug";
+import {
+  debugParserXmlToolsAtom,
+  debugRawXmlAtom,
+  debugVerboseAtom,
+} from "../store/debug";
 import {
   bookAtom,
   clearHistoryAtom,
@@ -18,6 +22,7 @@ export default function DebugPanel() {
   const [, gotoPage] = useAtom(gotoPageAtom);
   const [, clearHistory] = useAtom(clearHistoryAtom);
   const [debugVerbose, setDebugVerbose] = useAtom(debugVerboseAtom);
+  const [debugRawXml, setDebugRawXml] = useAtom(debugRawXmlAtom);
   const [debugParserXmlTools, setDebugParserXmlTools] = useAtom(
     debugParserXmlToolsAtom
   );
@@ -103,6 +108,14 @@ export default function DebugPanel() {
             checked={debugParserXmlTools}
           />
           xml-tools
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            onChange={() => setDebugRawXml((prev) => !prev)}
+            checked={debugRawXml}
+          />
+          raw xml
         </label>
         <label>
           <input
