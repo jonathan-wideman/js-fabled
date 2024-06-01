@@ -2,6 +2,7 @@ import React from "react";
 import DebugVerboseText from "../meta/DebugVerboseText";
 import { useAtom } from "jotai";
 import { characterAddItemAtom } from "../../store/character";
+import { formatModifier } from "../../helpers";
 
 /*
 TODO:
@@ -56,6 +57,16 @@ export default function Item({ children, ...others }) {
     bonus: parseInt(others.bonus) || undefined,
   };
 
+  const defaultContent = [
+    item.name,
+    {
+      weapon: " [combat ",
+      armor: " [defense ",
+      tool: ` [${item.ability} `,
+    }[item.type],
+    item.bonus ? `${formatModifier(item.bonus)}]` : null,
+  ];
+
   return (
     <a
       className="action"
@@ -63,7 +74,7 @@ export default function Item({ children, ...others }) {
         addItem(item);
       }}
     >
-      <strong>{children ?? item.name}</strong>
+      <strong>{children ?? defaultContent}</strong>
       {/* <strong>{item.name}</strong> */}
       <DebugVerboseText>[item {JSON.stringify(others)}]</DebugVerboseText>
     </a>
