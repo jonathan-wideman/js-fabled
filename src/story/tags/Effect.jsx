@@ -1,5 +1,6 @@
 import React from "react";
 import DefaultNode from "./DefaultNode";
+import DebugVerboseText from "../meta/DebugVerboseText";
 
 /*
 
@@ -30,7 +31,7 @@ verb – The description of the way in which an item will be 'used', displayed i
 export default function Effect({ children, ...others }) {
   return (
     <DefaultNode {...others} nodeType="effect">
-      ({children})
+      <DebugVerboseText applyWrapper={false}>({children})</DebugVerboseText>
     </DefaultNode>
   );
 }
