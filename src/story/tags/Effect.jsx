@@ -1,5 +1,5 @@
-import React from 'react'
-import DefaultNode from "./DefaultNode"
+import React from "react";
+import DefaultNode from "./DefaultNode";
 
 /*
 
@@ -28,8 +28,9 @@ verb – The description of the way in which an item will be 'used', displayed i
 */
 
 export default function Effect({ children, ...others }) {
-
   return (
-    <DefaultNode {...others} nodeType='effect'>{children}</DefaultNode>
-  )
+    <DefaultNode {...others} nodeType="effect">
+      ({children})
+    </DefaultNode>
+  );
 }
