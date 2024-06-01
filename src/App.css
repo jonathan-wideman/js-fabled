@@ -76,6 +76,7 @@
 
 .sidebar {
   display: flex;
+  position: relative;
 }
 
 .pane {
@@ -87,6 +88,18 @@
   display: flex;
   width: 20rem;
   flex-flow: column wrap;
+}
+
+.sidebar-tab-buttons {
+  position: absolute;
+}
+
+.sidebar-tab-buttons.left {
+  left: 100%;
+}
+
+.sidebar-tab-buttons.right {
+  right: 100%;
 }
 
 .sidebar-tab-button {

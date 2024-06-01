@@ -42,7 +42,7 @@ export default function Sidebar({
 
 function SidebarTabButtons({ tabs, side, selectedId, onClickTabButton }) {
   return (
-    <div>
+    <div className={`sidebar-tab-buttons ${side}`}>
       {tabs.map((tab) => (
         <div key={tab.id}>
           <button
