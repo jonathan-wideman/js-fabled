@@ -39,10 +39,15 @@
 
 .story {
   padding: 1em 1.5em;
-  width: 60ch;
+  width: 100%;
   font-size: 1.2em;
   line-height: 1.5;
   overflow-y: auto;
+}
+
+.story > div {
+  max-width: 45rem;
+  margin: 0 auto;
 }
 
 .section-title {
@@ -80,7 +85,7 @@
 
 .sidebar-content {
   display: flex;
-  width: 40ch;
+  width: 20rem;
   flex-flow: column wrap;
 }
 
@@ -113,7 +118,7 @@
 }
 
 .debug input[type="text"] {
-  width: 12ch;
+  width: 5rem;
 }
 
 .stat-label {
