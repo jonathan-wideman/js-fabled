@@ -1,5 +1,5 @@
-import React from 'react'
-import DefaultNode from "./DefaultNode"
+import React from "react";
+import DefaultNode from "./DefaultNode";
 
 /*
 TODO:
@@ -14,8 +14,12 @@ stamina – the amount of Stamina to restore. If absent, restores Stamina to its
 */
 
 export default function Rest({ children, ...others }) {
+  const { stamina } = others;
+  const defaultContent = ["Restore ", stamina || "all", " stamina"];
 
   return (
-    <DefaultNode {...others} nodeType='rest'>{children}</DefaultNode>
-  )
+    <DefaultNode {...others} nodeType="rest">
+      {children ?? defaultContent}
+    </DefaultNode>
+  );
 }
