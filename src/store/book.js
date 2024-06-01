@@ -1,7 +1,9 @@
 import { atom } from "jotai";
 
-const STARTING_BOOK = "book99";
-const STARTING_PAGE = "New";
+// const STARTING_BOOK = "book99";
+// const STARTING_PAGE = "New";
+const STARTING_BOOK = "book1";
+const STARTING_PAGE = "5";
 
 export const bookAtom = atom(STARTING_BOOK);
 export const pageAtom = atom(STARTING_PAGE);
