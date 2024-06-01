@@ -79,7 +79,12 @@
   position: relative;
 }
 
+.sidebar.full {
+  width: 100%;
+}
+
 .pane {
+  width: 100%;
   padding: 1em 1.5em;
   background-color: rgba(25, 25, 25, 0.5);
 }
@@ -88,6 +93,10 @@
   display: flex;
   width: 20rem;
   flex-flow: column wrap;
+}
+
+.sidebar-content.full {
+  width: 100%;
 }
 
 .sidebar-tab-buttons {
@@ -100,6 +109,14 @@
 
 .sidebar-tab-buttons.right {
   right: 100%;
+}
+
+.sidebar-tab-buttons.full {
+  position: unset;
+  display: flex;
+  /* width: 100%; */
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .sidebar-tab-button {
@@ -128,6 +145,10 @@
 .sidebar-tab-button.right {
   border-top-left-radius: 0.7rem;
   border-bottom-left-radius: 0.7rem;
+}
+
+.sidebar-tab-button.full {
+  border-radius: 0.7rem;
 }
 
 .debug input[type="text"] {

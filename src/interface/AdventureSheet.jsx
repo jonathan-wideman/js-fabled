@@ -61,122 +61,120 @@ export default function AdventureSheet() {
 
   return (
     <>
-      <div className="sidebar-content sheet">
-        <div>
-          <StatLabel>Name:</StatLabel>
-          {name}
-        </div>
-        <div>
-          <StatLabel>Profession:</StatLabel>
-          {profession}
-        </div>
-        <div>
-          <StatLabel>Rank:</StatLabel>
-          {rank} ({getRankTitle(rank)})
-        </div>
-        <div>
-          <StatLabel>Gender:</StatLabel>
-          {gender}
-        </div>
-        <div>
-          <StatLabel>Bio:</StatLabel>
-          {/* TODO: expandable, styled bio */}
-          {bio || "..."}
-        </div>
-        <div>
-          <StatLabel>Stamina:</StatLabel>
-          {stamina.current}/{stamina.max}
-        </div>
-        <SheetStat label={"DEFENSE"} stat={calculatedDefense} />
-        <SheetStat label={"CHARISMA"} stat={calculatedCharisma} />
-        <SheetStat label={"COMBAT"} stat={calculatedCombat} />
-        <SheetStat label={"MAGIC"} stat={calculatedMagic} />
-        <SheetStat label={"SANCTITY"} stat={calculatedSanctity} />
-        <SheetStat label={"SCOUTING"} stat={calculatedScouting} />
-        <SheetStat label={"THIEVERY"} stat={calculatedThievery} />
-        <div>
-          <StatLabel>Money:</StatLabel>
-          {money} Shards
-        </div>
-        <div>
-          <StatLabel>Possessions:</StatLabel>({inventory.items.length}/
-          {inventory.max})
-          <ul>
-            {" "}
-            {inventory.items.map((item, i) => (
-              <li key={i}>
-                <SheetItem item={item} />
-              </li>
-            ))}{" "}
-          </ul>
-        </div>
-        <div>
-          <StatLabel>Special Actions:</StatLabel>
-          <ul>
-            {" "}
-            {actions.map((action, i) => (
-              <li key={i}>{action}</li>
-            ))}{" "}
-          </ul>
-        </div>
-        <div>
-          <StatLabel>Titles and Honors:</StatLabel>
-          <ul>
-            {" "}
-            {titles.map((title, i) => (
-              <li key={i}>{title}</li>
-            ))}{" "}
-          </ul>
-        </div>
-        <div>
-          <StatLabel>God:</StatLabel>
-          {god}
-        </div>
-        <div>
-          <StatLabel>Blessings:</StatLabel>
-          <ul>
-            {" "}
-            {blessings.map((blessing, i) => (
-              <li key={i}>{blessing}</li>
-            ))}{" "}
-          </ul>
-        </div>
-        <div>
-          <StatLabel>Curses:</StatLabel>
-          <ul>
-            {" "}
-            {curses.map((curse, i) => (
-              <li key={i}>{curse}</li>
-            ))}{" "}
-          </ul>
-        </div>
-        <div>
-          <StatLabel>Resurrection Arrangements:</StatLabel>
-          <ul>
-            {" "}
-            {revives.map((revive, i) => (
-              <li key={i}>{revive}</li>
-            ))}{" "}
-          </ul>
-        </div>
-        <div>
-          <StatLabel>Codewords:</StatLabel>
-          <ul>
-            {" "}
-            {codewords.map((codeword, i) => (
-              <li key={i}>{codeword}</li>
-            ))}{" "}
-          </ul>
-        </div>
-        <div>
-          <StatLabel>Variables:</StatLabel>
-          {JSON.stringify(variables)}
-        </div>
-        <div>
-          <DebugVerboseText>
-            Section ticks: {JSON.stringify(sectionTicks, null, 2)}
-          </DebugVerboseText>
-        </div>
+      <div>
+        <StatLabel>Name:</StatLabel>
+        {name}
+      </div>
+      <div>
+        <StatLabel>Profession:</StatLabel>
+        {profession}
+      </div>
+      <div>
+        <StatLabel>Rank:</StatLabel>
+        {rank} ({getRankTitle(rank)})
+      </div>
+      <div>
+        <StatLabel>Gender:</StatLabel>
+        {gender}
+      </div>
+      <div>
+        <StatLabel>Bio:</StatLabel>
+        {/* TODO: expandable, styled bio */}
+        {bio || "..."}
+      </div>
+      <div>
+        <StatLabel>Stamina:</StatLabel>
+        {stamina.current}/{stamina.max}
+      </div>
+      <SheetStat label={"DEFENSE"} stat={calculatedDefense} />
+      <SheetStat label={"CHARISMA"} stat={calculatedCharisma} />
+      <SheetStat label={"COMBAT"} stat={calculatedCombat} />
+      <SheetStat label={"MAGIC"} stat={calculatedMagic} />
+      <SheetStat label={"SANCTITY"} stat={calculatedSanctity} />
+      <SheetStat label={"SCOUTING"} stat={calculatedScouting} />
+      <SheetStat label={"THIEVERY"} stat={calculatedThievery} />
+      <div>
+        <StatLabel>Money:</StatLabel>
+        {money} Shards
+      </div>
+      <div>
+        <StatLabel>Possessions:</StatLabel>({inventory.items.length}/
+        {inventory.max})
+        <ul>
+          {" "}
+          {inventory.items.map((item, i) => (
+            <li key={i}>
+              <SheetItem item={item} />
+            </li>
+          ))}{" "}
+        </ul>
+      </div>
+      <div>
+        <StatLabel>Special Actions:</StatLabel>
+        <ul>
+          {" "}
+          {actions.map((action, i) => (
+            <li key={i}>{action}</li>
+          ))}{" "}
+        </ul>
+      </div>
+      <div>
+        <StatLabel>Titles and Honors:</StatLabel>
+        <ul>
+          {" "}
+          {titles.map((title, i) => (
+            <li key={i}>{title}</li>
+          ))}{" "}
+        </ul>
+      </div>
+      <div>
+        <StatLabel>God:</StatLabel>
+        {god}
+      </div>
+      <div>
+        <StatLabel>Blessings:</StatLabel>
+        <ul>
+          {" "}
+          {blessings.map((blessing, i) => (
+            <li key={i}>{blessing}</li>
+          ))}{" "}
+        </ul>
+      </div>
+      <div>
+        <StatLabel>Curses:</StatLabel>
+        <ul>
+          {" "}
+          {curses.map((curse, i) => (
+            <li key={i}>{curse}</li>
+          ))}{" "}
+        </ul>
+      </div>
+      <div>
+        <StatLabel>Resurrection Arrangements:</StatLabel>
+        <ul>
+          {" "}
+          {revives.map((revive, i) => (
+            <li key={i}>{revive}</li>
+          ))}{" "}
+        </ul>
+      </div>
+      <div>
+        <StatLabel>Codewords:</StatLabel>
+        <ul>
+          {" "}
+          {codewords.map((codeword, i) => (
+            <li key={i}>{codeword}</li>
+          ))}{" "}
+        </ul>
+      </div>
+      <div>
+        <StatLabel>Variables:</StatLabel>
+        {JSON.stringify(variables)}
+      </div>
+      <div>
+        <DebugVerboseText>
+          Section ticks: {JSON.stringify(sectionTicks, null, 2)}
+        </DebugVerboseText>
       </div>
     </>
   );

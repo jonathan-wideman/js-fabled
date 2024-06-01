@@ -1,20 +1,26 @@
-import { useState } from "react";
-
 export default function Sidebar({
-  side = "left",
+  side = "full",
   tabs = [],
-  defaultTabId,
+  selectedId,
+  onClickTabButton,
   ...others
 }) {
-  const [selectedId, setSelectedId] = useState(defaultTabId);
   const selectedTab = tabs.find((tab) => selectedId && tab.id === selectedId);
 
-  const onClickTabButton = (id) => {
-    setSelectedId((prev) => (prev === id ? undefined : id));
-  };
+  if (!selectedTab)
+    return (
+      <div className={`sidebar`}>
+        <SidebarTabButtons
+          tabs={tabs}
+          side={side === "full" ? "right" : side}
+          selectedId={selectedId}
+          onClickTabButton={onClickTabButton}
+        />
+      </div>
+    );
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${side}`}>
       {side === "right" ? (
         <SidebarTabButtons
           tabs={tabs}
@@ -25,6 +31,14 @@ export default function Sidebar({
       ) : null}
       {selectedTab ? (
         <div key={selectedId} className="pane" {...others}>
+          {side === "full" ? (
+            <SidebarTabButtons
+              tabs={tabs}
+              side={side}
+              selectedId={selectedId}
+              onClickTabButton={onClickTabButton}
+            />
+          ) : null}
           {selectedTab.content}
         </div>
       ) : null}

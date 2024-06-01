@@ -54,7 +54,7 @@ export default function DebugPanel() {
   };
 
   return (
-    <div className="sidebar-content debug">
+    <>
       <h3>Debug Panel</h3>
       <div>
         <form
@@ -129,6 +129,6 @@ export default function DebugPanel() {
       <div>
         <Dice count={2} />
       </div>
-    </div>
+    </>
   );
 }

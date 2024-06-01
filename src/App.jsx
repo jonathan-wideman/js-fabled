@@ -12,7 +12,7 @@ import IconMap from "./icons/IconMap";
 import IconPerson from "./icons/IconPerson";
 import IconPen from "./icons/IconPen";
 import { conditionalElements } from "./helpers";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function Providers({ children }) {
   const queryClient = new QueryClient();
@@ -38,46 +38,119 @@ function App() {
     };
   }, [setDebug]);
 
+  const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
+
+  const [leftSidebarSelectedId, setLeftSidebarSelectedId] = useState(
+    debug ? "debug" : undefined
+  );
+  const [rightSidebarSelectedId, setRightSidebarSelectedId] = useState(
+    isMobileViewport ? undefined : "sheet"
+  );
+
+  const onClickLeftSidebarTabButton = (id) => {
+    setLeftSidebarSelectedId((prev) => (prev === id ? undefined : id));
+  };
+  const onClickRightSidebarTabButton = (id) => {
+    setRightSidebarSelectedId((prev) => (prev === id ? undefined : id));
+  };
+
   return (
     <Providers>
       <div className="App">
-        <Sidebar
-          side="left"
-          tabs={[
-            ...conditionalElements(debug, {
-              id: "debug",
-              label: "Debug",
-              icon: <IconSpider />,
-              content: <DebugPanel />,
-            }),
-            {
-              id: "map",
-              label: "Map",
-              icon: <IconMap />,
-              content: <div className="sidebar-content">Map</div>,
-            },
-            {
-              id: "notes",
-              label: "Notes",
-              icon: <IconPen />,
-              content: <div className="sidebar-content">Notes</div>,
-            },
-          ]}
-          defaultTabId={debug ? "debug" : undefined}
-        ></Sidebar>
-        <Story />
-        <Sidebar
-          side="right"
-          tabs={[
-            {
-              id: "sheet",
-              label: "Sheet",
-              icon: <IconPerson />,
-              content: <AdventureSheet />,
-            },
-          ]}
-          defaultTabId={"sheet"}
-        ></Sidebar>
+        {isMobileViewport ? (
+          <>
+            {!rightSidebarSelectedId ? <Story /> : null}
+            <Sidebar
+              side="full"
+              tabs={[
+                {
+                  id: "sheet",
+                  label: "Sheet",
+                  icon: <IconPerson />,
+                  content: (
+                    <div className="sidebar-content full sheet">
+                      <AdventureSheet />
+                    </div>
+                  ),
+                },
+                {
+                  id: "map",
+                  label: "Map",
+                  icon: <IconMap />,
+                  content: <div className="sidebar-content full">Map</div>,
+                },
+                {
+                  id: "notes",
+                  label: "Notes",
+                  icon: <IconPen />,
+                  content: <div className="sidebar-content full">Notes</div>,
+                },
+                ...conditionalElements(debug, {
+                  id: "debug",
+                  label: "Debug",
+                  icon: <IconSpider />,
+                  content: (
+                    <div className="sidebar-content full debug">
+                      <DebugPanel />
+                    </div>
+                  ),
+                }),
+              ]}
+              selectedId={rightSidebarSelectedId}
+              onClickTabButton={onClickRightSidebarTabButton}
+            />
+          </>
+        ) : (
+          <>
+            <Sidebar
+              side="left"
+              tabs={[
+                ...conditionalElements(debug, {
+                  id: "debug",
+                  label: "Debug",
+                  icon: <IconSpider />,
+                  content: (
+                    <div className="sidebar-content debug">
+                      <DebugPanel />
+                    </div>
+                  ),
+                }),
+                {
+                  id: "map",
+                  label: "Map",
+                  icon: <IconMap />,
+                  content: <div className="sidebar-content">Map</div>,
+                },
+                {
+                  id: "notes",
+                  label: "Notes",
+                  icon: <IconPen />,
+                  content: <div className="sidebar-content">Notes</div>,
+                },
+              ]}
+              selectedId={leftSidebarSelectedId}
+              onClickTabButton={onClickLeftSidebarTabButton}
+            />
+            <Story />
+            <Sidebar
+              side="right"
+              tabs={[
+                {
+                  id: "sheet",
+                  label: "Sheet",
+                  icon: <IconPerson />,
+                  content: (
+                    <div className="sidebar-content sheet">
+                      <AdventureSheet />
+                    </div>
+                  ),
+                },
+              ]}
+              selectedId={rightSidebarSelectedId}
+              onClickTabButton={onClickRightSidebarTabButton}
+            />
+          </>
+        )}
       </div>
     </Providers>
   );
