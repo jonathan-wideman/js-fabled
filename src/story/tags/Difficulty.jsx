@@ -1,5 +1,5 @@
-import React from 'react'
-import DefaultNode from "./DefaultNode"
+import React from "react";
+import DefaultNode from "./DefaultNode";
 
 /*
 TODO:
@@ -21,8 +21,17 @@ var – The variable that the result will be stored in; if missing, the anonymou
 */
 
 export default function Difficulty({ children, ...others }) {
+  const { ability, level } = others;
+  const defaultContent = [
+    "Roll two dice, add your ",
+    ability,
+    " ability score, trying to beat a score of ",
+    level,
+  ];
 
   return (
-    <DefaultNode {...others} nodeType='difficulty'>{children}</DefaultNode>
-  )
+    <DefaultNode {...others} nodeType="difficulty">
+      {children ?? defaultContent}
+    </DefaultNode>
+  );
 }
