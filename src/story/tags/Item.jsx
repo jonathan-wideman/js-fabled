@@ -74,8 +74,10 @@ export default function Item({ children, ...others }) {
         addItem(item);
       }}
     >
-      <strong>{children ?? defaultContent}</strong>
-      {/* <strong>{item.name}</strong> */}
+      <strong>
+        {defaultContent}
+        {children}
+      </strong>
       <DebugVerboseText>[item {JSON.stringify(others)}]</DebugVerboseText>
     </a>
   );
