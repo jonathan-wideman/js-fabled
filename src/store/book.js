@@ -14,7 +14,11 @@ export const addHistoryAtom = atom(null, (get, set, node) => {
 });
 
 export const clearHistoryAtom = atom(null, (get, set) => {
-  set(historyAtom, []);
+  const node = {
+    book: get(bookAtom),
+    page: get(pageAtom),
+  };
+  set(historyAtom, [node]);
 });
 
 export const popHistoryAtom = atom(null, (get, set) => {
