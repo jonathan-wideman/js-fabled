@@ -13,6 +13,7 @@ import {
   gotoPageAtom,
   historyAtom,
   pageAtom,
+  popHistoryAtom,
 } from "../store/book";
 
 export default function DebugPanel() {
@@ -21,6 +22,7 @@ export default function DebugPanel() {
   const [history] = useAtom(historyAtom);
   const [, gotoPage] = useAtom(gotoPageAtom);
   const [, clearHistory] = useAtom(clearHistoryAtom);
+  const [, popHistory] = useAtom(popHistoryAtom);
   const [debugVerbose, setDebugVerbose] = useAtom(debugVerboseAtom);
   const [debugRawXml, setDebugRawXml] = useAtom(debugRawXmlAtom);
   const [debugParserXmlTools, setDebugParserXmlTools] = useAtom(
@@ -50,6 +52,18 @@ export default function DebugPanel() {
     if (prev) {
       setInputPage(prev);
       gotoPage({ book, page: prev });
+    }
+  };
+
+  const historyBack = () => {
+    if (history.length < 2) {
+      return;
+    }
+    const node = history[history.length - 2];
+    if (node) {
+      popHistory();
+      popHistory();
+      gotoPage({ book: node.book, page: node.page });
     }
   };
 
@@ -86,6 +100,12 @@ export default function DebugPanel() {
       </div>
       <div>
         History:
+        <div>
+          <button onClick={() => historyBack()} disabled={history.length < 2}>
+            back
+          </button>
+          <button onClick={() => clearHistory()}>clear</button>
+        </div>
         <ul>
           {history.map((node, index) => (
             <li
@@ -97,7 +117,6 @@ export default function DebugPanel() {
             </li>
           ))}
         </ul>
-        <button onClick={() => clearHistory()}>clear</button>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         Output:

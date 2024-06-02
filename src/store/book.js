@@ -17,6 +17,10 @@ export const clearHistoryAtom = atom(null, (get, set) => {
   set(historyAtom, []);
 });
 
+export const popHistoryAtom = atom(null, (get, set) => {
+  set(historyAtom, get(historyAtom).slice(0, -1));
+});
+
 export const gotoPageAtom = atom(null, (get, set, { book, page }) => {
   set(bookAtom, book);
   set(pageAtom, page);
