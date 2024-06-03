@@ -59,8 +59,97 @@ function App() {
       <div className="App">
         {isMobileViewport ? (
           <>
-            {!rightSidebarSelectedId ? <Story /> : null}
-            <Sidebar
+            {!rightSidebarSelectedId ? (
+              <>
+                <Story />
+                <div className="blur-footer">
+                  <Sidebar
+                    side="full"
+                    tabs={[
+                      {
+                        id: "sheet",
+                        label: "Sheet",
+                        icon: <IconPerson />,
+                        content: (
+                          <div className="sidebar-content full sheet">
+                            <AdventureSheet />
+                          </div>
+                        ),
+                      },
+                      {
+                        id: "map",
+                        label: "Map",
+                        icon: <IconMap />,
+                        content: (
+                          <div className="sidebar-content full">Map</div>
+                        ),
+                      },
+                      {
+                        id: "notes",
+                        label: "Notes",
+                        icon: <IconPen />,
+                        content: (
+                          <div className="sidebar-content full">Notes</div>
+                        ),
+                      },
+                      ...conditionalElements(debug, {
+                        id: "debug",
+                        label: "Debug",
+                        icon: <IconSpider />,
+                        content: (
+                          <div className="sidebar-content full debug">
+                            <DebugPanel />
+                          </div>
+                        ),
+                      }),
+                    ]}
+                    selectedId={rightSidebarSelectedId}
+                    onClickTabButton={onClickRightSidebarTabButton}
+                  />
+                </div>
+              </>
+            ) : (
+              <Sidebar
+                side="full"
+                tabs={[
+                  {
+                    id: "sheet",
+                    label: "Sheet",
+                    icon: <IconPerson />,
+                    content: (
+                      <div className="sidebar-content full sheet">
+                        <AdventureSheet />
+                      </div>
+                    ),
+                  },
+                  {
+                    id: "map",
+                    label: "Map",
+                    icon: <IconMap />,
+                    content: <div className="sidebar-content full">Map</div>,
+                  },
+                  {
+                    id: "notes",
+                    label: "Notes",
+                    icon: <IconPen />,
+                    content: <div className="sidebar-content full">Notes</div>,
+                  },
+                  ...conditionalElements(debug, {
+                    id: "debug",
+                    label: "Debug",
+                    icon: <IconSpider />,
+                    content: (
+                      <div className="sidebar-content full debug">
+                        <DebugPanel />
+                      </div>
+                    ),
+                  }),
+                ]}
+                selectedId={rightSidebarSelectedId}
+                onClickTabButton={onClickRightSidebarTabButton}
+              />
+            )}
+            {/* <Sidebar
               side="full"
               tabs={[
                 {
@@ -98,7 +187,7 @@ function App() {
               ]}
               selectedId={rightSidebarSelectedId}
               onClickTabButton={onClickRightSidebarTabButton}
-            />
+            /> */}
           </>
         ) : (
           <>

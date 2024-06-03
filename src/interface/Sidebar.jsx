@@ -12,7 +12,8 @@ export default function Sidebar({
       <div className={`sidebar`}>
         <SidebarTabButtons
           tabs={tabs}
-          side={side === "full" ? "right" : side}
+          // side={side === "full" ? "right" : side}
+          side={side}
           selectedId={selectedId}
           onClickTabButton={onClickTabButton}
         />
